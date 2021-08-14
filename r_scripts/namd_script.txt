@@ -1,0 +1,400 @@
+cd /home/nastia/mem/ACHE/ACHE/start_ACh_acyl_poket/MD/stabilisation/
+namd run script  min_start_ACh_acyl_poket.conf > min_start_ACh_acyl_poket.out
+namd run script  heat_start_ACh_acyl_poket.conf > heat_start_ACh_acyl_poket.out
+namd run script  eqv_start_ACh_acyl_poket.conf > eqv_start_ACh_acyl_poket.out
+namd run script  quench_start_ACh_acyl_poket_1.conf > quench_start_ACh_acyl_poket_1.out
+namd run script  quench_start_ACh_acyl_poket_2.conf > quench_start_ACh_acyl_poket_2.out
+namd run script  quench_start_ACh_acyl_poket_3.conf > quench_start_ACh_acyl_poket_3.out
+namd run script  quench_start_ACh_acyl_poket_4.conf > quench_start_ACh_acyl_poket_4.out
+namd run script  quench_start_ACh_acyl_poket_5.conf > quench_start_ACh_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ACh_anion_cite/MD/stabilisation/
+namd run script  min_start_ACh_anion_cite.conf > min_start_ACh_anion_cite.out
+namd run script  heat_start_ACh_anion_cite.conf > heat_start_ACh_anion_cite.out
+namd run script  eqv_start_ACh_anion_cite.conf > eqv_start_ACh_anion_cite.out
+namd run script  quench_start_ACh_anion_cite_1.conf > quench_start_ACh_anion_cite_1.out
+namd run script  quench_start_ACh_anion_cite_2.conf > quench_start_ACh_anion_cite_2.out
+namd run script  quench_start_ACh_anion_cite_3.conf > quench_start_ACh_anion_cite_3.out
+namd run script  quench_start_ACh_anion_cite_4.conf > quench_start_ACh_anion_cite_4.out
+namd run script  quench_start_ACh_anion_cite_5.conf > quench_start_ACh_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ACh_cat_trio/MD/stabilisation/
+namd run script  min_start_ACh_cat_trio.conf > min_start_ACh_cat_trio.out
+namd run script  heat_start_ACh_cat_trio.conf > heat_start_ACh_cat_trio.out
+namd run script  eqv_start_ACh_cat_trio.conf > eqv_start_ACh_cat_trio.out
+namd run script  quench_start_ACh_cat_trio_1.conf > quench_start_ACh_cat_trio_1.out
+namd run script  quench_start_ACh_cat_trio_2.conf > quench_start_ACh_cat_trio_2.out
+namd run script  quench_start_ACh_cat_trio_3.conf > quench_start_ACh_cat_trio_3.out
+namd run script  quench_start_ACh_cat_trio_4.conf > quench_start_ACh_cat_trio_4.out
+namd run script  quench_start_ACh_cat_trio_5.conf > quench_start_ACh_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ACh_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_ACh_hydroxyanion_hole.conf > min_start_ACh_hydroxyanion_hole.out
+namd run script  heat_start_ACh_hydroxyanion_hole.conf > heat_start_ACh_hydroxyanion_hole.out
+namd run script  eqv_start_ACh_hydroxyanion_hole.conf > eqv_start_ACh_hydroxyanion_hole.out
+namd run script  quench_start_ACh_hydroxyanion_hole_1.conf > quench_start_ACh_hydroxyanion_hole_1.out
+namd run script  quench_start_ACh_hydroxyanion_hole_2.conf > quench_start_ACh_hydroxyanion_hole_2.out
+namd run script  quench_start_ACh_hydroxyanion_hole_3.conf > quench_start_ACh_hydroxyanion_hole_3.out
+namd run script  quench_start_ACh_hydroxyanion_hole_4.conf > quench_start_ACh_hydroxyanion_hole_4.out
+namd run script  quench_start_ACh_hydroxyanion_hole_5.conf > quench_start_ACh_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ACh_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_ACh_perefer_anion_cite.conf > min_start_ACh_perefer_anion_cite.out
+namd run script  heat_start_ACh_perefer_anion_cite.conf > heat_start_ACh_perefer_anion_cite.out
+namd run script  eqv_start_ACh_perefer_anion_cite.conf > eqv_start_ACh_perefer_anion_cite.out
+namd run script  quench_start_ACh_perefer_anion_cite_1.conf > quench_start_ACh_perefer_anion_cite_1.out
+namd run script  quench_start_ACh_perefer_anion_cite_2.conf > quench_start_ACh_perefer_anion_cite_2.out
+namd run script  quench_start_ACh_perefer_anion_cite_3.conf > quench_start_ACh_perefer_anion_cite_3.out
+namd run script  quench_start_ACh_perefer_anion_cite_4.conf > quench_start_ACh_perefer_anion_cite_4.out
+namd run script  quench_start_ACh_perefer_anion_cite_5.conf > quench_start_ACh_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ATC_acyl_poket/MD/stabilisation/
+namd run script  min_start_ATC_acyl_poket.conf > min_start_ATC_acyl_poket.out
+namd run script  heat_start_ATC_acyl_poket.conf > heat_start_ATC_acyl_poket.out
+namd run script  eqv_start_ATC_acyl_poket.conf > eqv_start_ATC_acyl_poket.out
+namd run script  quench_start_ATC_acyl_poket_1.conf > quench_start_ATC_acyl_poket_1.out
+namd run script  quench_start_ATC_acyl_poket_2.conf > quench_start_ATC_acyl_poket_2.out
+namd run script  quench_start_ATC_acyl_poket_3.conf > quench_start_ATC_acyl_poket_3.out
+namd run script  quench_start_ATC_acyl_poket_4.conf > quench_start_ATC_acyl_poket_4.out
+namd run script  quench_start_ATC_acyl_poket_5.conf > quench_start_ATC_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ATC_anion_cite/MD/stabilisation/
+namd run script  min_start_ATC_anion_cite.conf > min_start_ATC_anion_cite.out
+namd run script  heat_start_ATC_anion_cite.conf > heat_start_ATC_anion_cite.out
+namd run script  eqv_start_ATC_anion_cite.conf > eqv_start_ATC_anion_cite.out
+namd run script  quench_start_ATC_anion_cite_1.conf > quench_start_ATC_anion_cite_1.out
+namd run script  quench_start_ATC_anion_cite_2.conf > quench_start_ATC_anion_cite_2.out
+namd run script  quench_start_ATC_anion_cite_3.conf > quench_start_ATC_anion_cite_3.out
+namd run script  quench_start_ATC_anion_cite_4.conf > quench_start_ATC_anion_cite_4.out
+namd run script  quench_start_ATC_anion_cite_5.conf > quench_start_ATC_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ATC_cat_trio/MD/stabilisation/
+namd run script  min_start_ATC_cat_trio.conf > min_start_ATC_cat_trio.out
+namd run script  heat_start_ATC_cat_trio.conf > heat_start_ATC_cat_trio.out
+namd run script  eqv_start_ATC_cat_trio.conf > eqv_start_ATC_cat_trio.out
+namd run script  quench_start_ATC_cat_trio_1.conf > quench_start_ATC_cat_trio_1.out
+namd run script  quench_start_ATC_cat_trio_2.conf > quench_start_ATC_cat_trio_2.out
+namd run script  quench_start_ATC_cat_trio_3.conf > quench_start_ATC_cat_trio_3.out
+namd run script  quench_start_ATC_cat_trio_4.conf > quench_start_ATC_cat_trio_4.out
+namd run script  quench_start_ATC_cat_trio_5.conf > quench_start_ATC_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ATC_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_ATC_hydroxyanion_hole.conf > min_start_ATC_hydroxyanion_hole.out
+namd run script  heat_start_ATC_hydroxyanion_hole.conf > heat_start_ATC_hydroxyanion_hole.out
+namd run script  eqv_start_ATC_hydroxyanion_hole.conf > eqv_start_ATC_hydroxyanion_hole.out
+namd run script  quench_start_ATC_hydroxyanion_hole_1.conf > quench_start_ATC_hydroxyanion_hole_1.out
+namd run script  quench_start_ATC_hydroxyanion_hole_2.conf > quench_start_ATC_hydroxyanion_hole_2.out
+namd run script  quench_start_ATC_hydroxyanion_hole_3.conf > quench_start_ATC_hydroxyanion_hole_3.out
+namd run script  quench_start_ATC_hydroxyanion_hole_4.conf > quench_start_ATC_hydroxyanion_hole_4.out
+namd run script  quench_start_ATC_hydroxyanion_hole_5.conf > quench_start_ATC_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_ATC_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_ATC_perefer_anion_cite.conf > min_start_ATC_perefer_anion_cite.out
+namd run script  heat_start_ATC_perefer_anion_cite.conf > heat_start_ATC_perefer_anion_cite.out
+namd run script  eqv_start_ATC_perefer_anion_cite.conf > eqv_start_ATC_perefer_anion_cite.out
+namd run script  quench_start_ATC_perefer_anion_cite_1.conf > quench_start_ATC_perefer_anion_cite_1.out
+namd run script  quench_start_ATC_perefer_anion_cite_2.conf > quench_start_ATC_perefer_anion_cite_2.out
+namd run script  quench_start_ATC_perefer_anion_cite_3.conf > quench_start_ATC_perefer_anion_cite_3.out
+namd run script  quench_start_ATC_perefer_anion_cite_4.conf > quench_start_ATC_perefer_anion_cite_4.out
+namd run script  quench_start_ATC_perefer_anion_cite_5.conf > quench_start_ATC_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_atma_acyl_poket/MD/stabilisation/
+namd run script  min_start_atma_acyl_poket.conf > min_start_atma_acyl_poket.out
+namd run script  heat_start_atma_acyl_poket.conf > heat_start_atma_acyl_poket.out
+namd run script  eqv_start_atma_acyl_poket.conf > eqv_start_atma_acyl_poket.out
+namd run script  quench_start_atma_acyl_poket_1.conf > quench_start_atma_acyl_poket_1.out
+namd run script  quench_start_atma_acyl_poket_2.conf > quench_start_atma_acyl_poket_2.out
+namd run script  quench_start_atma_acyl_poket_3.conf > quench_start_atma_acyl_poket_3.out
+namd run script  quench_start_atma_acyl_poket_4.conf > quench_start_atma_acyl_poket_4.out
+namd run script  quench_start_atma_acyl_poket_5.conf > quench_start_atma_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_atma_anion_cite/MD/stabilisation/
+namd run script  min_start_atma_anion_cite.conf > min_start_atma_anion_cite.out
+namd run script  heat_start_atma_anion_cite.conf > heat_start_atma_anion_cite.out
+namd run script  eqv_start_atma_anion_cite.conf > eqv_start_atma_anion_cite.out
+namd run script  quench_start_atma_anion_cite_1.conf > quench_start_atma_anion_cite_1.out
+namd run script  quench_start_atma_anion_cite_2.conf > quench_start_atma_anion_cite_2.out
+namd run script  quench_start_atma_anion_cite_3.conf > quench_start_atma_anion_cite_3.out
+namd run script  quench_start_atma_anion_cite_4.conf > quench_start_atma_anion_cite_4.out
+namd run script  quench_start_atma_anion_cite_5.conf > quench_start_atma_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_atma_cat_trio/MD/stabilisation/
+namd run script  min_start_atma_cat_trio.conf > min_start_atma_cat_trio.out
+namd run script  heat_start_atma_cat_trio.conf > heat_start_atma_cat_trio.out
+namd run script  eqv_start_atma_cat_trio.conf > eqv_start_atma_cat_trio.out
+namd run script  quench_start_atma_cat_trio_1.conf > quench_start_atma_cat_trio_1.out
+namd run script  quench_start_atma_cat_trio_2.conf > quench_start_atma_cat_trio_2.out
+namd run script  quench_start_atma_cat_trio_3.conf > quench_start_atma_cat_trio_3.out
+namd run script  quench_start_atma_cat_trio_4.conf > quench_start_atma_cat_trio_4.out
+namd run script  quench_start_atma_cat_trio_5.conf > quench_start_atma_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_atma_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_atma_hydroxyanion_hole.conf > min_start_atma_hydroxyanion_hole.out
+namd run script  heat_start_atma_hydroxyanion_hole.conf > heat_start_atma_hydroxyanion_hole.out
+namd run script  eqv_start_atma_hydroxyanion_hole.conf > eqv_start_atma_hydroxyanion_hole.out
+namd run script  quench_start_atma_hydroxyanion_hole_1.conf > quench_start_atma_hydroxyanion_hole_1.out
+namd run script  quench_start_atma_hydroxyanion_hole_2.conf > quench_start_atma_hydroxyanion_hole_2.out
+namd run script  quench_start_atma_hydroxyanion_hole_3.conf > quench_start_atma_hydroxyanion_hole_3.out
+namd run script  quench_start_atma_hydroxyanion_hole_4.conf > quench_start_atma_hydroxyanion_hole_4.out
+namd run script  quench_start_atma_hydroxyanion_hole_5.conf > quench_start_atma_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_atma_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_atma_perefer_anion_cite.conf > min_start_atma_perefer_anion_cite.out
+namd run script  heat_start_atma_perefer_anion_cite.conf > heat_start_atma_perefer_anion_cite.out
+namd run script  eqv_start_atma_perefer_anion_cite.conf > eqv_start_atma_perefer_anion_cite.out
+namd run script  quench_start_atma_perefer_anion_cite_1.conf > quench_start_atma_perefer_anion_cite_1.out
+namd run script  quench_start_atma_perefer_anion_cite_2.conf > quench_start_atma_perefer_anion_cite_2.out
+namd run script  quench_start_atma_perefer_anion_cite_3.conf > quench_start_atma_perefer_anion_cite_3.out
+namd run script  quench_start_atma_perefer_anion_cite_4.conf > quench_start_atma_perefer_anion_cite_4.out
+namd run script  quench_start_atma_perefer_anion_cite_5.conf > quench_start_atma_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BCh_acyl_poket/MD/stabilisation/
+namd run script  min_start_BCh_acyl_poket.conf > min_start_BCh_acyl_poket.out
+namd run script  heat_start_BCh_acyl_poket.conf > heat_start_BCh_acyl_poket.out
+namd run script  eqv_start_BCh_acyl_poket.conf > eqv_start_BCh_acyl_poket.out
+namd run script  quench_start_BCh_acyl_poket_1.conf > quench_start_BCh_acyl_poket_1.out
+namd run script  quench_start_BCh_acyl_poket_2.conf > quench_start_BCh_acyl_poket_2.out
+namd run script  quench_start_BCh_acyl_poket_3.conf > quench_start_BCh_acyl_poket_3.out
+namd run script  quench_start_BCh_acyl_poket_4.conf > quench_start_BCh_acyl_poket_4.out
+namd run script  quench_start_BCh_acyl_poket_5.conf > quench_start_BCh_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BCh_anion_cite/MD/stabilisation/
+namd run script  min_start_BCh_anion_cite.conf > min_start_BCh_anion_cite.out
+namd run script  heat_start_BCh_anion_cite.conf > heat_start_BCh_anion_cite.out
+namd run script  eqv_start_BCh_anion_cite.conf > eqv_start_BCh_anion_cite.out
+namd run script  quench_start_BCh_anion_cite_1.conf > quench_start_BCh_anion_cite_1.out
+namd run script  quench_start_BCh_anion_cite_2.conf > quench_start_BCh_anion_cite_2.out
+namd run script  quench_start_BCh_anion_cite_3.conf > quench_start_BCh_anion_cite_3.out
+namd run script  quench_start_BCh_anion_cite_4.conf > quench_start_BCh_anion_cite_4.out
+namd run script  quench_start_BCh_anion_cite_5.conf > quench_start_BCh_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BCh_cat_trio/MD/stabilisation/
+namd run script  min_start_BCh_cat_trio.conf > min_start_BCh_cat_trio.out
+namd run script  heat_start_BCh_cat_trio.conf > heat_start_BCh_cat_trio.out
+namd run script  eqv_start_BCh_cat_trio.conf > eqv_start_BCh_cat_trio.out
+namd run script  quench_start_BCh_cat_trio_1.conf > quench_start_BCh_cat_trio_1.out
+namd run script  quench_start_BCh_cat_trio_2.conf > quench_start_BCh_cat_trio_2.out
+namd run script  quench_start_BCh_cat_trio_3.conf > quench_start_BCh_cat_trio_3.out
+namd run script  quench_start_BCh_cat_trio_4.conf > quench_start_BCh_cat_trio_4.out
+namd run script  quench_start_BCh_cat_trio_5.conf > quench_start_BCh_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BCh_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_BCh_hydroxyanion_hole.conf > min_start_BCh_hydroxyanion_hole.out
+namd run script  heat_start_BCh_hydroxyanion_hole.conf > heat_start_BCh_hydroxyanion_hole.out
+namd run script  eqv_start_BCh_hydroxyanion_hole.conf > eqv_start_BCh_hydroxyanion_hole.out
+namd run script  quench_start_BCh_hydroxyanion_hole_1.conf > quench_start_BCh_hydroxyanion_hole_1.out
+namd run script  quench_start_BCh_hydroxyanion_hole_2.conf > quench_start_BCh_hydroxyanion_hole_2.out
+namd run script  quench_start_BCh_hydroxyanion_hole_3.conf > quench_start_BCh_hydroxyanion_hole_3.out
+namd run script  quench_start_BCh_hydroxyanion_hole_4.conf > quench_start_BCh_hydroxyanion_hole_4.out
+namd run script  quench_start_BCh_hydroxyanion_hole_5.conf > quench_start_BCh_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BCh_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_BCh_perefer_anion_cite.conf > min_start_BCh_perefer_anion_cite.out
+namd run script  heat_start_BCh_perefer_anion_cite.conf > heat_start_BCh_perefer_anion_cite.out
+namd run script  eqv_start_BCh_perefer_anion_cite.conf > eqv_start_BCh_perefer_anion_cite.out
+namd run script  quench_start_BCh_perefer_anion_cite_1.conf > quench_start_BCh_perefer_anion_cite_1.out
+namd run script  quench_start_BCh_perefer_anion_cite_2.conf > quench_start_BCh_perefer_anion_cite_2.out
+namd run script  quench_start_BCh_perefer_anion_cite_3.conf > quench_start_BCh_perefer_anion_cite_3.out
+namd run script  quench_start_BCh_perefer_anion_cite_4.conf > quench_start_BCh_perefer_anion_cite_4.out
+namd run script  quench_start_BCh_perefer_anion_cite_5.conf > quench_start_BCh_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BTC_acyl_poket/MD/stabilisation/
+namd run script  min_start_BTC_acyl_poket.conf > min_start_BTC_acyl_poket.out
+namd run script  heat_start_BTC_acyl_poket.conf > heat_start_BTC_acyl_poket.out
+namd run script  eqv_start_BTC_acyl_poket.conf > eqv_start_BTC_acyl_poket.out
+namd run script  quench_start_BTC_acyl_poket_1.conf > quench_start_BTC_acyl_poket_1.out
+namd run script  quench_start_BTC_acyl_poket_2.conf > quench_start_BTC_acyl_poket_2.out
+namd run script  quench_start_BTC_acyl_poket_3.conf > quench_start_BTC_acyl_poket_3.out
+namd run script  quench_start_BTC_acyl_poket_4.conf > quench_start_BTC_acyl_poket_4.out
+namd run script  quench_start_BTC_acyl_poket_5.conf > quench_start_BTC_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BTC_anion_cite/MD/stabilisation/
+namd run script  min_start_BTC_anion_cite.conf > min_start_BTC_anion_cite.out
+namd run script  heat_start_BTC_anion_cite.conf > heat_start_BTC_anion_cite.out
+namd run script  eqv_start_BTC_anion_cite.conf > eqv_start_BTC_anion_cite.out
+namd run script  quench_start_BTC_anion_cite_1.conf > quench_start_BTC_anion_cite_1.out
+namd run script  quench_start_BTC_anion_cite_2.conf > quench_start_BTC_anion_cite_2.out
+namd run script  quench_start_BTC_anion_cite_3.conf > quench_start_BTC_anion_cite_3.out
+namd run script  quench_start_BTC_anion_cite_4.conf > quench_start_BTC_anion_cite_4.out
+namd run script  quench_start_BTC_anion_cite_5.conf > quench_start_BTC_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BTC_cat_trio/MD/stabilisation/
+namd run script  min_start_BTC_cat_trio.conf > min_start_BTC_cat_trio.out
+namd run script  heat_start_BTC_cat_trio.conf > heat_start_BTC_cat_trio.out
+namd run script  eqv_start_BTC_cat_trio.conf > eqv_start_BTC_cat_trio.out
+namd run script  quench_start_BTC_cat_trio_1.conf > quench_start_BTC_cat_trio_1.out
+namd run script  quench_start_BTC_cat_trio_2.conf > quench_start_BTC_cat_trio_2.out
+namd run script  quench_start_BTC_cat_trio_3.conf > quench_start_BTC_cat_trio_3.out
+namd run script  quench_start_BTC_cat_trio_4.conf > quench_start_BTC_cat_trio_4.out
+namd run script  quench_start_BTC_cat_trio_5.conf > quench_start_BTC_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BTC_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_BTC_hydroxyanion_hole.conf > min_start_BTC_hydroxyanion_hole.out
+namd run script  heat_start_BTC_hydroxyanion_hole.conf > heat_start_BTC_hydroxyanion_hole.out
+namd run script  eqv_start_BTC_hydroxyanion_hole.conf > eqv_start_BTC_hydroxyanion_hole.out
+namd run script  quench_start_BTC_hydroxyanion_hole_1.conf > quench_start_BTC_hydroxyanion_hole_1.out
+namd run script  quench_start_BTC_hydroxyanion_hole_2.conf > quench_start_BTC_hydroxyanion_hole_2.out
+namd run script  quench_start_BTC_hydroxyanion_hole_3.conf > quench_start_BTC_hydroxyanion_hole_3.out
+namd run script  quench_start_BTC_hydroxyanion_hole_4.conf > quench_start_BTC_hydroxyanion_hole_4.out
+namd run script  quench_start_BTC_hydroxyanion_hole_5.conf > quench_start_BTC_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BTC_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_BTC_perefer_anion_cite.conf > min_start_BTC_perefer_anion_cite.out
+namd run script  heat_start_BTC_perefer_anion_cite.conf > heat_start_BTC_perefer_anion_cite.out
+namd run script  eqv_start_BTC_perefer_anion_cite.conf > eqv_start_BTC_perefer_anion_cite.out
+namd run script  quench_start_BTC_perefer_anion_cite_1.conf > quench_start_BTC_perefer_anion_cite_1.out
+namd run script  quench_start_BTC_perefer_anion_cite_2.conf > quench_start_BTC_perefer_anion_cite_2.out
+namd run script  quench_start_BTC_perefer_anion_cite_3.conf > quench_start_BTC_perefer_anion_cite_3.out
+namd run script  quench_start_BTC_perefer_anion_cite_4.conf > quench_start_BTC_perefer_anion_cite_4.out
+namd run script  quench_start_BTC_perefer_anion_cite_5.conf > quench_start_BTC_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzCh_acyl_poket/MD/stabilisation/
+namd run script  min_start_BzCh_acyl_poket.conf > min_start_BzCh_acyl_poket.out
+namd run script  heat_start_BzCh_acyl_poket.conf > heat_start_BzCh_acyl_poket.out
+namd run script  eqv_start_BzCh_acyl_poket.conf > eqv_start_BzCh_acyl_poket.out
+namd run script  quench_start_BzCh_acyl_poket_1.conf > quench_start_BzCh_acyl_poket_1.out
+namd run script  quench_start_BzCh_acyl_poket_2.conf > quench_start_BzCh_acyl_poket_2.out
+namd run script  quench_start_BzCh_acyl_poket_3.conf > quench_start_BzCh_acyl_poket_3.out
+namd run script  quench_start_BzCh_acyl_poket_4.conf > quench_start_BzCh_acyl_poket_4.out
+namd run script  quench_start_BzCh_acyl_poket_5.conf > quench_start_BzCh_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzCh_anion_cite/MD/stabilisation/
+namd run script  min_start_BzCh_anion_cite.conf > min_start_BzCh_anion_cite.out
+namd run script  heat_start_BzCh_anion_cite.conf > heat_start_BzCh_anion_cite.out
+namd run script  eqv_start_BzCh_anion_cite.conf > eqv_start_BzCh_anion_cite.out
+namd run script  quench_start_BzCh_anion_cite_1.conf > quench_start_BzCh_anion_cite_1.out
+namd run script  quench_start_BzCh_anion_cite_2.conf > quench_start_BzCh_anion_cite_2.out
+namd run script  quench_start_BzCh_anion_cite_3.conf > quench_start_BzCh_anion_cite_3.out
+namd run script  quench_start_BzCh_anion_cite_4.conf > quench_start_BzCh_anion_cite_4.out
+namd run script  quench_start_BzCh_anion_cite_5.conf > quench_start_BzCh_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzCh_cat_trio/MD/stabilisation/
+namd run script  min_start_BzCh_cat_trio.conf > min_start_BzCh_cat_trio.out
+namd run script  heat_start_BzCh_cat_trio.conf > heat_start_BzCh_cat_trio.out
+namd run script  eqv_start_BzCh_cat_trio.conf > eqv_start_BzCh_cat_trio.out
+namd run script  quench_start_BzCh_cat_trio_1.conf > quench_start_BzCh_cat_trio_1.out
+namd run script  quench_start_BzCh_cat_trio_2.conf > quench_start_BzCh_cat_trio_2.out
+namd run script  quench_start_BzCh_cat_trio_3.conf > quench_start_BzCh_cat_trio_3.out
+namd run script  quench_start_BzCh_cat_trio_4.conf > quench_start_BzCh_cat_trio_4.out
+namd run script  quench_start_BzCh_cat_trio_5.conf > quench_start_BzCh_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzCh_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_BzCh_hydroxyanion_hole.conf > min_start_BzCh_hydroxyanion_hole.out
+namd run script  heat_start_BzCh_hydroxyanion_hole.conf > heat_start_BzCh_hydroxyanion_hole.out
+namd run script  eqv_start_BzCh_hydroxyanion_hole.conf > eqv_start_BzCh_hydroxyanion_hole.out
+namd run script  quench_start_BzCh_hydroxyanion_hole_1.conf > quench_start_BzCh_hydroxyanion_hole_1.out
+namd run script  quench_start_BzCh_hydroxyanion_hole_2.conf > quench_start_BzCh_hydroxyanion_hole_2.out
+namd run script  quench_start_BzCh_hydroxyanion_hole_3.conf > quench_start_BzCh_hydroxyanion_hole_3.out
+namd run script  quench_start_BzCh_hydroxyanion_hole_4.conf > quench_start_BzCh_hydroxyanion_hole_4.out
+namd run script  quench_start_BzCh_hydroxyanion_hole_5.conf > quench_start_BzCh_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzCh_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_BzCh_perefer_anion_cite.conf > min_start_BzCh_perefer_anion_cite.out
+namd run script  heat_start_BzCh_perefer_anion_cite.conf > heat_start_BzCh_perefer_anion_cite.out
+namd run script  eqv_start_BzCh_perefer_anion_cite.conf > eqv_start_BzCh_perefer_anion_cite.out
+namd run script  quench_start_BzCh_perefer_anion_cite_1.conf > quench_start_BzCh_perefer_anion_cite_1.out
+namd run script  quench_start_BzCh_perefer_anion_cite_2.conf > quench_start_BzCh_perefer_anion_cite_2.out
+namd run script  quench_start_BzCh_perefer_anion_cite_3.conf > quench_start_BzCh_perefer_anion_cite_3.out
+namd run script  quench_start_BzCh_perefer_anion_cite_4.conf > quench_start_BzCh_perefer_anion_cite_4.out
+namd run script  quench_start_BzCh_perefer_anion_cite_5.conf > quench_start_BzCh_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzTC_acyl_poket/MD/stabilisation/
+namd run script  min_start_BzTC_acyl_poket.conf > min_start_BzTC_acyl_poket.out
+namd run script  heat_start_BzTC_acyl_poket.conf > heat_start_BzTC_acyl_poket.out
+namd run script  eqv_start_BzTC_acyl_poket.conf > eqv_start_BzTC_acyl_poket.out
+namd run script  quench_start_BzTC_acyl_poket_1.conf > quench_start_BzTC_acyl_poket_1.out
+namd run script  quench_start_BzTC_acyl_poket_2.conf > quench_start_BzTC_acyl_poket_2.out
+namd run script  quench_start_BzTC_acyl_poket_3.conf > quench_start_BzTC_acyl_poket_3.out
+namd run script  quench_start_BzTC_acyl_poket_4.conf > quench_start_BzTC_acyl_poket_4.out
+namd run script  quench_start_BzTC_acyl_poket_5.conf > quench_start_BzTC_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzTC_anion_cite/MD/stabilisation/
+namd run script  min_start_BzTC_anion_cite.conf > min_start_BzTC_anion_cite.out
+namd run script  heat_start_BzTC_anion_cite.conf > heat_start_BzTC_anion_cite.out
+namd run script  eqv_start_BzTC_anion_cite.conf > eqv_start_BzTC_anion_cite.out
+namd run script  quench_start_BzTC_anion_cite_1.conf > quench_start_BzTC_anion_cite_1.out
+namd run script  quench_start_BzTC_anion_cite_2.conf > quench_start_BzTC_anion_cite_2.out
+namd run script  quench_start_BzTC_anion_cite_3.conf > quench_start_BzTC_anion_cite_3.out
+namd run script  quench_start_BzTC_anion_cite_4.conf > quench_start_BzTC_anion_cite_4.out
+namd run script  quench_start_BzTC_anion_cite_5.conf > quench_start_BzTC_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzTC_cat_trio/MD/stabilisation/
+namd run script  min_start_BzTC_cat_trio.conf > min_start_BzTC_cat_trio.out
+namd run script  heat_start_BzTC_cat_trio.conf > heat_start_BzTC_cat_trio.out
+namd run script  eqv_start_BzTC_cat_trio.conf > eqv_start_BzTC_cat_trio.out
+namd run script  quench_start_BzTC_cat_trio_1.conf > quench_start_BzTC_cat_trio_1.out
+namd run script  quench_start_BzTC_cat_trio_2.conf > quench_start_BzTC_cat_trio_2.out
+namd run script  quench_start_BzTC_cat_trio_3.conf > quench_start_BzTC_cat_trio_3.out
+namd run script  quench_start_BzTC_cat_trio_4.conf > quench_start_BzTC_cat_trio_4.out
+namd run script  quench_start_BzTC_cat_trio_5.conf > quench_start_BzTC_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzTC_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_BzTC_hydroxyanion_hole.conf > min_start_BzTC_hydroxyanion_hole.out
+namd run script  heat_start_BzTC_hydroxyanion_hole.conf > heat_start_BzTC_hydroxyanion_hole.out
+namd run script  eqv_start_BzTC_hydroxyanion_hole.conf > eqv_start_BzTC_hydroxyanion_hole.out
+namd run script  quench_start_BzTC_hydroxyanion_hole_1.conf > quench_start_BzTC_hydroxyanion_hole_1.out
+namd run script  quench_start_BzTC_hydroxyanion_hole_2.conf > quench_start_BzTC_hydroxyanion_hole_2.out
+namd run script  quench_start_BzTC_hydroxyanion_hole_3.conf > quench_start_BzTC_hydroxyanion_hole_3.out
+namd run script  quench_start_BzTC_hydroxyanion_hole_4.conf > quench_start_BzTC_hydroxyanion_hole_4.out
+namd run script  quench_start_BzTC_hydroxyanion_hole_5.conf > quench_start_BzTC_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_BzTC_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_BzTC_perefer_anion_cite.conf > min_start_BzTC_perefer_anion_cite.out
+namd run script  heat_start_BzTC_perefer_anion_cite.conf > heat_start_BzTC_perefer_anion_cite.out
+namd run script  eqv_start_BzTC_perefer_anion_cite.conf > eqv_start_BzTC_perefer_anion_cite.out
+namd run script  quench_start_BzTC_perefer_anion_cite_1.conf > quench_start_BzTC_perefer_anion_cite_1.out
+namd run script  quench_start_BzTC_perefer_anion_cite_2.conf > quench_start_BzTC_perefer_anion_cite_2.out
+namd run script  quench_start_BzTC_perefer_anion_cite_3.conf > quench_start_BzTC_perefer_anion_cite_3.out
+namd run script  quench_start_BzTC_perefer_anion_cite_4.conf > quench_start_BzTC_perefer_anion_cite_4.out
+namd run script  quench_start_BzTC_perefer_anion_cite_5.conf > quench_start_BzTC_perefer_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_choline_acyl_poket/MD/stabilisation/
+namd run script  min_start_choline_acyl_poket.conf > min_start_choline_acyl_poket.out
+namd run script  heat_start_choline_acyl_poket.conf > heat_start_choline_acyl_poket.out
+namd run script  eqv_start_choline_acyl_poket.conf > eqv_start_choline_acyl_poket.out
+namd run script  quench_start_choline_acyl_poket_1.conf > quench_start_choline_acyl_poket_1.out
+namd run script  quench_start_choline_acyl_poket_2.conf > quench_start_choline_acyl_poket_2.out
+namd run script  quench_start_choline_acyl_poket_3.conf > quench_start_choline_acyl_poket_3.out
+namd run script  quench_start_choline_acyl_poket_4.conf > quench_start_choline_acyl_poket_4.out
+namd run script  quench_start_choline_acyl_poket_5.conf > quench_start_choline_acyl_poket_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_choline_anion_cite/MD/stabilisation/
+namd run script  min_start_choline_anion_cite.conf > min_start_choline_anion_cite.out
+namd run script  heat_start_choline_anion_cite.conf > heat_start_choline_anion_cite.out
+namd run script  eqv_start_choline_anion_cite.conf > eqv_start_choline_anion_cite.out
+namd run script  quench_start_choline_anion_cite_1.conf > quench_start_choline_anion_cite_1.out
+namd run script  quench_start_choline_anion_cite_2.conf > quench_start_choline_anion_cite_2.out
+namd run script  quench_start_choline_anion_cite_3.conf > quench_start_choline_anion_cite_3.out
+namd run script  quench_start_choline_anion_cite_4.conf > quench_start_choline_anion_cite_4.out
+namd run script  quench_start_choline_anion_cite_5.conf > quench_start_choline_anion_cite_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_choline_cat_trio/MD/stabilisation/
+namd run script  min_start_choline_cat_trio.conf > min_start_choline_cat_trio.out
+namd run script  heat_start_choline_cat_trio.conf > heat_start_choline_cat_trio.out
+namd run script  eqv_start_choline_cat_trio.conf > eqv_start_choline_cat_trio.out
+namd run script  quench_start_choline_cat_trio_1.conf > quench_start_choline_cat_trio_1.out
+namd run script  quench_start_choline_cat_trio_2.conf > quench_start_choline_cat_trio_2.out
+namd run script  quench_start_choline_cat_trio_3.conf > quench_start_choline_cat_trio_3.out
+namd run script  quench_start_choline_cat_trio_4.conf > quench_start_choline_cat_trio_4.out
+namd run script  quench_start_choline_cat_trio_5.conf > quench_start_choline_cat_trio_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_choline_hydroxyanion_hole/MD/stabilisation/
+namd run script  min_start_choline_hydroxyanion_hole.conf > min_start_choline_hydroxyanion_hole.out
+namd run script  heat_start_choline_hydroxyanion_hole.conf > heat_start_choline_hydroxyanion_hole.out
+namd run script  eqv_start_choline_hydroxyanion_hole.conf > eqv_start_choline_hydroxyanion_hole.out
+namd run script  quench_start_choline_hydroxyanion_hole_1.conf > quench_start_choline_hydroxyanion_hole_1.out
+namd run script  quench_start_choline_hydroxyanion_hole_2.conf > quench_start_choline_hydroxyanion_hole_2.out
+namd run script  quench_start_choline_hydroxyanion_hole_3.conf > quench_start_choline_hydroxyanion_hole_3.out
+namd run script  quench_start_choline_hydroxyanion_hole_4.conf > quench_start_choline_hydroxyanion_hole_4.out
+namd run script  quench_start_choline_hydroxyanion_hole_5.conf > quench_start_choline_hydroxyanion_hole_5.out
+
+cd /home/nastia/mem/ACHE/ACHE/start_choline_perefer_anion_cite/MD/stabilisation/
+namd run script  min_start_choline_perefer_anion_cite.conf > min_start_choline_perefer_anion_cite.out
+namd run script  heat_start_choline_perefer_anion_cite.conf > heat_start_choline_perefer_anion_cite.out
+namd run script  eqv_start_choline_perefer_anion_cite.conf > eqv_start_choline_perefer_anion_cite.out
+namd run script  quench_start_choline_perefer_anion_cite_1.conf > quench_start_choline_perefer_anion_cite_1.out
+namd run script  quench_start_choline_perefer_anion_cite_2.conf > quench_start_choline_perefer_anion_cite_2.out
+namd run script  quench_start_choline_perefer_anion_cite_3.conf > quench_start_choline_perefer_anion_cite_3.out
+namd run script  quench_start_choline_perefer_anion_cite_4.conf > quench_start_choline_perefer_anion_cite_4.out
+namd run script  quench_start_choline_perefer_anion_cite_5.conf > quench_start_choline_perefer_anion_cite_5.out
+

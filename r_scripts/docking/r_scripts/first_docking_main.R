@@ -1,0 +1,11 @@
+part_start <- commandArgs(trailingOnly=TRUE)
+library(ggplot2)
+library(bio3d)
+library(dplyr)
+#part_start<-part_name
+part_scriprs<-paste0(part_start,"r_scripts/")
+part_start<-paste0(part_start,"docking_first/")
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_start),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_start),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_start),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_start,"analysis.R ",part_start,""),ignore.stdout=T,wait = T)

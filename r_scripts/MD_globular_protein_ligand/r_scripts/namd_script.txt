@@ -1,0 +1,10 @@
+cd /home/nastia/mem/MD_globular_protein_ligand/test_complex/MD/stabilisation/
+namd run script  min_test_complex.conf > min_test_complex.out
+namd run script  heat_test_complex.conf > heat_test_complex.out
+namd run script  eqv_test_complex.conf > eqv_test_complex.out
+namd run script  quench_test_complex_1.conf > quench_test_complex_1.out
+namd run script  quench_test_complex_2.conf > quench_test_complex_2.out
+namd run script  quench_test_complex_3.conf > quench_test_complex_3.out
+namd run script  quench_test_complex_4.conf > quench_test_complex_4.out
+namd run script  quench_test_complex_5.conf > quench_test_complex_5.out
+
