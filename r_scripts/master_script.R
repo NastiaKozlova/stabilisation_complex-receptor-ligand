@@ -172,9 +172,9 @@ for (i in 1:length(v_list_proteins)) {
       if (length(list.files(paste0(part_name,df_complex$complex_name[j],"/MD/stabilisation/quench/")))>0){
         print(paste0(part_name,df_complex$complex_name[j]))
         part_analysis<-paste0(part_name,df_complex$complex_name[j],"/")    
-        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/prepare_tcl_din.R ",part_analysis),ignore.stdout=T,wait = T)
-        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/second_stucture_compare.R ",part_analysis),ignore.stdout=T,wait = T)
-        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/Ramachadran.R ",part_analysis),ignore.stdout=T,wait = T)
+#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/prepare_tcl_din.R ",part_analysis),ignore.stdout=T,wait = T)
+#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/second_stucture_compare.R ",part_analysis),ignore.stdout=T,wait = T)
+#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/Ramachadran.R ",part_analysis),ignore.stdout=T,wait = T)
         #make plot
         system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/make_plots_RMSD_RMSF.R ",part_analysis),ignore.stdout=T,wait = T)
       }
@@ -198,3 +198,10 @@ for (i in 1:length(v_list_proteins)) {
     }
   }
 }
+
+for (i in 1:length(v_list_proteins)) {
+  part_prepare<-paste0(part_start,"r_scripts/MD_globular_protein_ligand/")
+  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/") 
+  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/fin_structure_prepare.R ",part_name),ignore.stdout=T,wait = T)
+}
+  

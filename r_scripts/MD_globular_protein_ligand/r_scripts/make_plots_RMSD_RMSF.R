@@ -33,11 +33,13 @@ for (j in 1:length(name)) {
     df_data<-left_join(df_data,df_SASA,by=c("number"="frame"))
     df_data<-left_join(df_data,df_RMSD,by=c("number"="frame"))
     df_data<-df_data%>%mutate(time=number/100)
-    df_second<-df_second%>%
+    df_second<-df_second%>%mutate(level_min=level_min/100)
+    df_second<-df_second%>%mutate(level_max=level_max/100)
     v_RMSD<-df_data$RMSD[!is.na(df_data$RMSD)]
     p_rmsd<-ggplot(data = df_data)+
       ggtitle(paste0("RMSD"))+
       labs(y = "RMSD (A)", x = "Time (ns)")+
+      labs(y = "RMSD (A)", x = "Время, нс")+
       geom_line(aes(x = time, y = RMSD))+
       geom_hline(yintercept = median(v_RMSD))+
       #    scale_x_continuous(breaks = test_10, labels =  test_10)+
@@ -45,17 +47,15 @@ for (j in 1:length(name)) {
       theme_bw()+coord_flip()
     v_protein<-df_data$protein[!is.na(df_data$protein)]
     p_sasa<-ggplot(data = df_data)+
-      labs(title=paste("Solvent accessible surface"),
-           x = "Time(ns)", y = "Solvent accessible surface (A^2)") +
+      labs(title=paste("Solvent accessible surface"), x = "Time(ns)", y = "Solvent accessible surface (A^2)") +
+      labs(title=paste("Площадь доступная для растрорителя"),x =  "Время, нс", y = "Площадь доступная для растрорителя (A^2)") +
       geom_line(aes(x = time,y=protein))+
       geom_hline(yintercept = median(v_protein))+
-      #    scale_x_continuous(breaks = test_10, labels =  test_10)+
-      #   scale_y_continuous(limits = c(min(df_SASA$protein),max(df_SASA$protein)))+
       theme_bw()+coord_flip()
     v_Total<-df_data$Total[!is.na(df_data$Total)]
     p_Total<-ggplot(data = df_data)+
-      labs(title=paste("Total energy"),
-           x = "Time(ns)", y = "Total energy (kcal/mol)") +
+      labs(title=paste("Total energy"), x = "Time(ns)", y = "Total energy (kcal/mol)") +
+      labs(title=paste("Полная энергия рецептора"), x = "Время, нс", y = "Полная энергия рецептораб ккал/моль") +
       geom_line(aes(x = time,y=Total))+
       geom_hline(yintercept = median(v_Total))+
       #    scale_x_continuous(breaks = test_10, labels =  test_10)+
@@ -63,8 +63,9 @@ for (j in 1:length(name)) {
       theme_bw()+coord_flip()
     v_ramachadran<-df_data$ramachadran[!is.na(df_data$ramachadran)]
     p_ramachadran<-ggplot(data = df_data)+
-      labs(title=paste("Ramachadran"),
-           x = "Time(ns)", y = "Ramachadran") +
+#      labs(title=paste("Ramachadran"),
+#           x = "Time(ns)", y = "Ramachadran") +
+      labs(title=paste("Кол-во аминокислот в запрещенных зонах"),x = "Время, нс", y = "Кол-во аминокислот в запрещенных зонах") +
       geom_line(aes(x = time,y=ramachadran))+
       geom_hline(yintercept = median(v_ramachadran))+
       #    scale_x_continuous(breaks = test_10, labels =  test_10)+
@@ -72,7 +73,7 @@ for (j in 1:length(name)) {
       theme_bw()+coord_flip()
     
     p_ramachadran_histo<-ggplot(data = df_data)+
-      labs(title=paste("Ramachadran"),
+      labs(#title=paste("Ramachadran"),
            x = "Time(ns)", y = "Ramachadran") +
       geom_freqpoly(aes(x = ramachadran),bins=(max(v_ramachadran)-min(v_ramachadran)))+
       geom_vline(xintercept = median(v_ramachadran))+
@@ -82,7 +83,7 @@ for (j in 1:length(name)) {
       theme_bw()
     
     p_rmsd_histo<-ggplot(data = df_data)+
-      ggtitle(paste0("RMSD"))+
+#      ggtitle(paste0("RMSD"))+
       labs(x = "RMSD (A)")+
       #      geom_freqpoly(aes(x = RMSD),bins=(max(df_RMSD$RMSD)-min(df_RMSD$RMSD)))+
       geom_freqpoly(aes(x = RMSD))+
@@ -91,7 +92,7 @@ for (j in 1:length(name)) {
       scale_x_continuous(limits = c(min(v_RMSD),max(v_RMSD)))+
       theme_bw()
     p_sasa_histo<-ggplot(data = df_data)+
-      labs(title=paste("Solvent accessible surface"),
+      labs(#title=paste("Solvent accessible surface"),
            x =  "Solvent accessible surface (A^2)") +
       #      geom_freqpoly(aes(x = protein),bins=(max(df_SASA$protein)-min(df_SASA$protein)))+
       geom_freqpoly(aes(x = protein))+
@@ -100,8 +101,9 @@ for (j in 1:length(name)) {
       scale_x_continuous(limits = c(min(v_protein),max(v_protein)))+
       theme_bw()
     p_Total_histo<-ggplot(data = df_data)+
-      labs(title=paste("Total energy"),
-           x =  "Total energy (kcal/mol)") +
+      labs(#title=paste("Total energy"),
+#           x =  "Total energy (kcal/mol)" +
+      x =  "Полная энергия, ккал/моль") +
       geom_freqpoly(aes(x = Total))+
       geom_vline(xintercept = median(v_Total))+
       geom_text(aes(x = median(v_Total),y=100,label= round(median(v_Total),digits = 0)))+
@@ -112,14 +114,14 @@ for (j in 1:length(name)) {
     
     p_second<-ggplot(data = df_second)+
       ggtitle(paste0("Second structure"))+
-      labs(x = "Number of aminoasids", y = "Time (ns)")+
+      labs(x = "Number of aminoasids", y = "Time, ns")+       labs(x = "Номер аминокислоты", y = "Время, нс")+
       geom_rect(aes(xmin = start, ymin = level_min, xmax= finish, ymax = level_max, colour = type,fill=type))+
       scale_color_grey()+ scale_fill_grey()+
       theme_bw()+ guides(color = "none") + guides(fill = "none")
     
     p_rmsf<-ggplot(data = df_RMSF)+
       ggtitle(paste0("RMSF"))+
-      labs(x = "Number of aminoasids", y = "RMSF (A)")+
+      labs(x = "Number of aminoasids", y = "RMSF (A)")+labs(x = "Номер аминокислоты", y = "RMSF (A)")+
       geom_line(aes(x = Resid, y = RMSF))+
       theme_bw()
     p_all<-plot_grid(p_sasa,       p_ramachadran,       p_Total,       p_rmsd,       p_second,
