@@ -92,7 +92,7 @@ for (part in 1:length(name)) {
                          'autoionize -psf solvate_',name[part],'.psf -pdb solvate_',name[part],'.pdb -sc 0.15 -o ionized_',name[part],
                          '\nmol delete all\n\nexit now')
   write.table(df_psfgen,paste0(name[part],'/MD/stabilisation/protein/solvate_',name[part],'.tcl'),col.names = F,row.names = F,quote = F)
-  #system(command = paste0("vmd -dispdev text -e ",part_start,name[part],'/MD/stabilisation/protein/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
+  system(command = paste0("vmd -dispdev text -e ",part_start,name[part],'/MD/stabilisation/protein/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
   
   x_mean<-mean(x_max+x_min)/2
   y_mean<-mean(y_max+y_min)/2
