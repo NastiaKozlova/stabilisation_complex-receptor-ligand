@@ -1,14 +1,6 @@
 part_start<-"/home/nastia/projects/current/stabilisation_complex-receptor-ligand/"
 setwd(part_start)
-#install.packages("httr")
-#install.packages("cowplot")
 
-#sudo apt-get install libgdal-dev libssl-dev
-#sudo apt-get install muscle
-#sudo apt-get install openbabel
-#install.packages("dplyr")
-#install.packages("bio3d")
-i<-1
 v_list_proteins<-list.files("start/sequence/")
 a<-c()
 for (i in 1:length(v_list_proteins)) {
@@ -25,30 +17,30 @@ for (i in 1:length(v_list_proteins)) {
   if (!dir.exists(paste0(part_start,v_list_proteins[i]))){dir.create(paste0(part_start,v_list_proteins[i]))}
   if (!dir.exists(paste0(part_start,v_list_proteins[i],"/structure_prediction/"))){dir.create(paste0(part_start,v_list_proteins[i],"/structure_prediction/"))}
   if (!dir.exists(paste0(part_start,v_list_proteins[i],"/structure_prediction/r_scripts/"))){dir.create(paste0(part_start,v_list_proteins[i],"/structure_prediction/r_scripts/"))}
-  
-#  system(command = paste0("cp ",part_start,"start/structure_prediction/data/",v_list_proteins[i],".csv ",part_start,v_list_proteins[i],"/structure_prediction/comparible_models.csv"),ignore.stdout=T,wait = T)
   system(command = paste0("cp -r ",part_start,"start/structure_prediction/pdb/",v_list_proteins[i],"/ ",part_start,v_list_proteins[i],"/structure_prediction/pdb/"),ignore.stdout=T,wait = T)
   system(command = paste0("cp ",part_start,"start/structure_prediction/sequence/",v_list_proteins[i],".fasta ",part_start,v_list_proteins[i],"/structure_prediction/seqs.fasta"),ignore.stdout=T,wait = T)
   system(command = paste0("cp ",part_start,"start/sequence/",v_list_proteins[i],".fasta ",part_start,v_list_proteins[i],"/structure_prediction/protein_sequence.fasta"),ignore.stdout=T,wait = T)
   if(!dir.exists("predicted/")){dir.create("predicted/")}
   if(!dir.exists(paste0("predicted/",v_list_proteins[i]))){dir.create(paste0("predicted/",v_list_proteins[i]))}
   system(command = paste0("cp -r ",part_start,"r_scripts/structure_prediction/ ",part_start,v_list_proteins[i],"/structure_prediction/r_scripts/ "),ignore.stdout=T,wait = T)
-  
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/structure_prediction.R ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/structure_prediction/pdb_fin/ ",part_start,"output/predicted/",v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   
 }
 #prepare files for MD based on chousen structures 
 #predicted structures
-#and stquense predict structure of protein ising robetta server structure_prediction
+#and sequense predict structure of protein using robetta server structure_prediction
 i<-1
 for (i in 1:length(v_list_proteins)) {
   print(v_list_proteins[i])
-  #  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
   if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/"))}
   if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/programs/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/programs/"))}
   system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  system(command = paste0("tar -xvzf ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz"),ignore.stdout=T,wait = T)
+  
+  system(command = paste0("cp -r ",part_start,"programs/la1.0 ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
+  system(command = paste0("cp -r ",part_start,"programs/orient ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
+  
+#  system(command = paste0("tar -xvzf ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz " ,part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
   
   system(command = paste0("rm ",part_start,"r_scripts/MD_globular_protein/start/structure/*"),ignore.stdout=T,wait = T)  
   system(command = paste0("cp ",part_start,"start/MD_stabilisation/",v_list_proteins[i],".pdb ",part_start,"r_scripts/MD_globular_protein/start/structure/",v_list_proteins[i],".pdb"),ignore.stdout=T,wait = T)
@@ -59,8 +51,9 @@ for (i in 1:length(v_list_proteins)) {
 i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
-  print(paste0("run namd from ",part_name,"r_scripts/namd_script.txt"))
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
+  
+#  print(paste0("run namd from ",part_name,"r_scripts/namd_script.txt"))
 }
 print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r_scripts/namd_script.txt"))
 i<-1
