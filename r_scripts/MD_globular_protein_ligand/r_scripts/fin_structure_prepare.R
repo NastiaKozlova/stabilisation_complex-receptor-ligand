@@ -91,10 +91,10 @@ if(file.exists(paste0("complex.csv"))){
       df_interactions_start<-df_interactions_start%>%mutate(center_new=NA)
       df_interactions_start<-df_interactions_start%>%mutate(ligand_new=NA)
       df_interactions_start$center_new[df_interactions_start$center=="perefer_anion_cite"]<-"1. Периферийный анионный сайт"
-      df_interactions_start$center_new[df_interactions_start$center=="acyl_poket"]<-"4. Ацильный карман"
+      df_interactions_start$center_new[df_interactions_start$center=="acyl_poket"]<-"5. Ацильный карман"
       df_interactions_start$center_new[df_interactions_start$center=="anion_cite"]<-"3. Анионный сайт"
       df_interactions_start$center_new[df_interactions_start$center=="hydroxyanion_hole"]<-"2. Оксианионная дыра"
-      df_interactions_start$center_new[df_interactions_start$center=="cat_trio"]<-"5. Каталитическая триада"
+      df_interactions_start$center_new[df_interactions_start$center=="cat_trio"]<-"4. Каталитическая триада"
 
       df_interactions_start$ligand_new[df_interactions_start$ligand=="ACh"]<-"АХ"
       df_interactions_start$ligand_new[df_interactions_start$ligand=="ATC"]<-"АТХ"
@@ -110,7 +110,7 @@ if(file.exists(paste0("complex.csv"))){
         geom_freqpoly(aes(x=Total),binwidth=10)+
         geom_text(aes(x=total_median,y=10,label=total_median))+
         facet_grid(.~center_new)+theme_bw()
-      ggsave(p,filename = paste0("fin_structure/plot/fin_structure_energy_",v_ligand[i],".png"), width = 60, height = 15, units = c("cm"), dpi = 200 ) 
+      ggsave(p,filename = paste0("fin_structure/plot/fin_structure_energy_",v_ligand[i],".png"), width = 30, height = 8, units = c("cm"), dpi = 200 ) 
     }
   }
 }
