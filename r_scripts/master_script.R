@@ -65,9 +65,9 @@ print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r
 i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
-#  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
-#  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
-#  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
   #make plot
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/make_plots_RMSD_RMSF.R ",part_name),ignore.stdout=T,wait = T)
 }
@@ -113,13 +113,13 @@ for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
 }
-i<-1
+i<-2
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   part_analysis<-paste0(part_name,"docking_first/")
-#  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
-#  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"analysis.R ",part_analysis,""),ignore.stdout=T,wait = T)
 }
@@ -156,7 +156,7 @@ for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/convert_docking_MD_receptor_ligand.R ",part_prepare),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
-  #system(command = paste0("vmd -dispdev text -e ",part_start,"r_scripts/prepare_MD.tcl "),ignore.stdout=T,wait = T) 
+  system(command = paste0("vmd -dispdev text -e ",part_start,"r_scripts/prepare_MD.tcl "),ignore.stdout=T,wait = T) 
   #namd
   print(paste0("#run namd2 from "))
   print(paste0(part_start,"r_scripts/namd_script.txt"))
@@ -172,9 +172,9 @@ for (i in 1:length(v_list_proteins)) {
       if (length(list.files(paste0(part_name,df_complex$complex_name[j],"/MD/stabilisation/quench/")))>0){
         print(paste0(part_name,df_complex$complex_name[j]))
         part_analysis<-paste0(part_name,df_complex$complex_name[j],"/")    
-#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/prepare_tcl_din.R ",part_analysis),ignore.stdout=T,wait = T)
-#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/second_stucture_compare.R ",part_analysis),ignore.stdout=T,wait = T)
-#        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/Ramachadran.R ",part_analysis),ignore.stdout=T,wait = T)
+        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/prepare_tcl_din.R ",part_analysis),ignore.stdout=T,wait = T)
+        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/second_stucture_compare.R ",part_analysis),ignore.stdout=T,wait = T)
+        system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/Ramachadran.R ",part_analysis),ignore.stdout=T,wait = T)
         #make plot
         system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/make_plots_RMSD_RMSF.R ",part_analysis),ignore.stdout=T,wait = T)
       }
@@ -198,10 +198,11 @@ for (i in 1:length(v_list_proteins)) {
     }
   }
 }
-
+i<-1
 for (i in 1:length(v_list_proteins)) {
   part_prepare<-paste0(part_start,"r_scripts/MD_globular_protein_ligand/")
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/") 
-  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/fin_structure_prepare.R ",part_name),ignore.stdout=T,wait = T)
+#  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/fin_structure_prepare.R ",part_name),ignore.stdout=T,wait = T)
+#  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/atom_interactions.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/make_structure_picture.R ",part_name),ignore.stdout=T,wait = T)
 }
-  

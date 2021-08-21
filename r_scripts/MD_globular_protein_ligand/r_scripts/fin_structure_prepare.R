@@ -69,7 +69,7 @@ if(file.exists(paste0("complex.csv"))){
 
         df_test<-full_join(df_protein,df_ligand,by="type")
         df_test<-df_test%>%mutate(length=sqrt((x.x-x.y)^2+(y.x-y.y)^2+(z.x-z.y)^2))
-        df_test<-df_test%>%filter(length<5)
+        df_test<-df_test%>%filter(length<12)
         df_test<-df_test%>%filter(alt.x!=alt.y)
         df_test<-df_test%>%select(eleno.x,  elety.x,  alt.x,    resid.x,  resno.x,x.x,y.x,z.x,
                                   eleno.y,  elety.y,  alt.y,    resid.y,  resno.y,x.y,y.y,z.y, length)
