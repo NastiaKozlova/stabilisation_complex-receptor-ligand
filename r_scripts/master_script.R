@@ -1,4 +1,4 @@
-part_start<-"/home/nastia/mem/ACHE/ACHE/"
+part_start<-"/home/nastia/projects/current/stabilisation_complex-receptor-ligand/"
 setwd(part_start)
 #install.packages("httr")
 #install.packages("cowplot")
@@ -26,7 +26,7 @@ for (i in 1:length(v_list_proteins)) {
   if (!dir.exists(paste0(part_start,v_list_proteins[i],"/structure_prediction/"))){dir.create(paste0(part_start,v_list_proteins[i],"/structure_prediction/"))}
   if (!dir.exists(paste0(part_start,v_list_proteins[i],"/structure_prediction/r_scripts/"))){dir.create(paste0(part_start,v_list_proteins[i],"/structure_prediction/r_scripts/"))}
   
-  system(command = paste0("cp ",part_start,"start/structure_prediction/data/",v_list_proteins[i],".csv ",part_start,v_list_proteins[i],"/structure_prediction/comparible_models.csv"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp ",part_start,"start/structure_prediction/data/",v_list_proteins[i],".csv ",part_start,v_list_proteins[i],"/structure_prediction/comparible_models.csv"),ignore.stdout=T,wait = T)
   system(command = paste0("cp -r ",part_start,"start/structure_prediction/pdb/",v_list_proteins[i],"/ ",part_start,v_list_proteins[i],"/structure_prediction/pdb/"),ignore.stdout=T,wait = T)
   system(command = paste0("cp ",part_start,"start/structure_prediction/sequence/",v_list_proteins[i],".fasta ",part_start,v_list_proteins[i],"/structure_prediction/seqs.fasta"),ignore.stdout=T,wait = T)
   system(command = paste0("cp ",part_start,"start/sequence/",v_list_proteins[i],".fasta ",part_start,v_list_proteins[i],"/structure_prediction/protein_sequence.fasta"),ignore.stdout=T,wait = T)
@@ -39,6 +39,7 @@ for (i in 1:length(v_list_proteins)) {
   
 }
 #prepare files for MD based on chousen structures 
+#predicted structures
 #and stquense predict structure of protein ising robetta server structure_prediction
 i<-1
 for (i in 1:length(v_list_proteins)) {

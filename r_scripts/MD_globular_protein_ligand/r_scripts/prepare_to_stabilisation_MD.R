@@ -3,7 +3,7 @@ part_name = commandArgs(trailingOnly=TRUE)
 v_namd<-"namd run script"
 #quantity of 25 ns MD simulations, change it to Modify length of MD simulation 
 
-num_din<-5
+num_din<-100
 library(dplyr)
 library(bio3d)
 setwd(part_name)
@@ -22,6 +22,7 @@ for (part in 1:nrow(df_complex)) {
   if(!dir.exists(paste0("prepared_structures/tcl"))){dir.create(paste0("prepared_structures/tcl"))}
   if(!dir.exists(paste0("prepared_structures/complex_structure"))){dir.create(paste0("prepared_structures/complex_structure"))}
   if(!dir.exists(paste0("prepared_structures/fin_complex_structure"))){dir.create(paste0("prepared_structures/fin_complex_structure"))}
+  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/toppar/"),ignore.stdout=T,wait = T)
   #prepare psf and pdb parts of complex
   pdb_ligand<-read.pdb(paste0("start/ligands/",df_complex$structure_name[part]))
   pdb_receptor<-read.pdb(paste0("start/receptor/",df_complex$receptor[part],".pdb"))
@@ -205,8 +206,8 @@ for (i in 1:length(v_complex)) {
                         '\nwrapAll on',
                         '\nminimization on',
                         '\nnumsteps 100000',
-                        '\noutputenergies 100',
-                        '\ndcdfreq 100',
+                        '\noutputenergies 10000',
+                        '\ndcdfreq 10000',
                         '\ndcdfile dcd/min_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/min_',v_complex[i])
@@ -252,8 +253,8 @@ for (i in 1:length(v_complex)) {
                         '\nreassignHold 300',
                         '\nfirsttimestep 0',
                         '\nnumsteps 300000',
-                        '\noutputenergies 100',
-                        '\ndcdfreq 100',
+                        '\noutputenergies 10000',
+                        '\ndcdfreq 10000',
                         '\ndcdfile dcd/head_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/head_',v_complex[i])
@@ -294,8 +295,8 @@ for (i in 1:length(v_complex)) {
                         '\nreassignFreq		10',
                         '\nnumsteps		2000000',
                         '\nseed			11552514',
-                        '\noutputenergies	100',
-                        '\ndcdfreq 100',
+                        '\noutputenergies	10000',
+                        '\ndcdfreq 10000',
                         '\ndcdfile dcd/eqv_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/eqv_',v_complex[i])
@@ -342,7 +343,7 @@ for (i in 1:length(v_complex)) {
                         '\nLangevinPistonTarget 1.01325',
                         '\nLangevinPistonPeriod 200',
                         '\nLangevinPistonDecay 100',
-                        '\nLangevinPistonTemp 310',
+                        '\nLangevinPistonTemp 300',
                         '\noutputenergies	10000',
                         '\ndcdfreq		10000',
                         '\ndcdfile quench/quench_',v_complex[i],'_1.dcd',
@@ -390,13 +391,13 @@ for (i in 1:length(v_complex)) {
                           '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
                           '\nwrapAll on',
                           '\ntimestep 1.0',
-                          '\nnumsteps 25000000',
+                          '\nnumsteps 1000000',
                           '\nseed 322223322', '\nuseGroupPressure yes', '\nuseFlexibleCell yes', '\nuseConstantRatio yes',
                           '\nLangevinPiston on', 
                           '\nLangevinPistonTarget 1.01325',
                           '\nLangevinPistonPeriod 200',
                           '\nLangevinPistonDecay 100',
-                          '\nLangevinPistonTemp 310',
+                          '\nLangevinPistonTemp 300',
                           '\noutputenergies	10000',
                           '\ndcdfreq		10000', 
                           '\ndcdfile quench/quench_',v_complex[i],'_',j,'.dcd',

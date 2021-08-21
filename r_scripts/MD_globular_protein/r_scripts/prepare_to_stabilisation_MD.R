@@ -17,6 +17,9 @@ name<-a
 part<-1
 for (part in 1:length(name)) {
   print(paste0(name[part]))
+  system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_start,name[part],"/MD/stabilisation/toppar/"),ignore.stdout=T,wait = T)
+  
+  /home/nastia/projects/current/stabilisation_complex-receptor-ligand/ACHE/MD_globular_protein/start/toppar
   if(!dir.exists(paste0(name[part]))){dir.create(paste0(name[part]))}
   if(!dir.exists(paste0(name[part],"/MD"))){dir.create(paste0(name[part],"/MD"))}
   if(!dir.exists(paste0(name[part],"/MD/stabilisation"))){dir.create(paste0(name[part],"/MD/stabilisation"))}
@@ -38,8 +41,8 @@ for (part in 1:length(name)) {
   package require Orient
   namespace import Orient::orient
   resetpsf
-  topology ',part_start,'start/toppar/top_all36_prot.rtf
-  topology ',part_start,'start/toppar/toppar_water_ions_namd.str
+  topology toppar/top_all36_prot.rtf
+  topology toppar/toppar_water_ions_namd.str
   
   pdbalias residue HIS HSE
   pdbalias atom ILE CD1 CD
@@ -103,12 +106,12 @@ for (part in 1:length(name)) {
                       '\n## SIMULATION PARAMETERS ##',
                       '\n#############################################################',
                       '\nparaTypeCharmm on',
-                      '\nparameters ',part_start,'start/toppar/par_all36_carb.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_cgenff.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_lipid.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36m_prot.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_na.prm',
-                      '\nparameters ',part_start,'start/toppar/toppar_water_ions_namd.str',
+                      '\nparameters toppar/par_all36_carb.prm',
+                      '\nparameters toppar/par_all36_cgenff.prm',
+                      '\nparameters toppar/par_all36_lipid.prm',
+                      '\nparameters toppar/par_all36m_prot.prm',
+                      '\nparameters toppar/par_all36_na.prm',
+                      '\nparameters toppar/toppar_water_ions_namd.str',
                       '\ntemperature $temperature',
                       '\n# Force-Field Parameters',
                       '\nexclude scaled1-4',
@@ -146,12 +149,12 @@ for (part in 1:length(name)) {
                       '\n## SIMULATION PARAMETERS ##',
                       '\n#############################################################',
                       '\nparaTypeCharmm on',
-                      '\nparameters ',part_start,'start/toppar/par_all36_prot.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_carb.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_cgenff.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_lipid.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_na.prm',
-                      '\nparameters ',part_start,'start/toppar/toppar_water_ions_namd.str',
+                      '\nparameters toppar/par_all36_prot.prm',
+                      '\nparameters toppar/par_all36_carb.prm',
+                      '\nparameters toppar/par_all36_cgenff.prm',
+                      '\nparameters toppar/par_all36_lipid.prm',
+                      '\nparameters toppar/par_all36_na.prm',
+                      '\nparameters toppar/toppar_water_ions_namd.str',
                       '\n# Force-Field Parameters',
                       '\nexclude scaled1-4',
                       '\n1-4scaling 1.0',
@@ -192,12 +195,12 @@ for (part in 1:length(name)) {
                       '\n## SIMULATION PARAMETERS ##',
                       '\n#############################################################',
                       '\nparaTypeCharmm on',
-                      '\nparameters ',part_start,'start/toppar/par_all36_prot.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_carb.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_cgenff.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_lipid.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_na.prm',
-                      '\nparameters ',part_start,'start/toppar/toppar_water_ions_namd.str',
+                      '\nparameters toppar/par_all36_prot.prm',
+                      '\nparameters toppar/par_all36_carb.prm',
+                      '\nparameters toppar/par_all36_cgenff.prm',
+                      '\nparameters toppar/par_all36_lipid.prm',
+                      '\nparameters toppar/par_all36_na.prm',
+                      '\nparameters toppar/toppar_water_ions_namd.str',
                       '\nexclude		scaled1-4',
                       '\n1-4scaling	1.0',
                       '\nswitching	on',
@@ -237,12 +240,12 @@ for (part in 1:length(name)) {
                       '\n## SIMULATION PARAMETERS ##',
                       '\n#############################################################',
                       '\nparaTypeCharmm on',
-                      '\nparameters ',part_start,'start/toppar/par_all36_prot.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_carb.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_cgenff.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_lipid.prm',
-                      '\nparameters ',part_start,'start/toppar/par_all36_na.prm',
-                      '\nparameters ',part_start,'start/toppar/toppar_water_ions_namd.str',
+                      '\nparameters toppar/par_all36_prot.prm',
+                      '\nparameters toppar/par_all36_carb.prm',
+                      '\nparameters toppar/par_all36_cgenff.prm',
+                      '\nparameters toppar/par_all36_lipid.prm',
+                      '\nparameters toppar/par_all36_na.prm',
+                      '\nparameters toppar/toppar_water_ions_namd.str',
                       '\nexclude		scaled1-4',
                       '\n1-4scaling	1.0',
                       '\nswitching	on',
@@ -262,15 +265,15 @@ for (part in 1:length(name)) {
                       '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
                       '\nwrapAll on',
                       '\ntimestep 1.0',
-                      '\nnumsteps 10000000',
+                      '\nnumsteps 1000000',
                       '\nseed 322223322', '\nuseGroupPressure yes', '\nuseFlexibleCell yes', '\nuseConstantRatio yes',
                       '\nLangevinPiston on', 
                       '\nLangevinPistonTarget 1.01325',
                       '\nLangevinPistonPeriod 200',
                       '\nLangevinPistonDecay 100',
                       '\nLangevinPistonTemp 310',
-                      '\noutputenergies	1000',
-                      '\ndcdfreq		1000',
+                      '\noutputenergies	10000',
+                      '\ndcdfreq		10000',
                       '\ndcdfile quench/quench_',name[part],'_1.dcd',
                       '\nbinaryoutput no',
                       '\noutputname pdb/quench_',name[part],'_1')
@@ -292,12 +295,12 @@ for (part in 1:length(name)) {
                         '\n## SIMULATION PARAMETERS ##',
                         '\n#############################################################',
                         '\nparaTypeCharmm on',
-                        '\nparameters ',part_start,'start/toppar/par_all36_prot.prm',
-                        '\nparameters ',part_start,'start/toppar/par_all36_carb.prm',
-                        '\nparameters ',part_start,'start/toppar/par_all36_cgenff.prm',
-                        '\nparameters ',part_start,'start/toppar/par_all36_lipid.prm',
-                        '\nparameters ',part_start,'start/toppar/par_all36_na.prm',
-                        '\nparameters ',part_start,'start/toppar/toppar_water_ions_namd.str',
+                        '\nparameters toppar/par_all36_prot.prm',
+                        '\nparameters toppar/par_all36_carb.prm',
+                        '\nparameters toppar/par_all36_cgenff.prm',
+                        '\nparameters toppar/par_all36_lipid.prm',
+                        '\nparameters toppar/par_all36_na.prm',
+                        '\nparameters toppar/toppar_water_ions_namd.str',
                         '\nexclude		scaled1-4',
                         '\n1-4scaling	1.0',
                         '\nswitching	on',
