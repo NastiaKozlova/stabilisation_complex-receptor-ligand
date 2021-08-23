@@ -1,6 +1,6 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 #group ligand structures
-
+part_start<-part_analysis
 library(bio3d)
 library(readr)
 library(dplyr)
@@ -33,20 +33,22 @@ for (i in 1:length(v_str)) {
 }
 v_str<-a
 df_all<-df_all[!df_all$name%in%v_str,]
-for (i in 1:nrow(df_all)) {
-  models<-list.files(paste0("pdb_second/",df_all$name[i]))
-  if(length(models)>1){
-    if(!file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
-      df_RMSD<-data.frame(matrix(ncol = 2,nrow=length(models)))
-      colnames(df_RMSD)<-c("models","RMSD")
-      df_RMSD$models<-models
-      df_RMSD_all<-full_join(df_RMSD,df_RMSD,by="RMSD")
-      for (j in 1:nrow(df_RMSD_all)) {
-        pdb_1<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.x[j]))
-        pdb_2<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.y[j]))
-        df_RMSD_all$RMSD[j]<-rmsd(pdb_1,pdb_2)
+if(nrow(df_all)>0){
+  for (i in 1:nrow(df_all)) {
+    models<-list.files(paste0("pdb_second/",df_all$name[i]))
+    if(length(models)>1){
+      if(!file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
+        df_RMSD<-data.frame(matrix(ncol = 2,nrow=length(models)))
+        colnames(df_RMSD)<-c("models","RMSD")
+        df_RMSD$models<-models
+        df_RMSD_all<-full_join(df_RMSD,df_RMSD,by="RMSD")
+        for (j in 1:nrow(df_RMSD_all)) {
+          pdb_1<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.x[j]))
+          pdb_2<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.y[j]))
+          df_RMSD_all$RMSD[j]<-rmsd(pdb_1,pdb_2)
+        }
+      write.csv(df_RMSD_all,paste0("RMSD_analysis/",df_all$name[i],".csv"),row.names = F)
       }
-    write.csv(df_RMSD_all,paste0("RMSD_analysis/",df_all$name[i],".csv"),row.names = F)
     }
   }
 }
@@ -121,7 +123,6 @@ k<-2
 for (j in 1:length(df_all$name)) {
   if(file.exists(paste0("groups_fin/",df_all$name[j],".csv"))){
     df_RMSD<-read.csv(paste0("groups_fin/",df_all$name[j],".csv"),stringsAsFactors = F)
-    #  print(unique(df_RMSD$ligand_center))
     for (k in 1:nrow(df_RMSD)) {
       if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k]))) { dir.create(paste0("str/",df_RMSD$ligand_center[k]))}
       if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))) {
@@ -130,7 +131,9 @@ for (j in 1:length(df_all$name)) {
       write.pdb(pdb,paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k],"/",df_RMSD$models.y[k]))
     }
     df_RMSD<-df_RMSD%>%filter(models.y==models.x)
-    write.pdb(pdb,paste0("str_fin/",df_RMSD$ligand_center[1],"_",df_RMSD$grop_number[1],"_",df_RMSD$models.y[1]))
+    for (q in 1:nrow(df_RMSD)){
+        write.pdb(pdb,paste0("str_fin/",df_RMSD$ligand_center[q],"_",df_RMSD$grop_number[q],"_",df_RMSD$models.y[q]))
+    }
   }
 }
 
