@@ -7,8 +7,9 @@ num_din<-100
 library(dplyr)
 library(bio3d)
 setwd(part_name)
+part_start<-part_name
 df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
-#df_complex<-df_complex%>%select(structure_name,resname_change)
+
 df_complex<-unique(df_complex)
 df_replase<-read.csv("start/resname_mutate.csv",stringsAsFactors = F)
 df_complex<-left_join(df_complex,df_replase,by=c("ligand"="ligand_name"))
@@ -22,13 +23,16 @@ for (part in 1:nrow(df_complex)) {
   if(!dir.exists(paste0("prepared_structures/tcl"))){dir.create(paste0("prepared_structures/tcl"))}
   if(!dir.exists(paste0("prepared_structures/complex_structure"))){dir.create(paste0("prepared_structures/complex_structure"))}
   if(!dir.exists(paste0("prepared_structures/fin_complex_structure"))){dir.create(paste0("prepared_structures/fin_complex_structure"))}
-  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/toppar/"),ignore.stdout=T,wait = T)
+  if(!dir.exists(paste0("MD/"))){dir.create(paste0("MD/"))}
+  if(!dir.exists(paste0("MD/",df_complex$structure_name[part]))){dir.create(paste0("MD/",df_complex$structure_name[part]))}
+  if(!dir.exists(paste0("MD/",df_complex$structure_name[part]))){dir.create(paste0("MD/",df_complex$structure_name[part]))}
+  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$structure_name[part]),ignore.stdout=T,wait = T)
   #prepare psf and pdb parts of complex
   pdb_ligand<-read.pdb(paste0("start/ligands/",df_complex$structure_name[part]))
   pdb_receptor<-read.pdb(paste0("start/receptor/",df_complex$receptor[part],".pdb"))
   pdb_ligand$atom$chain<-"Z"
   pdb_ligand$atom$elesy<-"Z"
-#  pdb_ligand$atom$elesy<-""
+
   v_chain_ligand<-unique(pdb_ligand$atom$chain)
   v_chain_receptor<-unique(pdb_receptor$atom$chain)
   
@@ -89,8 +93,8 @@ for (i in 1:nrow(df_chains)) {
   system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$structure_name[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
 df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
-v_complex<-unique(df_chains$complex)
-i<-2
+v_complex<-unique(df_chains$structure_name)
+i<-3
 for (i in 1:length(v_complex)) {
   df_chain_TEMP<-df_chains%>%filter(complex_name==v_complex[i])
   df_chain_TEMP<-df_chain_TEMP%>%mutate(psf_merge=paste0(structure_name,"_",chain))
