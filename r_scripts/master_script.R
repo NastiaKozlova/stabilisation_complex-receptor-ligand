@@ -1,4 +1,4 @@
-part_start<-"/home/nastia/projects/current/stabilisation_complex-receptor-ligand/"
+part_start<-"path to stabilisation_complex-receptor-ligand/"
 setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
@@ -193,7 +193,7 @@ j<-1
 for (i in 1:length(v_list_proteins)) {
   part_prepare<-paste0(part_start,"r_scripts/MD_globular_protein_ligand/")
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/") 
-  part_start<-part_name
+#  part_start<-part_name
   if (file.exists(paste0(part_name,"complex.csv"))){
     df_complex<-read.csv(paste0(part_name,"complex.csv"),stringsAsFactors = F)
     for (j in 1:nrow(df_complex)) {
