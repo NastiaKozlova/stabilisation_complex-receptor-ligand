@@ -1,4 +1,4 @@
-part_start<-"/home/nastia/projects/current/stabilisation_complex-receptor-ligand/"
+part_start<-"path to stabilisation_complex-receptor-ligand/"
 setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
