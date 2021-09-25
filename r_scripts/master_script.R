@@ -1,4 +1,4 @@
-part_start<-"path to stabilisation_complex-receptor-ligand/"
+part_start<-"/home/nastia/projects/current/stabilisation_complex-receptor-ligand/"
 setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
@@ -112,7 +112,7 @@ for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   part_analysis<-paste0(part_name,"docking_first/")
-#  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"analysis.R ",part_analysis,""),ignore.stdout=T,wait = T)
@@ -210,6 +210,6 @@ for (i in 1:length(v_list_proteins)) {
   part_prepare<-paste0(part_start,"r_scripts/MD_globular_protein_ligand/")
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/") 
   system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/fin_structure_prepare.R ",part_name),ignore.stdout=T,wait = T)
-#  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/atom_interactions.R ",part_name),ignore.stdout=T,wait = T)
-#  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/make_structure_picture.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/atom_interactions.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_prepare,"r_scripts/make_structure_picture.R ",part_name),ignore.stdout=T,wait = T)
 }
