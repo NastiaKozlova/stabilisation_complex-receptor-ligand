@@ -1,4 +1,5 @@
 part_start<-"path to stabilisation_complex-receptor-ligand/"
+
 setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
@@ -98,6 +99,12 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("cp -r ",part_start,"programs/ ",part_name,"docking_first/"),ignore.stdout=T,wait = T)
 }
 i<-1
+#add surf active center, optional 
+for (i in 1:length(v_list_proteins)) {
+  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
+  system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
+}
+
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
@@ -112,6 +119,7 @@ for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   part_analysis<-paste0(part_name,"docking_first/")
+  
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
