@@ -19,12 +19,13 @@ Scripts were tested using CHARMM 36 force fields and NAMD 2.12 and NAMD 2.14.
 Scripts were tested using Debian 10.9.
 You should copy your toppar folder with force fields to the stabilisation_complex-receptor-ligand/start/*_ directory and add there all additional fource fields.
 This project support running multiple protein structures at the same time. In this README ProteinName - is one of the proteins name. you shold not use spaces, "_", "-". in the protein and ligand, and center snames. This symblos are confliting with scripts. Scripts will work wrong. 
+Plan of experiment ![](pictures/fig.1.jpg)
 
 # Protein structure prediction, optional for uncomplite proteins
 
 Protein sequences should be in and _*stabilisation_complex-receptor-ligand/start/structure_prediction/sequence/ProteinName.fasta*_ 
 
-To find rigth homology model you should have sthuctures to chouse from put into _*/home/nastia/projects/current/stabilisation_complex-receptor-ligand/start/structure_prediction/pdb/ProteinName*_
+To find rigth homology model you should have sthuctures to chouse from put into _*start/structure_prediction/pdb/ProteinName*_
 You should check most appropriate strutures chousen by scripts from stabilisation_complex-receptor-ligand/predicted/ProteinName folder, and predict full structure based on chousen structure by homology prediction method of your chouse. We recomend Robetta. 
 
 # Protein structure stablilisation using MD simulations (NAMD), needed for relaxing protein structure before docking
@@ -36,10 +37,12 @@ You can adjast length of simulation by editing _*num_din*_ parameter. _*num_din*
 
 After this step you can find your namd script _*MD\_globular\_protein/r\_scripts/namd\_script.txt*_
 This script has to be altered to accommodate different configurations of computers. 
+Example of picture of output of MD simulation ![](pictures/RMSD_RMSF_Second_str_ACHE.png)
 
 # Prediction of structure receptor-ligand complex this docking AutoDock, needed for putting ligand roughly near real coordinates of ligands in ligand-receptor complex.
 
 You should put all of ligand structures in pdb form into _*stabilisation_complex-receptor-ligand/start/docking/docking_first/ligand_start/*_
+Example of searcing field ![](pictures/fig.2.png)
 
 # Receptor-ligand structure stablilisation using MD simulations (NAMD)
 
@@ -53,6 +56,7 @@ You can alter time by changing _*num_din*_
 
 After this step you can find your namd script _*MD\_globular\_protein/r\_scripts/namd\_script.txt*_
 This script has to be altered to accommodate different configurations of computers. 
+Example of picture of output of MD simulation ![](pictures/fin_structure_energy_ACh.png)
 
 # List of dependencies
 
