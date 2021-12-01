@@ -1,0 +1,46 @@
+REMARK   Accelrys Discovery Studio PDB file
+REMARK   Created:  2020-06-17T17:36:51Z
+HETATM    1  C1  LGN     1      -3.743   0.347   2.091  0.00 -0.05           C  
+HETATM    2  C2  LGN     1      -4.128   1.622   1.649  0.00 -0.03           C  
+HETATM    3  C3  LGN     1      -3.361   2.292   0.701  0.00 -0.00           C  
+HETATM    4  C4  LGN     1      -2.215   1.722   0.178  0.00 -0.00           C  
+HETATM    5  C5  LGN     1      -1.823   0.467   0.603  0.00 -0.00           C  
+HETATM    6  C6  LGN     1      -2.582  -0.208   1.549  0.00 -0.00           C  
+HETATM    7  N1  LGN     1      -4.533  -0.383   3.091  0.00  0.33           N  
+HETATM    8  H4  LGN     1      -5.364   0.045   3.460  0.00 -0.24           H  
+HETATM    9  C7  LGN     1      -4.223  -1.593   3.553  0.00 -0.35           C  
+HETATM   10  O3  LGN     1      -3.229  -2.203   3.167  0.00  0.30           O  
+HETATM   11  C8  LGN     1      -5.116  -2.249   4.586  0.00 -0.57           C  
+HETATM   12  F1  LGN     1      -4.660  -3.515   4.972  0.00  0.18           F  
+HETATM   13  F2  LGN     1      -5.193  -1.370   5.638  0.00  0.17           F  
+HETATM   14  F3  LGN     1      -6.375  -2.281   4.039  0.00  0.15           F  
+HETATM   15  N2  LGN     1      -5.272   2.315   2.101  0.00 -0.08           N  
+HETATM   16  O1  LGN     1      -5.817   1.648   2.883  0.00  0.15           O  
+HETATM   17  O2  LGN     1      -5.231   3.301   1.510  0.00 -0.14           O  
+HETATM   18  H2  LGN     1      -3.655   3.258   0.368  0.00  0.00           H  
+HETATM   19  H3  LGN     1      -1.653   2.240  -0.533  0.00  0.00           H  
+HETATM   20  H4  LGN     1      -0.945   0.022   0.207  0.00  0.00           H  
+HETATM   21  H5  LGN     1      -2.263  -1.152   1.851  0.00  0.00           H  
+TER      22      LGN     1 
+CONECT    1    7    2    6
+CONECT    2    1    3   15
+CONECT    3    2    4   18
+CONECT    4    3    5   19
+CONECT    5    4    6   20
+CONECT    6    1    5   21
+CONECT    7    1    8    9
+CONECT    8    7
+CONECT    9    7   10   11
+CONECT   10    9
+CONECT   11    9   12   14   13
+CONECT   12   11
+CONECT   13   11
+CONECT   14   11
+CONECT   15    2   17   16
+CONECT   16   15
+CONECT   17   15
+CONECT   18    3
+CONECT   19    4
+CONECT   20    5
+CONECT   21    6
+END

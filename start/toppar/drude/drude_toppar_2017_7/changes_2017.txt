@@ -1,0 +1,53 @@
+
+toppar_drude_model_2013e.str renamed to toppar_drude_model_2013d_2.str
+
+toppar_drude_model_2013f.str renamed to toppar_drude_model_2013e.str
+
+mv toppar_drude_lipid_2013b_to_2017.str toppar_drude_lipid_2017a.str: 
+   New Lipid force field of Hui et al.
+
+   Major issue was the use of the CD32AL atom type due to a change in
+   the CD32A CD32A CD32A CD32A dihedral parameter.  This leads to the
+   treatment of this dihedral in the long alkanes and Lysine
+   sidechains being modified.  The new dihedral parameters from the
+   lipids have now been transferred to the proteins and tested by Jing
+   Huang.  The changes are not significant based on Lys dipeptide
+   simulations and the new parameters will be used in both the lipids
+   and nucleic acids).
+
+   Next generation lipids 
+      1) based on dispersion PME
+      2) will use nucleic acid phosphate model
+      3) Unification of alkane parameters (protein FF is using new alkane parameters)
+      4) consider unification of ester linkage model (residues MAS, MPRO etc)
+      
+
+New DNA parameters (Lemkul and MacKerell, JCTC, 2017, 10.1021/acs.jctc.7b00067 and 10.1021/acs.jctc.7b00068)
+
+   toppar_drude_nucleic_acid_2013e.str to toppar_drude_nucleic_acid_2017a.str
+   residues BDEO and BRIB in nucleic_acid file changed to BDEON and BRIBN due to conflict with carbohydrates.
+   RNA is NOT complete.
+
+   toppar_drude_nucleic_acid_2017b.str is toppar_drude_nucleic_acid_2017a.str with selected RNA parameters removed
+   to disallow its use for RNA simulations.
+
+Test case issues
+
+   Changes occurred in nucleic acids and carbohydrates.  Expected due
+   to the 2017 DNA update and changes in the hexapyranose parameters.
+
+   Some lipid model compounds to model test case. Additional residues add to lipid test case
+
+   Additional residues in model test case, including molecular ions
+
+Model compounds
+
+   New Imidazole parameters from Fang-Yu Lin NOT added: will be released with the new protein FF.
+
+   Alkenes from lipids to toppar_drude_model
+   Carbonyl (ketone,aldehyde) from carbohydrates to toppar_drude_model
+
+   Molecular ion atom types, residues and parameters added. 
+       Parameters need to be finalized.
+       Methylphosphates need additional optimization.
+

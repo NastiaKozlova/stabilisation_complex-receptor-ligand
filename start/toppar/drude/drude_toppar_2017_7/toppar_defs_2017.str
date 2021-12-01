@@ -1,0 +1,10 @@
+* stream drude toppar files
+*
+
+stream @toppar/toppar_drude_master_protein_2013e.str
+stream @toppar/toppar_drude_carbohydrate_2013e.str
+stream @toppar/toppar_drude_nucleic_acid_2017b.str
+stream @toppar/toppar_drude_lipid_2017a.str
+stream @toppar/toppar_drude_model_2013e.str
+
+return

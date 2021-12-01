@@ -18,15 +18,15 @@ You should provide your own NAMD copy and CHARMM force fields.
 Scripts were tested using CHARMM 36 force fields and NAMD 2.12 and NAMD 2.14.
 Scripts were tested using Debian 10.9.
 You should copy your toppar folder with force fields to the stabilisation_complex-receptor-ligand/start/*_ directory and add there all additional fource fields.
-This project support running multiple protein structures at the same time. In this README ProteinName - is one of the proteins name. you shold not use spaces, "_", "-". in the protein and ligand, and center snames. This symblos are confliting with scripts. Scripts will work wrong. 
+This project support running multiple protein structures at the same time. In this README ProteinName - is one of the proteins name. you should not use spaces, "_", "-". in the protein and ligand, and center snames. This symblos are confliting with scripts. Scripts will work wrong. 
 Plan of experiment ![](pictures/fig.1.jpg)
 
 # Protein structure prediction, optional for uncomplite proteins
 
 Protein sequences should be in and _*stabilisation_complex-receptor-ligand/start/structure_prediction/sequence/ProteinName.fasta*_ 
 
-To find rigth homology model you should have sthuctures to chouse from put into _*start/structure_prediction/pdb/ProteinName*_
-You should check most appropriate strutures chousen by scripts from stabilisation_complex-receptor-ligand/predicted/ProteinName folder, and predict full structure based on chousen structure by homology prediction method of your chouse. We recomend Robetta. 
+To find rigth homology model you should have structures to chouse from put into _*start/structure_prediction/pdb/ProteinName*_
+You should check most appropriate structures chousen by scripts from stabilisation_complex-receptor-ligand/predicted/ProteinName folder, and predict full structure based on chousen structure by homology prediction method of your chouse. We recomend Robetta. 
 
 # Protein structure stablilisation using MD simulations (NAMD), needed for relaxing protein structure before docking
 
@@ -62,7 +62,7 @@ Example of picture of output of MD simulation ![](pictures/fin_structure_energy_
 
 R pacages:
 1. bio3d install.packages("bio3d")
-2. cowlpot install.packages("cowlpot")
+2. cowplot install.packages("cowplot")
 3. ggplot2 install.packages("ggplot2")
 4. dplyr install.packages("dplyr")
 5. httr install.packages("httr")

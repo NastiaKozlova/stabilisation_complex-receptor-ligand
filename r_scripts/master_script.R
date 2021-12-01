@@ -1,5 +1,5 @@
 part_start<-"path to stabilisation_complex-receptor-ligand/"
-
+part_start<-"/home/nastia/projects/current/Alya/stabilisation_complex-receptor-ligand/"
 setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
@@ -76,11 +76,12 @@ for (i in 1:length(v_list_proteins)) {
 #docking first 
 #prepare ligands for first docking
 v_ligands<-list.files("start/docking/docking_first/ligand_start/")
+if(!dir.exists(paste0(part_start,"start/docking/docking_first/ligand/"))){dir.create(paste0(part_start,"start/docking/docking_first/ligand/"))}
 for (i in 1:length(v_ligands)) {
   a<-strsplit(v_ligands[i],split = ".",fixed = T)[[1]][1]
   system(command = paste0("obabel ",part_start,"start/docking/docking_first/ligand_start/",a, ".pdb -O ",part_start,"start/docking/docking_first/ligand/",a, ".pdbqt"),ignore.stdout=T,wait = T)
 }
-i<-1
+i<-2
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   #copying sctipts for docking
@@ -102,17 +103,22 @@ i<-1
 #add surf active center, optional 
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
+  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+#  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
+#  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
 }
 
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
+  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
 }
 i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  system(command = paste0("Rscript --vanilla  ",part_name,"r_scripts/first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
+  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
 }
 i<-2
 for (i in 1:length(v_list_proteins)) {
