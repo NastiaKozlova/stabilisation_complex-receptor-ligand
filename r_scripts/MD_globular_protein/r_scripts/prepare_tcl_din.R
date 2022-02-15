@@ -1,9 +1,9 @@
-part_start = commandArgs(trailingOnly=TRUE)
+part_name = commandArgs(trailingOnly=TRUE)
 library(dplyr)
 library(bio3d)
-#part_start<-part_name
-part_name<-part_start
-setwd(part_start)
+#part_name<-part_name
+
+setwd(part_name)
 name<-list.files('start/structure/')
 
 a<-c()
@@ -13,31 +13,33 @@ for(i in 1:length(name)){
 }
 based_name<-a
 name<-1
-part<-part_start
+part<-part_name
 num_model<-100
 
 for (name in 1:length(based_name)) {
-  part_start<-paste0(part_name,based_name[name],'/MD/stabilisation/')
-  setwd(paste0(part_start))
+  part<-paste0(part_name,based_name[name],'/MD/stabilisation/')
+  setwd(paste0(part))
   #create additional directories
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/tcl'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/tcl'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/pdb_second'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/pdb_second'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/pdb_second/',based_name[name]))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/pdb_second/',based_name[name]))}
+  if (!dir.exists(paste0(part,'din'))) {dir.create(paste0(part,'din'))}
+  if (!dir.exists(paste0(part,'din/tcl'))) {dir.create(paste0(part,'din/tcl'))}
+  if (!dir.exists(paste0(part,'din/pdb_second'))) {dir.create(paste0(part,'din/pdb_second'))}
+  if (!dir.exists(paste0(part,'din/pdb_second/',based_name[name]))) {dir.create(paste0(part,'din/pdb_second/',based_name[name]))}
+
+  if (!dir.exists(paste0(part,'din/pdb_second/hbonds_',based_name[name]))) {dir.create(paste0(part,'din/pdb_second/hbonds_',based_name[name]))}
   
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/Energy'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/Energy'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/SASA'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/SASA'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/RMSD'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/RMSD'))}
-  if (!dir.exists(paste0(part,based_name[name],'/MD/stabilisation/din/RMSF'))) {dir.create(paste0(part,based_name[name],'/MD/stabilisation/din/RMSF'))}
+  if (!dir.exists(paste0(part,'din/Energy'))) {dir.create(paste0(part,'din/Energy'))}
+  if (!dir.exists(paste0(part,'din/SASA'))) {dir.create(paste0(part,'din/SASA'))}
+  if (!dir.exists(paste0(part,'din/RMSD'))) {dir.create(paste0(part,'din/RMSD'))}
+  if (!dir.exists(paste0(part,'din/RMSF'))) {dir.create(paste0(part,'din/RMSF'))}
   
   #combine MD simulation dcd files
   df_tcl<-data.frame(matrix(nrow = 2,ncol = 2))
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/\npackage require animate')
+  df_tcl[1,1]<-paste0('cd ', part,'\npackage require animate')
   
   df_tcl[1,2]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   for (i in 1:num_model) {
-    if(file.exists(paste0(part,based_name[name],'/MD/stabilisation/quench/quench_',based_name[name],'_',i,".dcd"))){
-      df_tcl[i+1,1]<-paste0('mol addfile {quench/quench_',based_name[name],'_',i,'.dcd} type {dcd} first 0 last -1 step 1 waitfor all')
+    if(file.exists(paste0(part,'quench/quench_',based_name[name],'_',i,".dcd"))){
+      df_tcl[i+1,1]<-paste0('mol addfile {quench/quench_',based_name[name],'_',i,'.dcd} type {dcd} first 0 last -1 step 10 waitfor all')
     }
   }
   df_tcl[i+2,1]<-paste0('animate write dcd quench/quench_',based_name[name],'.dcd waitfor all')
@@ -45,12 +47,12 @@ for (name in 1:length(based_name)) {
   df_tcl[i+3,1]<-paste0('mol delete all\n\nexit now')
   
   write.table(df_tcl,file =paste0('din/tcl/combine_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  print( paste0('vmd -dispdev text -e ',part_start,'din/tcl/combine_',based_name[name],'.tcl'))
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/combine_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  print( paste0('vmd -dispdev text -e ',part,'din/tcl/combine_',based_name[name],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/combine_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
   
   #RMSD conting
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 13))
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/\n')
+  df_tcl[1,1]<-paste0('cd ', part,'\n')
 
   df_tcl[2,1]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   df_tcl[2,2]<-paste0('mol addfile {protein/ionized_',based_name[name],'.pdb} type {pdb}') 
@@ -69,13 +71,13 @@ for (name in 1:length(based_name)) {
   df_tcl[2,15]<-paste0('mol delete all\n\nexit now')
   
   write.table(df_tcl,file =paste0('din/tcl/RMSD_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  print( paste0('vmd -dispdev text -e ',part_start,'din/tcl/RMSD_',based_name[name],'.tcl'))
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/RMSD_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  print( paste0('vmd -dispdev text -e ',part,'din/tcl/RMSD_',based_name[name],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/RMSD_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
   
   #RMSF counting
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 13))
   
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/')
+  df_tcl[1,1]<-paste0('cd ', part,'')
   df_tcl[2,1]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   df_tcl[2,2]<-paste0('mol addfile {quench/quench_',based_name[name],'.dcd} type {dcd} first 0 last -1 step 1 waitfor all')
   df_tcl[2,3]<-paste0('set protein [atomselect top "protein and name CA"]')
@@ -89,11 +91,11 @@ for (name in 1:length(based_name)) {
   df_tcl[2,11]<-paste0('close $output')
   df_tcl[2,12]<-paste0('mol delete all\n\nexit now')
   write.table(df_tcl,file =paste0('din/tcl/RMSF_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/RMSF_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/RMSF_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
   
   #Secondary structure counting
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 7))
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/')
+  df_tcl[1,1]<-paste0('cd ', part,'')
   df_tcl[2,1]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   df_tcl[2,2]<-paste0('mol addfile {quench/quench_',based_name[name],'.dcd} type {dcd} first 0 last -1 step 1 waitfor all')
   df_tcl[2,3]<-paste0('set nf [molinfo top get numframes]')
@@ -102,12 +104,12 @@ for (name in 1:length(based_name)) {
   df_tcl[2,6]<-paste0('}')
   df_tcl[2,7]<-'mol delete all\n\nexit now'
   write.table(df_tcl,file =paste0('din/tcl/Second_str_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  print(paste0('vmd -dispdev text -e ',part_start,'din/tcl/Second_str_',based_name[name],'.tcl'))
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/Second_str_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  print(paste0('vmd -dispdev text -e ',part,'din/tcl/Second_str_',based_name[name],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/Second_str_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
 
   #Energy counting
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/\npackage require namdenergy')
+  df_tcl[1,1]<-paste0('cd ', part,'\npackage require namdenergy')
   df_tcl[1,2]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   df_tcl[1,3]<-paste0('mol addfile {quench/quench_',based_name[name],'.dcd} type {dcd} first 0 last -1 step 1 waitfor all')
   df_tcl[1,4]<-paste0('set sel2 [atomselect top "protein"]')
@@ -115,12 +117,12 @@ for (name in 1:length(based_name)) {
   df_tcl[1,6]<-'mol delete all'
   df_tcl[1,7]<-'\n\nexit now'
   write.table(df_tcl,file =paste0('din/tcl/Energy_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  print(paste0('vmd -dispdev text -e ',part_start,'din/tcl/Energy_',based_name[name],'.tcl'))
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/Energy_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  print(paste0('vmd -dispdev text -e ',part,'din/tcl/Energy_',based_name[name],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/Energy_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
   
   #SASA counting
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 9))
-  df_tcl[1,1]<-paste0('cd ', part,based_name[name],'/MD/stabilisation/\npackage require measure')
+  df_tcl[1,1]<-paste0('cd ', part,'\npackage require measure')
   df_tcl[1,2]<-paste0('mol new {protein/ionized_',based_name[name],'.psf} type {psf}')
   df_tcl[1,3]<-paste0('mol addfile {quench/quench_',based_name[name],'.dcd} type {dcd} first 0 last -1 step 1 waitfor all')
   df_tcl[1,4]<-paste0('set protein [atomselect top "protein"]')
@@ -135,7 +137,7 @@ for (name in 1:length(based_name)) {
   df_tcl[1,13]<-paste0('close $output')
   df_tcl[1,14]<-paste0('mol delete all\n\nexit now')
   write.table(df_tcl,file =paste0('din/tcl/SASA_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
-  print(paste0('vmd -dispdev text -e ',part_start,'din/tcl/SASA_',based_name[name],'.tcl'))
-  system(command = paste0('vmd -dispdev text -e ',part_start,'din/tcl/SASA_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
+  print(paste0('vmd -dispdev text -e ',part,'din/tcl/SASA_',based_name[name],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part,'din/tcl/SASA_',based_name[name],'.tcl'),ignore.stdout=T,wait = T) 
 }
 
