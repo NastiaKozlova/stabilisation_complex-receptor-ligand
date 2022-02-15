@@ -1,6 +1,6 @@
-part_start<-"path to stabilisation_complex-receptor-ligand/"
-part_start<-paste0(getwd(),"/")
-setwd(part_start)
+#part_start<-"path to stabilisation_complex-receptor-ligand/"
+#part_start<-paste0(getwd(),"/")
+#setwd(part_start)
 
 v_list_proteins<-list.files("start/sequence/")
 a<-c()
@@ -13,6 +13,7 @@ for (i in 1:length(v_list_proteins)) {
   if(!dir.exists(v_list_proteins[i])){dir.create(v_list_proteins[i])}
 }
 #structure_prediction
+i<-1
 for (i in 1:length(v_list_proteins)) {
   print(v_list_proteins[i])
   part_name<-paste0(part_start,",",v_list_proteins[i])
@@ -25,28 +26,20 @@ for (i in 1:length(v_list_proteins)) {
 i<-1
 for (i in 1:length(v_list_proteins)) {
   print(v_list_proteins[i])
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/"))}
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/programs/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein/programs/"))}
-  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  
-  system(command = paste0("cp -r ",part_start,"programs/la1.0 ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"programs/orient ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  
-#  system(command = paste0("tar -xvzf ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz " ,part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  
-  system(command = paste0("rm ",part_start,"r_scripts/MD_globular_protein/start/structure/*"),ignore.stdout=T,wait = T)  
-  system(command = paste0("cp ",part_start,"start/MD_stabilisation/",v_list_proteins[i],".pdb ",part_start,"r_scripts/MD_globular_protein/start/structure/",v_list_proteins[i],".pdb"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein/start/toppar/"),ignore.stdout=T,wait = T)
+  part_name<-paste0(part_start,",",v_list_proteins[i])
+  print(part_name)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_pre_MD_simulation_files.R ",part_name),ignore.stdout=T,wait = T)
 }
 #MD stabilisation
+#prepare files to run MD simulation
 i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
-  
 #  print(paste0("run namd from ",part_name,"r_scripts/namd_script.txt"))
 }
+#generated scipts to run MD simulation are in this folder
+#to continue experiment you should run MD simulation
 print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r_scripts/namd_script.txt"))
 i<-1
 for (i in 1:length(v_list_proteins)) {
