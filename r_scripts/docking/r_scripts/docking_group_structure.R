@@ -27,12 +27,15 @@ print(Sys.time())
 df_all<-df_all%>%filter(number>0)
 v_str<-list.files(paste0("RMSD_analysis/"))
 a<-c()
-for (i in 1:length(v_str)) {
-  b<-strsplit(v_str[i],split = ".",fixed = T)[[1]][1]
-  a<-c(a,b)
+if(length(v_str)>0){
+  for (i in 1:length(v_str)) {
+    b<-strsplit(v_str[i],split = ".",fixed = T)[[1]][1]
+    a<-c(a,b)
+  }
+  v_str<-a
+  df_all<-df_all[!df_all$name%in%v_str,]
 }
-v_str<-a
-df_all<-df_all[!df_all$name%in%v_str,]
+
 if(nrow(df_all)>0){
   for (i in 1:nrow(df_all)) {
     models<-list.files(paste0("pdb_second/",df_all$name[i]))
@@ -47,11 +50,12 @@ if(nrow(df_all)>0){
           pdb_2<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.y[j]))
           df_RMSD_all$RMSD[j]<-rmsd(pdb_1,pdb_2)
         }
-      write.csv(df_RMSD_all,paste0("RMSD_analysis/",df_all$name[i],".csv"),row.names = F)
+        write.csv(df_RMSD_all,paste0("RMSD_analysis/",df_all$name[i],".csv"),row.names = F)
       }
     }
   }
 }
+
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 #sort to grops
@@ -159,35 +163,3 @@ for (i in 2:length(df_all$name)) {
   }
 }
 write.csv(df_fin,"log_fin.csv",row.names = F)
-if (!dir.exists(paste0("interaction/"))) { dir.create(paste0("interaction/"))}
-for (i in 1:nrow(df_all)) {
-  if(file.exists(paste0("groups_fin/",df_all$name[i],".csv"))){
-    df_groups<-read.csv(paste0("log_fin/",df_all$name[i],".csv"),stringsAsFactors = F)
-    if (nrow(df_groups)>1) {
-      for (j in 1:nrow(df_groups)) {
-        a<-read.pdb(paste0(part_start,"receptor_start/",df_all$receptor[i],".pdb"))
-        b<-read.pdb(paste0("str/",df_groups$ligand_center[j],"/",df_groups$grop_number[j],"/",df_groups$models.y[j]))
-        bs<-binding.site(a,b)
-        m<-bs$resnames
-        a<-c()
-        b<-c()
-        y<-1
-        for (y in 1:length(m)) {
-          p<-strsplit(m[y],split = " ",fixed = T)[[1]][2]
-          a<-c(a,p)
-          p<-strsplit(m[y],split = " ",fixed = T)[[1]][1]
-          b<-c(b,p)
-        }
-        a<-as.numeric(a)
-        df_protein<-data.frame(matrix(ncol=2,nrow=length(a)))
-        colnames(df_protein)<-c("resid","resno")
-        df_protein$resid<-a
-        df_protein$resno<-b
-        if (!dir.exists(paste0("interaction/",df_groups$ligand_center[j]))) { dir.create(paste0("interaction/",df_groups$ligand_center[j]))}
-        if (!dir.exists(paste0("interaction/",df_groups$ligand_center[j],"/",df_groups$grop_number[j]))) {
-          dir.create(paste0("interaction/",df_groups$ligand_center[j],"/",df_groups$grop_number[j]))}
-        write.csv(df_protein,paste0("interaction/",df_groups$ligand_center[j],"/",df_groups$grop_number[j],"/frame_",df_groups$new_number[j],".csv"),row.names = F)
-      }
-    }
-  }
-}

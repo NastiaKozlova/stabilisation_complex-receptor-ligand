@@ -50,7 +50,7 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/test_hbonds.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
-  #make plot
+    #make plot
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/make_plots_RMSD_RMSF.R ",part_name),ignore.stdout=T,wait = T)
 }
 #copy files from MD simulation
@@ -75,27 +75,17 @@ for (i in 1:length(v_list_proteins)) {
   #copying sctipts for docking
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
-i<-1
+i<-2
 #check protein surface
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_name,"docking_first/"),ignore.stdout=T,wait = T)
-  
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"check_surface.R ",part_name),ignore.stdout=T,wait = T)
-  
-}
-#add surf active center, optional 
-i<-1
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+  #add surf active center, optional 
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
-}
-#run docking
-for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+  #run docking
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
 }
 i<-1

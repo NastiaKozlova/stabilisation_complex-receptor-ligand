@@ -4,9 +4,10 @@ library(bio3d)
 library(dplyr)
 #part_start<-part_name
 part_scriprs<-paste0(part_start,"r_scripts/")
-part_start<-paste0(part_start,"docking_first/")
 setwd(part_start)
 if(!dir.exists(paste0(part_start,"analysis"))){dir.create(paste0(part_start,"analysis"))}
+if(!dir.exists(paste0(part_start,"din"))){dir.create(paste0(part_start,"din"))}
+if(!dir.exists(paste0(part_start,"din/log"))){dir.create(paste0(part_start,"din/log"))}
 v_start<-list.files(paste0(part_start,"out"))
 v_finish<-list.files(paste0(part_start,"analysis"))
 
@@ -27,3 +28,4 @@ for (i in 1:length(v_start)) {
   a<-paste0(part_start,"out/",a,".pdbqt ",part_start,"analysis/",a,"_MODEL_%d.pdb")
   system(command = paste0("python ", part_scriprs,"pdbqt_to_pdbs.py ",a),ignore.stdout=T,wait = T)
 }
+
