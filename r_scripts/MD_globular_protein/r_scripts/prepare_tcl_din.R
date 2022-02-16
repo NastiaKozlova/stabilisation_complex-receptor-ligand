@@ -42,9 +42,19 @@ for (name in 1:length(based_name)) {
       df_tcl[i+1,1]<-paste0('mol addfile {quench/quench_',based_name[name],'_',i,'.dcd} type {dcd} first 0 last -1 step 10 waitfor all')
     }
   }
-  df_tcl[i+2,1]<-paste0('animate write dcd quench/quench_',based_name[name],'.dcd waitfor all')
+  df_tcl[i+2,1]<-paste0('set ref [atomselect top "protein and name CA" frame 0]\n',
+                        'set sel [atomselect top "protein and name CA"]\n',
+                        'set all [atomselect top all]\n',
+                        'set n [molinfo top get numframes]\n',
+                        'set fin [expr $n-1]\n',
+                        'for { set i 1 } { $i < $n } { incr i } {\n',
+                        '  $sel frame $i\n',
+                        '  $all frame $i\n',
+                        '  $all move [measure fit $sel $ref]\n',
+                        '}\n')
+  df_tcl[i+3,1]<-paste0('animate write dcd quench/quench_',based_name[name],'.dcd waitfor all')
 
-  df_tcl[i+3,1]<-paste0('mol delete all\n\nexit now')
+  df_tcl[i+4,1]<-paste0('mol delete all\n\nexit now')
   
   write.table(df_tcl,file =paste0('din/tcl/combine_',based_name[name],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
   print( paste0('vmd -dispdev text -e ',part,'din/tcl/combine_',based_name[name],'.tcl'))

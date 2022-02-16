@@ -45,15 +45,15 @@ i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_pdb_hbonds.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/hbonds_prepare.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/test_hbonds.R ",part_name),ignore.stdout=T,wait = T)
-  
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
   #make plot
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/make_plots_RMSD_RMSF.R ",part_name),ignore.stdout=T,wait = T)
 }
-
+#copy files from MD simulation
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
@@ -62,6 +62,7 @@ for (i in 1:length(v_list_proteins)) {
 
 #docking first 
 #prepare ligands for first docking
+i<-1
 v_ligands<-list.files("start/docking/docking_first/ligand_start/")
 if(!dir.exists(paste0(part_start,"start/docking/docking_first/ligand/"))){dir.create(paste0(part_start,"start/docking/docking_first/ligand/"))}
 for (i in 1:length(v_ligands)) {
@@ -70,21 +71,9 @@ for (i in 1:length(v_ligands)) {
 }
 i<-1
 for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
+  part_name<-paste0(part_start,",",v_list_proteins[i])
   #copying sctipts for docking
-  system(command = paste0("cp -r ",part_start,"r_scripts/docking/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
-  #create directories
-  if(!dir.exists(paste0(part_name,"docking_first/"))){dir.create(paste0(part_name,"docking_first/"))}
-  if(!dir.exists(paste0(part_name,"docking_first/receptor_start/"))){dir.create(paste0(part_name,"docking_first/receptor_start/"))}
-  if(!dir.exists(paste0(part_name,"docking_first/receptor/"))){dir.create(paste0(part_name,"docking_first/receptor/"))}
-  #copying ligand's structures for docking
-  system(command = paste0("cp -r ",part_start,"start/docking/docking_first/ligand/ ",part_name,"/docking_first/"),ignore.stdout=T,wait = T)
-  #copying receptor structure for docking
-  system(command = paste0("cp -r ",part_start,"output/stabilisation/fin_structure/",v_list_proteins[i],".pdb ",part_name,"/docking_first/receptor_start/start.pdb"),ignore.stdout=T,wait = T)
-  #copying amino acids for active center for docking
-  system(command = paste0("cp ",part_start,"start/docking/active_center/",v_list_proteins[i],"/active_center.csv ",part_name,"/docking_first/active_center.csv"),ignore.stdout=T,wait = T)
-  #copying programs for docking
-  system(command = paste0("cp -r ",part_start,"programs/ ",part_name,"docking_first/"),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
 i<-1
 #check protein surface
