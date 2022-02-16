@@ -1,4 +1,4 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_name <- commandArgs(trailingOnly=TRUE)
 library(dplyr)
 library(bio3d)
 library(readr)
@@ -16,12 +16,13 @@ filter_structure<-function(df_pdb,x_min,x_max,y_min,y_max,z_min,z_max){
   }
   return(df_pdb_filtered)
 }
-part_start<-paste0(part_start,"docking_first/")
-setwd(part_start)
-#part<-paste0(part_start,"start/")
-start<-read.pdb(paste0(part_start,"receptor_start/start.pdb"))
+setwd(part_name)
+#part<-paste0(part_name,"start/")
+start<-read.pdb(paste0(part_name,"receptor_start/start.pdb"))
+df_hbonds<-read.csv(paste0(part_name,"hbonds.csv"),stringsAsFactors = F)
 df_pdb<-start$atom
 df_pdb<-df_pdb%>%filter(elety=="CA")
+df_pdb<-semi_join(df_pdb,df_hbonds,by=c("resno"="number"))
 x_min<-round(min(df_pdb$x),digits = 0)
 y_min<-round(min(df_pdb$y),digits = 0)
 z_min<-round(min(df_pdb$z),digits = 0)
@@ -30,9 +31,9 @@ y_max<-round(max(df_pdb$y),digits = 0)
 z_max<-round(max(df_pdb$z),digits = 0)
 df_structure<-data.frame(matrix(ncol=7,nrow = 0))
 colnames(df_structure)<-c("type","x_min","y_min","z_min","x_max","y_max","z_max")
-x_len<-seq(from=x_min,to=x_max,by=5)
-y_len<-seq(from=y_min,to=y_max,by=5)
-z_len<-seq(from=z_min,to=z_max,by=5)
+x_len<-seq(from=x_min,to=x_max,by=10)
+y_len<-seq(from=y_min,to=y_max,by=10)
+z_len<-seq(from=z_min,to=z_max,by=10)
 x<-x_len[1]
 y<-y_len[1]
 z<-z_len[1]
@@ -42,12 +43,12 @@ for (x in x_len) {
       df_structure_add<-data.frame(matrix(ncol=7,nrow = 1))
       colnames(df_structure_add)<-c("type","x_min","y_min","z_min","x_max","y_max","z_max")
       df_structure_add$type<-paste0("serf_x_",x,"_y_",y,"_z_",z)
-      df_structure_add$x_min<-x-5
-      df_structure_add$x_max<-x+5
-      df_structure_add$y_min<-y-5
-      df_structure_add$y_max<-y+5
-      df_structure_add$z_min<-z-5
-      df_structure_add$z_max<-z+5
+      df_structure_add$x_min<-x-10
+      df_structure_add$x_max<-x+10
+      df_structure_add$y_min<-y-10
+      df_structure_add$y_max<-y+10
+      df_structure_add$z_min<-z-10
+      df_structure_add$z_max<-z+10
       df_structure<-rbind(df_structure,df_structure_add)
     }
   }

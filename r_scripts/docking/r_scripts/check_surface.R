@@ -87,11 +87,11 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
   system(command = paste0("vmd -dispdev text -e ",part_name,'/hbonds_test/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
   df_tcl[1,1]<-paste('cd', part_name,"\npackage require hbonds")
-  df_tcl[1,2]<-paste0('mol new {hbonds_test/ionized_',name,'.psf} type {psf}')
-  df_tcl[1,3]<-paste0('mol addfile {hbonds_test/ionized_',name,'.pdb} type {pdb}')
+  df_tcl[1,2]<-paste0('mol new {hbonds_test/solvate_',name,'.psf} type {psf}')
+  df_tcl[1,3]<-paste0('mol addfile {hbonds_test/solvate_',name,'.pdb} type {pdb}')
   df_tcl[1,4]<-paste0('set protein [atomselect top "protein" ]')
   df_tcl[1,5]<-paste0('set water [atomselect top "water" ]')
-  df_tcl[1,6]<-paste0('hbonds -sel1 $protein -sel2 $water -writefile yes -upsel yes -frames all -dist 3.0 -ang 20 -plot no -outdir hbonds_test -log hbonds_log.txt -writefile yes -outfile outfile -polar no -DA both -type all -detailout hbonds_test.txt')
+  df_tcl[1,6]<-paste0('hbonds -sel1 $protein -sel2 $water -writefile yes -upsel yes -frames all -dist 5.0 -ang 20 -plot no -outdir hbonds_test -log hbonds_log.txt -writefile yes -outfile outfile -polar no -DA both -type all -detailout hbonds_test.txt')
   df_tcl[1,7]<-'mol delete all'
   df_tcl[1,8]<-"\n\nexit now"
   
