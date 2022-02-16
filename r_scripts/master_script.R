@@ -23,7 +23,7 @@ for (i in 1:length(v_list_proteins)) {
 #prepare files for MD based on chousen structures 
 #predicted structures
 #and sequense predict structure of protein using robetta server structure_prediction
-i<-1
+
 for (i in 1:length(v_list_proteins)) {
   print(v_list_proteins[i])
   part_name<-paste0(part_start,",",v_list_proteins[i])
@@ -32,7 +32,7 @@ for (i in 1:length(v_list_proteins)) {
 }
 #MD stabilisation
 #prepare files to run MD simulation
-i<-1
+
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
@@ -41,7 +41,7 @@ for (i in 1:length(v_list_proteins)) {
 #generated scipts to run MD simulation are in this folder
 #to continue experiment you should run MD simulation
 print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r_scripts/namd_script.txt"))
-i<-1
+
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
@@ -62,20 +62,20 @@ for (i in 1:length(v_list_proteins)) {
 
 #docking first 
 #prepare ligands for first docking
-i<-1
+
 v_ligands<-list.files("start/docking/docking_first/ligand_start/")
 if(!dir.exists(paste0(part_start,"start/docking/docking_first/ligand/"))){dir.create(paste0(part_start,"start/docking/docking_first/ligand/"))}
 for (i in 1:length(v_ligands)) {
   a<-strsplit(v_ligands[i],split = ".",fixed = T)[[1]][1]
   system(command = paste0("obabel ",part_start,"start/docking/docking_first/ligand_start/",a, ".pdb -O ",part_start,"start/docking/docking_first/ligand/",a, ".pdbqt"),ignore.stdout=T,wait = T)
 }
-i<-1
+
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,",",v_list_proteins[i])
   #copying sctipts for docking
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
-i<-2
+
 #check protein surface
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
