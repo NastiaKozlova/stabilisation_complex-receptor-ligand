@@ -88,7 +88,7 @@ for (name in 1:length(based_name)) {
     df_bonds<-df_bonds%>%mutate(persent=occupancy/(number_frame+1)*100)
     df_bonds<-df_bonds%>%select(number, amino, occupancy,	persent)
     df_bonds<-unique(df_bonds)
-    write.csv(df_bonds,paste0(part_start,"MD_analysis/din/",v_part[p],"/hbonds_",based_name[name],".csv"),row.names = F)                     
+    write.csv(df_bonds,paste0("hbonds_",based_name[name],".csv"),row.names = F)                     
   }
 }
 
