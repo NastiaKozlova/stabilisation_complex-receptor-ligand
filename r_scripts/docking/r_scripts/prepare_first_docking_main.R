@@ -1,11 +1,12 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_name <- commandArgs(trailingOnly=TRUE)
 library(ggplot2)
 library(bio3d)
 library(dplyr)
-#part_start<-part_start
-part_scriprs<-paste0(part_start,"r_scripts/")
-part_start<-paste0(part_start,"docking_first/")
-setwd(part_start)
+#part_name<-part_name
+part_scriprs<-strsplit(part_name,split ="/",fixed = T)[[1]]
+part_scriprs<-paste(part_scriprs[1:(length(part_scriprs)-3)],collapse =  "/")
+part_scriprs<-paste0(part_scriprs,"/r_scripts/docking/r_scripts/")
+setwd(part_name)
 
 v_ligand<-list.files(paste0("ligand/"))
 a<-c()
@@ -46,16 +47,16 @@ df_receptor$receptor<-v_receptor
 df_receptor<-df_receptor%>%mutate(c="C")
 df_all<-full_join(df_receptor,df_ligand_center,by="c")
 df_all$c<-NULL
-write.csv(df_all,paste0(part_start,"df_all.csv"),row.names = F)
-if (!dir.exists(paste0(part_start,"ligand/"))){dir.create(paste0(part_start,"ligand/"))}
-if (!dir.exists(paste0(part_start,"receptor/"))){dir.create(paste0(part_start,"receptor/"))}
+write.csv(df_all,paste0(part_name,"df_all.csv"),row.names = F)
+if (!dir.exists(paste0(part_name,"ligand/"))){dir.create(paste0(part_name,"ligand/"))}
+if (!dir.exists(paste0(part_name,"receptor/"))){dir.create(paste0(part_name,"receptor/"))}
 i<-1
 for (i in 1:nrow(df_receptor)) {
-  system(command = paste0(part_start,"programs/MGLTools-1.5.7/bin/pythonsh ",part_start,"programs/MGLTools-1.5.7/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r ",
-                          part_start,"receptor_start/",df_receptor$receptor[i],".pdb -o ",part_start,"receptor/",df_receptor$receptor[i],".pdbqt ",
+  system(command = paste0(part_name,"programs/MGLTools-1.5.7/bin/pythonsh ",part_name,"programs/MGLTools-1.5.7/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r ",
+                          part_name,"receptor_start/",df_receptor$receptor[i],".pdb -o ",part_name,"receptor/",df_receptor$receptor[i],".pdbqt ",
                           "-A None"))
 }
 
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part_start),ignore.stdout=T,wait = T)
-system(command = paste0("chmod +x ",part_start,"script_fin.txt "),ignore.stdout=T,wait = T)
-system(command = paste0(part_start,"script_fin.txt"),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part_name),ignore.stdout=T,wait = T)
+system(command = paste0("chmod +x ",part_name,"script_fin.txt "),ignore.stdout=T,wait = T)
+system(command = paste0(part_name,"script_fin.txt"),ignore.stdout=T,wait = T)

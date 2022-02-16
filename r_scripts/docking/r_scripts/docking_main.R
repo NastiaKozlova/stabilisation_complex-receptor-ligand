@@ -63,6 +63,10 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"convert_pdbqt_to_pdb
 system(command = paste0("chmod +x ",part_start,"convert_pdbqt_to_pdb.py "),ignore.stdout=T,wait = T)
 system(command = paste0("python3 ", part_start,"convert_pdbqt_to_pdb.py"),ignore.stdout=T,wait = T)
 
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",part_name),ignore.stdout=T,wait = T)
+system(command = paste0("chmod +x ",part_start,"prepare_log_csv.py "),ignore.stdout=T,wait = T)
+system(command = paste0("python3 ", part_start,"prepare_log_csv.py"),ignore.stdout=T,wait = T)
+
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking/docking_pre_analysis.R ",part_start),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking/docking_group_structure.R ",part_start),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking/docking_interactions.R ",part_start),ignore.stdout=T,wait = T)
