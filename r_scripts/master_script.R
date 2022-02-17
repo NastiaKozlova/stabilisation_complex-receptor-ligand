@@ -2,7 +2,6 @@ part_start<-"path to stabilisation_complex-receptor-ligand/"
 part_start<-paste0(getwd(),"/")
 setwd(part_start)
 
-part_start<-"/home/nastia/projects/current/Natasha/stabilisation_complex-receptor-ligand/"
 v_list_proteins<-list.files("start/sequence/")
 a<-c()
 for (i in 1:length(v_list_proteins)) {
