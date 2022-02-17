@@ -4,10 +4,12 @@ library(bio3d)
 library(dplyr)
 #part_name<-part_name
 part_scriprs<-strsplit(part_name,split ="/",fixed = T)[[1]]
-part_scriprs<-paste(part_scriprs[1:(length(part_scriprs)-3)],collapse =  "/")
+part_scriprs<-paste(part_scriprs[1:(length(part_scriprs)-2)],collapse =  "/")
+part_vina<-paste0(part_scriprs,"/programs/",collapse =  "")
 part_scriprs<-paste0(part_scriprs,"/r_scripts/docking/r_scripts/")
-setwd(part_name)
 
+part<-paste0(part_name,"docking_first/")
+setwd(part)
 v_ligand<-list.files(paste0("ligand/"))
 a<-c()
 for (i in 1:length(v_ligand)) {
@@ -47,16 +49,16 @@ df_receptor$receptor<-v_receptor
 df_receptor<-df_receptor%>%mutate(c="C")
 df_all<-full_join(df_receptor,df_ligand_center,by="c")
 df_all$c<-NULL
-write.csv(df_all,paste0(part_name,"df_all.csv"),row.names = F)
-if (!dir.exists(paste0(part_name,"ligand/"))){dir.create(paste0(part_name,"ligand/"))}
-if (!dir.exists(paste0(part_name,"receptor/"))){dir.create(paste0(part_name,"receptor/"))}
+write.csv(df_all,paste0(part,"df_all.csv"),row.names = F)
+if (!dir.exists(paste0(part,"ligand/"))){dir.create(paste0(part,"ligand/"))}
+if (!dir.exists(paste0(part,"receptor/"))){dir.create(paste0(part,"receptor/"))}
 i<-1
 for (i in 1:nrow(df_receptor)) {
-  system(command = paste0(part_name,"programs/MGLTools-1.5.7/bin/pythonsh ",part_name,"programs/MGLTools-1.5.7/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r ",
-                          part_name,"receptor_start/",df_receptor$receptor[i],".pdb -o ",part_name,"receptor/",df_receptor$receptor[i],".pdbqt ",
+  system(command = paste0(part_vina,"MGLTools-1.5.7/bin/pythonsh ",part_vina,"MGLTools-1.5.7/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r ",
+                          part,"receptor_start/",df_receptor$receptor[i],".pdb -o ",part,"receptor/",df_receptor$receptor[i],".pdbqt ",
                           "-A None"))
 }
 
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part_name),ignore.stdout=T,wait = T)
-system(command = paste0("chmod +x ",part_name,"script_fin.txt "),ignore.stdout=T,wait = T)
-system(command = paste0(part_name,"script_fin.txt"),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part),ignore.stdout=T,wait = T)
+system(command = paste0("chmod +x ",part,"script_fin.txt "),ignore.stdout=T,wait = T)
+system(command = paste0(part,"script_fin.txt"),ignore.stdout=T,wait = T)

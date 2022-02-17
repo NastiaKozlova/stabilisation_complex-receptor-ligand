@@ -80,7 +80,7 @@ for (i in 1:length(v_list_proteins)) {
   #copying sctipts for docking
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
-
+i<-1
 #check protein surface
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
@@ -89,7 +89,7 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"check_surface.R ",part_name),ignore.stdout=T,wait = T)
   #add surf active center, optional 
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
+#  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
   #run docking
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
 }
@@ -104,7 +104,7 @@ i<-1
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",part),ignore.stdout=T,wait = T)
   system(command = paste0("chmod +x ",part_name,"prepare_log_csv.py "),ignore.stdout=T,wait = T)
   system(command = paste0("python3 ", part_name,"prepare_log_csv.py"),ignore.stdout=T,wait = T)
 }
