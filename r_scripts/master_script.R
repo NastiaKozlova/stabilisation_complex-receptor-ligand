@@ -45,9 +45,6 @@ print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_pdb_hbonds.R ",part_name),ignore.stdout=T,wait = T)
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/hbonds_prepare.R ",part_name),ignore.stdout=T,wait = T)
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/test_hbonds.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
     #make plot
