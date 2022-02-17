@@ -56,6 +56,7 @@ for (j in 1:length(based_name)) {
     backpdb <- trim.pdb(pdb, protein.inds)
     df_pdb_all<-Extract_Secondary_Structure_From_Pdb(pdb = backpdb,number_of_pdb = 0)
     for (i in 1:frame_number) {
+      pdb<-read.pdb(paste0(based_name[j],"/frame_",i,".pdb"))
       pdb_num<-c((min(pdb$atom$resno)+1):(max(pdb$atom$resno)-1))
       protein.inds <- atom.select(pdb, "protein",resno=pdb_num)
       backpdb <- trim.pdb(pdb, protein.inds)
