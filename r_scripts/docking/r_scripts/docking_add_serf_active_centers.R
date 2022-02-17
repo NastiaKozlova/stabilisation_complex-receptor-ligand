@@ -16,10 +16,11 @@ filter_structure<-function(df_pdb,x_min,x_max,y_min,y_max,z_min,z_max){
   }
   return(df_pdb_filtered)
 }
-setwd(part_name)
-#part<-paste0(part_name,"start/")
-start<-read.pdb(paste0(part_name,"receptor_start/start.pdb"))
-df_hbonds<-read.csv(paste0(part_name,"hbonds.csv"),stringsAsFactors = F)
+
+part<-paste0(part_name,"docking_first/")
+setwd(part)
+start<-read.pdb(paste0("receptor_start/start.pdb"))
+df_hbonds<-read.csv(paste0("hbonds.csv"),stringsAsFactors = F)
 df_pdb<-start$atom
 df_pdb<-df_pdb%>%filter(elety=="CA")
 df_pdb<-semi_join(df_pdb,df_hbonds,by=c("resno"="number"))

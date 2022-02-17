@@ -3,11 +3,11 @@ library(dplyr)
 library(bio3d)
 library(readr)
 
-part_name<-paste0(part_name,"docking_first")
-setwd(part_name)
+part<-paste0(part_name,"docking_first/")
+setwd(part)
 name<-"start"
 
-part<-1
+
 sort_hbonds<-function(file_name,frame_number){
   df_hbonds<-read_tsv(file_name,skip = 2,col_names = F)
   colnames(df_hbonds)<-c("donor","acceptor","occupancy")
@@ -46,7 +46,7 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
   #prepare psf and pdb to run NAMD
   
   df_psfgen<-data.frame(matrix(ncol = 1,nrow = 1))
-  df_psfgen[1,1]<-paste0('cd ',part_name,'\n',
+  df_psfgen[1,1]<-paste0('cd ',part,'\n',
   'mol delete all\n',
   'package require psfgen \n',
   'resetpsf\n',
@@ -64,7 +64,7 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
   'writepsf hbonds_test/',name,'.psf\n',
   'mol delete all\n\nexit now')
   write.table(df_psfgen,paste0('hbonds_test/psfgen_',name,'.tcl'),col.names = F,row.names = F,quote = F)
-  system(command = paste0("vmd -dispdev text -e ",part_name,'/hbonds_test/psfgen_',name,'.tcl'),ignore.stdout=T,wait = T) 
+  system(command = paste0("vmd -dispdev text -e ",part,'/hbonds_test/psfgen_',name,'.tcl'),ignore.stdout=T,wait = T) 
   print(paste0(name))
   pdb_start<-read.pdb(paste0('hbonds_test/',name,'.pdb'))
   df_pdb<-pdb_start$atom
@@ -78,15 +78,15 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
   z_max<-max(df_pdb$z)+20
   #prepare script to solvate and ionize protein pstructure
   df_psfgen<-data.frame(matrix(ncol = 1,nrow = 1))
-  df_psfgen[1,1]<-paste0('cd ',part_name,'/hbonds_test\n',
+  df_psfgen[1,1]<-paste0('cd ',part,'/hbonds_test\n',
                          'package require solvate \n','package require autoionize \n',
                          'solvate ',name,'.psf ',name,'.pdb -o solvate_',name,' -b 1.5 -minmax {{',x_min,' ',y_min,' ',z_min,'} {',x_max,' ',y_max,' ',z_max,'}}\n',
                          'autoionize -psf solvate_',name,'.psf -pdb solvate_',name,'.pdb -sc 0.15 -o ionized_',name,
                          '\nmol delete all\n\nexit now')
   write.table(df_psfgen,paste0('hbonds_test/solvate_',name[part],'.tcl'),col.names = F,row.names = F,quote = F)
-  system(command = paste0("vmd -dispdev text -e ",part_name,'/hbonds_test/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
+  system(command = paste0("vmd -dispdev text -e ",part,'/hbonds_test/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-  df_tcl[1,1]<-paste('cd', part_name,"\npackage require hbonds")
+  df_tcl[1,1]<-paste('cd', part,"\npackage require hbonds")
   df_tcl[1,2]<-paste0('mol new {hbonds_test/solvate_',name,'.psf} type {psf}')
   df_tcl[1,3]<-paste0('mol addfile {hbonds_test/solvate_',name,'.pdb} type {pdb}')
   df_tcl[1,4]<-paste0('set protein [atomselect top "protein" ]')
@@ -95,9 +95,9 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
   df_tcl[1,7]<-'mol delete all'
   df_tcl[1,8]<-"\n\nexit now"
   
-  write.table(df_tcl,file =paste0(part_name,'/hbonds_test/',name,'_hbond.tcl'),sep = '\n', quote = F,na = '' ,row.names = F,col.names = F)
+  write.table(df_tcl,file =paste0(part,'/hbonds_test/',name,'_hbond.tcl'),sep = '\n', quote = F,na = '' ,row.names = F,col.names = F)
 
-  system(command = paste0("vmd -dispdev text -e ",part_name,'/hbonds_test/',name,'_hbond.tcl'),ignore.stdout=T,wait = T) 
+  system(command = paste0("vmd -dispdev text -e ",part,'/hbonds_test/',name,'_hbond.tcl'),ignore.stdout=T,wait = T) 
   file_name<-paste0("hbonds_test/hbonds_test.txt")
   df_bonds<-sort_hbonds(file_name=file_name,frame_number=1)
   pdb<-read.pdb(paste0("receptor_start/",name,".pdb"))
