@@ -1,7 +1,8 @@
-#part_start<-"path to stabilisation_complex-receptor-ligand/"
-#part_start<-paste0(getwd(),"/")
-#setwd(part_start)
+part_start<-"path to stabilisation_complex-receptor-ligand/"
+part_start<-paste0(getwd(),"/")
+setwd(part_start)
 
+part_start<-"/home/nastia/projects/current/Natasha/stabilisation_complex-receptor-ligand/"
 v_list_proteins<-list.files("start/sequence/")
 a<-c()
 for (i in 1:length(v_list_proteins)) {
@@ -95,7 +96,7 @@ for (i in 1:length(v_list_proteins)) {
 i<-1
 #pdbqt to pdb; log to csv
 for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
+  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
 }
@@ -126,9 +127,8 @@ for (i in 1:length(v_list_proteins)) {
   part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
 
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_parts.R ",part_name),ignore.stdout=T,wait = T)
-  
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_name),ignore.stdout=T,wait = T)}
-
+  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_name),ignore.stdout=T,wait = T)
+}
 
 #MD receptor-ligand stabilisation
 i<-1
@@ -148,31 +148,26 @@ for (i in 1:length(v_list_proteins)) {
 #  system(command = paste0("tar -xvzf ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"),ignore.stdout=T,wait = T)
 
 
-  v_ligands<-list.files(paste0(part_start,v_list_proteins[i],"/docking/docking_first/din/str_fin/"))
+  v_ligands<-list.files(paste0(part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/"))
   if (length(v_ligands)>0){
     for (j in 1:length(v_ligands)) {
-      system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/din/str_fin/",v_ligands[j]," ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"),ignore.stdout=T,wait = T)
+      system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/",v_ligands[j]," ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"),ignore.stdout=T,wait = T)
     }
   }
-  if(file.exists(paste0(part_start,v_list_proteins[i],"/docking/docking_first/receptor_start/start.pdb"))){
-    system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/receptor_start/start.pdb ", part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))
-  }
-
-  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/toppar/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"start/receptor_ligand_MD/resname_mutate.csv ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp -r ",part_start,"start/receptor_ligand_MD/resname_mutate.csv ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   
 }
 i<-1
 
 for (i in 1:length(v_list_proteins)) {
   if(file.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))){
-    part_prepare<-paste0(part_start,v_list_proteins[i])
+    part_prepare<-paste0(part_start,",",v_list_proteins[i])
     part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/")
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein_ligand/r_scripts/convert_docking_MD_receptor_ligand.R ",part_prepare),ignore.stdout=T,wait = T)
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein_ligand/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
-    system(command = paste0("vmd -dispdev text -e ",part_start,"r_scripts/MD_globular_protein_ligand/r_scripts/prepare_MD.tcl "),ignore.stdout=T,wait = T) 
     #namd
     print(paste0("#run namd2 from "))
     print(paste0(part_start,"r_scripts/namd_script.txt"))
