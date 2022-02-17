@@ -170,7 +170,7 @@ for (i in 1:length(v_list_proteins)) {
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein_ligand/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
     #namd
     print(paste0("#run namd2 from "))
-    print(paste0(part_start,"r_scripts/namd_script.txt"))
+    print(paste0(part_name,"namd_script.txt"))
   }
 }
 i<-1
