@@ -7,15 +7,15 @@ num_din<-100
 library(dplyr)
 library(bio3d)
 setwd(part_name)
-part_start<-part_name
+
 df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
 
 df_complex<-unique(df_complex)
-df_replase<-read.csv("start/resname_mutate.csv",stringsAsFactors = F)
-df_complex<-left_join(df_complex,df_replase,by=c("ligand"="ligand_name"))
+#df_replase<-read.csv("start/resname_mutate.csv",stringsAsFactors = F)
+#df_complex<-left_join(df_complex,df_replase,by=c("ligand"="ligand_name"))
 part<-1
 for (part in 1:nrow(df_complex)) {
-  print(paste0(df_complex$structure_name[part]))
+  print(paste0(df_complex$file_name[part]))
   if(!dir.exists(paste0("prepared_structures"))){dir.create(paste0("prepared_structures"))}
   if(!dir.exists(paste0("prepared_structures/start_structure"))){dir.create(paste0("prepared_structures/start_structure"))}
   if(!dir.exists(paste0("prepared_structures/prepared"))){dir.create(paste0("prepared_structures/prepared"))}
@@ -24,11 +24,11 @@ for (part in 1:nrow(df_complex)) {
   if(!dir.exists(paste0("prepared_structures/complex_structure"))){dir.create(paste0("prepared_structures/complex_structure"))}
   if(!dir.exists(paste0("prepared_structures/fin_complex_structure"))){dir.create(paste0("prepared_structures/fin_complex_structure"))}
   if(!dir.exists(paste0("MD/"))){dir.create(paste0("MD/"))}
-  if(!dir.exists(paste0("MD/",df_complex$structure_name[part]))){dir.create(paste0("MD/",df_complex$structure_name[part]))}
-  if(!dir.exists(paste0("MD/",df_complex$structure_name[part]))){dir.create(paste0("MD/",df_complex$structure_name[part]))}
-  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$structure_name[part]),ignore.stdout=T,wait = T)
+  if(!dir.exists(paste0("MD/",df_complex$number[part]))){dir.create(paste0("MD/",df_complex$number[part]))}
+  if(!dir.exists(paste0("MD/",df_complex$number[part]))){dir.create(paste0("MD/",df_complex$number[part]))}
+  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$number[part]),ignore.stdout=T,wait = T)
   #prepare psf and pdb parts of complex
-  pdb_ligand<-read.pdb(paste0("start/ligands/",df_complex$structure_name[part]))
+  pdb_ligand<-read.pdb(paste0("start/ligands/",df_complex$file_name[part]))
   pdb_receptor<-read.pdb(paste0("start/receptor/",df_complex$receptor[part],".pdb"))
   pdb_ligand$atom$chain<-"Z"
   pdb_ligand$atom$elesy<-"Z"
@@ -40,13 +40,13 @@ for (part in 1:nrow(df_complex)) {
   df_chain<-data.frame(matrix(nrow = length(v_chain),ncol = 2))
   colnames(df_chain)<-c("models","chain")
   df_chain$chain<-v_chain
-  df_chain$models<-df_complex$structure_name[part]
+  df_chain$models<-df_complex$number[part]
   
   df_chain_test<-df_chain%>%filter(is.na(chain))
   df_chain<-df_chain%>%filter(!is.na(chain))
-  write.pdb(pdb_receptor,paste0("prepared_structures/start_structure/",df_chain$models[1],"_",df_chain$chain[1],".pdb"))
-  write.pdb(pdb_ligand,paste0("prepared_structures/start_structure/",df_chain$models[2],"_",df_chain$chain[2],".pdb"))
-  write.csv(df_chain,paste0("prepared_structures/chains/",df_complex$structure_name[part],".csv"),row.names = F)
+  write.pdb(pdb_receptor,paste0("prepared_structures/start_structure/",df_complex$ligand[part],"_",df_chain$models[1],"_",df_chain$chain[1],".pdb"))
+  write.pdb(pdb_ligand,paste0("prepared_structures/start_structure/",df_complex$ligand[part],"_",df_chain$models[2],"_",df_chain$chain[2],".pdb"))
+  write.csv(df_chain,paste0("prepared_structures/chains/",df_complex$file_name[part],".csv"),row.names = F)
 }
 v_chains<-list.files(paste0("prepared_structures/chains/"))
 df_chains<-read.csv(paste0("prepared_structures/chains/",v_chains[1]),stringsAsFactors = F)
@@ -57,9 +57,8 @@ if(length(v_chains)>1){
     df_chains<-rbind(df_chains,df_chains_add)
   }
 }
-df_chains<-left_join(df_complex,df_chains,by=c("structure_name"="models"))
+df_chains<-left_join(df_complex,df_chains,by=c("number"="models"))
 i<-1
-
 for (i in 1:nrow(df_chains)) {
   df_psfgen<-data.frame(matrix(ncol = 1,nrow = 3))
   df_psfgen[1,1]<-paste0('cd ',part_name,'prepared_structures/\n',
@@ -79,24 +78,28 @@ for (i in 1:nrow(df_chains)) {
   df_psfgen[3,1]<-paste0('pdbalias residue HIS HSE\n',  
                          'pdbalias atom ILE CD1 CD\n')
   if (!is.na(df_chains$resname_change[i])){  
-    df_psfgen[4,1]<-paste0('pdbalias residue ',df_chains$pdb_name[i],' ', df_chains$charmm_name[i],'\n')}
+    pdb<-
+    df_psfgen[4,1]<-paste0('pdbalias residue ',df_chains$resname_change[i],' ', df_chains$charmm_name[i],'\n')}
   
-  df_psfgen[5,1]<-paste0('segment ',df_chains$chain[i],' { pdb start_structure/',df_chains$structure_name[i],"_",df_chains$chain[i],'.pdb\n',
+  df_psfgen[5,1]<-paste0('segment ',df_chains$chain[i],' { pdb start_structure/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb\n',
                          '}',
-                         '\ncoordpdb start_structure/',df_chains$structure_name[i],"_",df_chains$chain[i],'.pdb ',df_chains$chain[i],'\n',  
+                         '\ncoordpdb start_structure/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb ',df_chains$chain[i],'\n',  
                          'regenerate angles dihedrals\n', 
                          'guesscoord\n',
-                         'writepdb prepared/',df_chains$structure_name[i],"_",df_chains$chain[i],'.pdb\n',
-                         'writepsf prepared/',df_chains$structure_name[i],"_",df_chains$chain[i],'.psf\n',
+                         'writepdb prepared/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb\n',
+                         'writepsf prepared/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.psf\n',
                          'mol delete all \n \n \n exit now')
-  write.table(df_psfgen,paste0('prepared_structures/tcl/psfgen_',df_chains$structure_name[i],"_",df_chains$chain[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
-  system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$structure_name[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
+  write.table(df_psfgen,paste0('prepared_structures/tcl/psfgen_',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
+  system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
 df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
+df_chains<-df_chains%>%mutate(structure_name=paste0(ligand,"_",number))
 v_complex<-unique(df_chains$structure_name)
-i<-3
+
+i<-1
+
 for (i in 1:length(v_complex)) {
-  df_chain_TEMP<-df_chains%>%filter(complex_name==v_complex[i])
+  df_chain_TEMP<-df_chains%>%filter(structure_name==v_complex[i])
   df_chain_TEMP<-df_chain_TEMP%>%mutate(psf_merge=paste0(structure_name,"_",chain))
   df_chain_TEMP<-unique(df_chain_TEMP)
 
@@ -145,7 +148,7 @@ for (part in 1:length(v_complex)) {
     system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/solvate_',v_complex[part],'.tcl'),ignore.stdout=T,wait = T) 
   }
 }
-i<-2
+i<-1
 for (i in 1:length(v_complex)) {
   if(!dir.exists(paste0(v_complex[i]))){dir.create(paste0(v_complex[i]))}
   if(!dir.exists(paste0(v_complex[i],"/MD"))){dir.create(paste0(v_complex[i],"/MD"))}
@@ -182,12 +185,12 @@ for (i in 1:length(v_complex)) {
                         '\n## SIMULATION PARAMETERS ##',
                         '\n#############################################################',
                         '\nparaTypeCharmm on',
-                        '\nparameters ',part_name,'start/toppar/par_all36_carb.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_cgenff.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_lipid.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36m_prot.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_na.prm',
-                        '\nparameters ',part_name,'start/toppar/toppar_water_ions_namd.str',
+                        '\nparameters toppar/par_all36_carb.prm',
+                        '\nparameters toppar/par_all36_cgenff.prm',
+                        '\nparameters toppar/par_all36_lipid.prm',
+                        '\nparameters toppar/par_all36m_prot.prm',
+                        '\nparameters toppar/par_all36_na.prm',
+                        '\nparameters toppar/toppar_water_ions_namd.str',
                         '\ntemperature $temperature',
                         '\n# Force-Field Parameters',
                         '\nexclude scaled1-4',
@@ -210,8 +213,8 @@ for (i in 1:length(v_complex)) {
                         '\nwrapAll on',
                         '\nminimization on',
                         '\nnumsteps 100000',
-                        '\noutputenergies 10000',
-                        '\ndcdfreq 10000',
+                        '\noutputenergies 1000',
+                        '\ndcdfreq 1000',
                         '\ndcdfile dcd/min_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/min_',v_complex[i])
@@ -225,12 +228,12 @@ for (i in 1:length(v_complex)) {
                         '\n## SIMULATION PARAMETERS ##',
                         '\n#############################################################',
                         '\nparaTypeCharmm on',
-                        '\nparameters ',part_name,'start/toppar/par_all36_prot.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_carb.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_cgenff.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_lipid.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_na.prm',
-                        '\nparameters ',part_name,'start/toppar/toppar_water_ions_namd.str',
+                        '\nparameters toppar/par_all36_prot.prm',
+                        '\nparameters toppar/par_all36_carb.prm',
+                        '\nparameters toppar/par_all36_cgenff.prm',
+                        '\nparameters toppar/par_all36_lipid.prm',
+                        '\nparameters toppar/par_all36_na.prm',
+                        '\nparameters toppar/toppar_water_ions_namd.str',
                         '\n# Force-Field Parameters',
                         '\nexclude scaled1-4',
                         '\n1-4scaling 1.0',
@@ -257,8 +260,8 @@ for (i in 1:length(v_complex)) {
                         '\nreassignHold 300',
                         '\nfirsttimestep 0',
                         '\nnumsteps 300000',
-                        '\noutputenergies 10000',
-                        '\ndcdfreq 10000',
+                        '\noutputenergies 100',
+                        '\ndcdfreq 100',
                         '\ndcdfile dcd/head_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/head_',v_complex[i])
@@ -271,12 +274,12 @@ for (i in 1:length(v_complex)) {
                         '\n## SIMULATION PARAMETERS ##',
                         '\n#############################################################',
                         '\nparaTypeCharmm on',
-                        '\nparameters ',part_name,'start/toppar/par_all36_prot.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_carb.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_cgenff.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_lipid.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_na.prm',
-                        '\nparameters ',part_name,'start/toppar/toppar_water_ions_namd.str',
+                        '\nparameters toppar/par_all36_prot.prm',
+                        '\nparameters toppar/par_all36_carb.prm',
+                        '\nparameters toppar/par_all36_cgenff.prm',
+                        '\nparameters toppar/par_all36_lipid.prm',
+                        '\nparameters toppar/par_all36_na.prm',
+                        '\nparameters toppar/toppar_water_ions_namd.str',
                         '\nexclude		scaled1-4',
                         '\n1-4scaling	1.0',
                         '\nswitching	on',
@@ -299,8 +302,8 @@ for (i in 1:length(v_complex)) {
                         '\nreassignFreq		10',
                         '\nnumsteps		2000000',
                         '\nseed			11552514',
-                        '\noutputenergies	10000',
-                        '\ndcdfreq 10000',
+                        '\noutputenergies	100',
+                        '\ndcdfreq 100',
                         '\ndcdfile dcd/eqv_',v_complex[i],'.dcd',
                         '\nbinaryoutput no',
                         '\noutputname pdb/eqv_',v_complex[i])
@@ -316,12 +319,12 @@ for (i in 1:length(v_complex)) {
                         '\n## SIMULATION PARAMETERS ##',
                         '\n#############################################################',
                         '\nparaTypeCharmm on',
-                        '\nparameters ',part_name,'start/toppar/par_all36_prot.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_carb.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_cgenff.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_lipid.prm',
-                        '\nparameters ',part_name,'start/toppar/par_all36_na.prm',
-                        '\nparameters ',part_name,'start/toppar/toppar_water_ions_namd.str',
+                        '\nparameters toppar/par_all36_prot.prm',
+                        '\nparameters toppar/par_all36_carb.prm',
+                        '\nparameters toppar/par_all36_cgenff.prm',
+                        '\nparameters toppar/par_all36_lipid.prm',
+                        '\nparameters toppar/par_all36_na.prm',
+                        '\nparameters toppar/toppar_water_ions_namd.str',
                         '\nexclude		scaled1-4',
                         '\n1-4scaling	1.0',
                         '\nswitching	on',
@@ -339,14 +342,18 @@ for (i in 1:length(v_complex)) {
                         '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
                         '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
                         '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                        '\nwrapAll on',
+                        '\nwrapWater               on',
+                        '\nwrapAll                off',
                         '\ntimestep 1.0',
-                        '\nnumsteps 25000000',
-                        '\nseed 322223322', '\nuseGroupPressure yes', '\nuseFlexibleCell yes', '\nuseConstantRatio yes',
+                        '\nnumsteps 1000000',
+                        '\nseed 322223322', 
+                        #'\nuseGroupPressure yes',
+                        #'\nuseFlexibleCell no',
+                        #'\nuseConstantRatio no',
                         '\nLangevinPiston on', 
-                        '\nLangevinPistonTarget 1.01325',
-                        '\nLangevinPistonPeriod 200',
-                        '\nLangevinPistonDecay 100',
+                        '\nLangevinPistonTarget 1.01325 ;# pressure in bar -> 1 atm',
+                        '\nLangevinPistonPeriod 100. ;# oscillation period around 100 fs',
+                        '\nLangevinPistonDecay 50. ;# oscillation decay time of 50 fs',
                         '\nLangevinPistonTemp 300',
                         '\noutputenergies	10000',
                         '\ndcdfreq		10000',
@@ -366,17 +373,16 @@ for (i in 1:length(v_complex)) {
       
       df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
                           '\ncoordinates pdb/quench_',v_complex[i],'_',(j-1),'.coor',
-                          '\ntemperature 310',
                           '\n#############################################################',
                           '\n## SIMULATION PARAMETERS ##',
                           '\n#############################################################',
                           '\nparaTypeCharmm on',
-                          '\nparameters ',part_name,'start/toppar/par_all36_prot.prm',
-                          '\nparameters ',part_name,'start/toppar/par_all36_carb.prm',
-                          '\nparameters ',part_name,'start/toppar/par_all36_cgenff.prm',
-                          '\nparameters ',part_name,'start/toppar/par_all36_lipid.prm',
-                          '\nparameters ',part_name,'start/toppar/par_all36_na.prm',
-                          '\nparameters ',part_name,'start/toppar/toppar_water_ions_namd.str',
+                          '\nparameters toppar/par_all36_prot.prm',
+                          '\nparameters toppar/par_all36_carb.prm',
+                          '\nparameters toppar/par_all36_cgenff.prm',
+                          '\nparameters toppar/par_all36_lipid.prm',
+                          '\nparameters toppar/par_all36_na.prm',
+                          '\nparameters toppar/toppar_water_ions_namd.str',
                           '\nexclude		scaled1-4',
                           '\n1-4scaling	1.0',
                           '\nswitching	on',
@@ -393,20 +399,27 @@ for (i in 1:length(v_complex)) {
                           '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
                           '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
                           '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                          '\nwrapAll on',
+                          '\nwrapWater               on;                 # wrap water to central cell',
+                          '\nwrapAll                off;                 ',
                           '\ntimestep 1.0',
                           '\nnumsteps 1000000',
-                          '\nseed 322223322', '\nuseGroupPressure yes', '\nuseFlexibleCell yes', '\nuseConstantRatio yes',
+                          '\nseed 322223322', 
+                          #'\nuseGroupPressure yes',
+                          #'\nuseFlexibleCell no',
+                          #'\nuseConstantRatio no',
                           '\nLangevinPiston on', 
-                          '\nLangevinPistonTarget 1.01325',
-                          '\nLangevinPistonPeriod 200',
-                          '\nLangevinPistonDecay 100',
+                          '\nLangevinPistonTarget 1.01325 ;# pressure in bar -> 1 atm',
+                          '\nLangevinPistonPeriod 100. ;# oscillation period around 100 fs',
+                          '\nLangevinPistonDecay 50. ;# oscillation decay time of 50 fs',
                           '\nLangevinPistonTemp 300',
                           '\noutputenergies	10000',
                           '\ndcdfreq		10000', 
                           '\ndcdfile quench/quench_',v_complex[i],'_',j,'.dcd',
                           '\nbinaryoutput no',
-                          '\noutputname pdb/quench_',v_complex[i],'_',j)
+                          '\noutputname pdb/quench_',v_complex[i],'_',j,
+                          '\nset inputname           pdb/quench_',v_complex[i],'_',(j-1),
+                          '\nVelocities           $inputname.vel;     # velocities from last run (binary)',
+                          '\nextendedSystem          $inputname.xsc;     # cell dimensions from last run (binary)')
       
       write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/quench_',v_complex[i],'_',j,'.conf'),row.names = F,col.names = F,quote = F)
     }
@@ -424,4 +437,4 @@ for (part in 1:length(v_complex)) {
     
   }
 }
-write.table(df_conf,paste0(part_name,"r_scripts/namd_script.txt"),row.names = F,col.names = F,quote = F,na = "")
+write.table(df_conf,paste0(part_name,"namd_script.txt"),row.names = F,col.names = F,quote = F,na = "")
