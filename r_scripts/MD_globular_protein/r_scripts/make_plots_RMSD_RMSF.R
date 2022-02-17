@@ -25,7 +25,7 @@ for (j in 1:length(name)) {
     
     df_RMSD <- read.table(paste0("RMSD/",name[j],".txt"), sep="", header=F, na.strings ="", stringsAsFactors= F)
     colnames(df_RMSD)<-c("frame","RMSD")
-    #  df_RMSD<-df_RMSD%>% mutate(Time=Time/100) 
+    #  df_RMSD<-df_RMSD%>% mutate(Time=Time/10) 
     df_second<-read.csv(paste0("pdb_second/Second_structure_",name[j],".csv"), stringsAsFactors= F)
     df_SASA <- read.table(paste0("SASA/",name[j],".txt"), sep="", header=F, na.strings ="", stringsAsFactors= F)
     colnames(df_SASA)<-c("frame","protein")
@@ -36,9 +36,9 @@ for (j in 1:length(name)) {
     df_data<-left_join(df_ramachadran,df_energy,by=c("number"="frame"))
     df_data<-left_join(df_data,df_SASA,by=c("number"="frame"))
     df_data<-left_join(df_data,df_RMSD,by=c("number"="frame"))
-    df_data<-df_data%>%mutate(time=number/100)
-    df_second<-df_second%>%mutate(level_min=level_min/100)
-    df_second<-df_second%>%mutate(level_max=level_max/100)
+    df_data<-df_data%>%mutate(time=number/10)
+    df_second<-df_second%>%mutate(level_min=level_min/10)
+    df_second<-df_second%>%mutate(level_max=level_max/10)
     df_data<-df_data%>%filter(time<25)
     df_second<-df_second%>%filter(level_min<25)
     v_RMSD<-df_data$RMSD[!is.na(df_data$RMSD)]
