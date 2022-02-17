@@ -83,8 +83,8 @@ if (!dir.exists(paste0('hbonds_test'))) {dir.create(paste0('hbonds_test'))}
                          'solvate ',name,'.psf ',name,'.pdb -o solvate_',name,' -b 1.5 -minmax {{',x_min,' ',y_min,' ',z_min,'} {',x_max,' ',y_max,' ',z_max,'}}\n',
                          'autoionize -psf solvate_',name,'.psf -pdb solvate_',name,'.pdb -sc 0.15 -o ionized_',name,
                          '\nmol delete all\n\nexit now')
-  write.table(df_psfgen,paste0('hbonds_test/solvate_',name[part],'.tcl'),col.names = F,row.names = F,quote = F)
-  system(command = paste0("vmd -dispdev text -e ",part,'/hbonds_test/solvate_',name[part],'.tcl'),ignore.stdout=T,wait = T) 
+  write.table(df_psfgen,paste0('hbonds_test/solvate_',name,'.tcl'),col.names = F,row.names = F,quote = F)
+  system(command = paste0("vmd -dispdev text -e ",part,'/hbonds_test/solvate_',name,'.tcl'),ignore.stdout=T,wait = T) 
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
   df_tcl[1,1]<-paste('cd', part,"\npackage require hbonds")
   df_tcl[1,2]<-paste0('mol new {hbonds_test/solvate_',name,'.psf} type {psf}')
