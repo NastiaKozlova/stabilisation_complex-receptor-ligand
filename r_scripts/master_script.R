@@ -89,7 +89,6 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"check_surface.R ",part_name),ignore.stdout=T,wait = T)
   #add surf active center, optional 
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
-#  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
   #run docking
   system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
 }

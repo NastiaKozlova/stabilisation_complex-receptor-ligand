@@ -1,13 +1,13 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_name <- commandArgs(trailingOnly=TRUE)
 library(ggplot2)
 library(bio3d)
 library(dplyr)
-setwd(part_start)
-if (!dir.exists(paste0(part_start,"din/"))){dir.create(paste0(part_start,"din/"))}
-if (!dir.exists(paste0(part_start,"din/log/"))){dir.create(paste0(part_start,"din/log/"))}
+setwd(part_name)
+if (!dir.exists(paste0(part_name,"din/"))){dir.create(paste0(part_name,"din/"))}
+if (!dir.exists(paste0(part_name,"din/log/"))){dir.create(paste0(part_name,"din/log/"))}
 df_convert<-paste0('import glob\n\n',
-                   'folder_log = "',part_start,'log/*.log"\n',
-                   'folder_svg = "',part_start,'din/log/%s.csv"\n\n',
+                   'folder_log = "',part_name,'log/*.log"\n',
+                   'folder_svg = "',part_name,'din/log/%s.csv"\n\n',
                    'def convert_one_file (fname, fsave):\n',
                    '    f = open(fname, "r")\n',
                    '    text = f.read()\n',
@@ -32,4 +32,4 @@ df_convert<-paste0('import glob\n\n',
                    '        fsave = folder_svg % (fname.split("/")[-1][:-4])\n',
                    '        convert_one_file (fname, fsave)\n',
                    'convert_logs_to_svg (folder_log, folder_svg)')
-write.table(df_convert,paste0(part_start,"prepare_log_csv.py"),quote = F,na = "",col.names = F,row.names = F)
+write.table(df_convert,paste0(part_name,"prepare_log_csv.py"),quote = F,na = "",col.names = F,row.names = F)

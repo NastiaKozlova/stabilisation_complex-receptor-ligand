@@ -1,15 +1,16 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_name <- commandArgs(trailingOnly=TRUE)
 library(ggplot2)
 library(bio3d)
 library(dplyr)
-#part_start<-part_name
-part_scriprs<-paste0(part_start,"r_scripts/")
-setwd(part_start)
-if(!dir.exists(paste0(part_start,"analysis"))){dir.create(paste0(part_start,"analysis"))}
-if(!dir.exists(paste0(part_start,"din"))){dir.create(paste0(part_start,"din"))}
-if(!dir.exists(paste0(part_start,"din/log"))){dir.create(paste0(part_start,"din/log"))}
-v_start<-list.files(paste0(part_start,"out"))
-v_finish<-list.files(paste0(part_start,"analysis"))
+#part_name<-part_name
+part_scriprs<-paste0(part_name,"r_scripts/")
+part<-paste0(part_name,"docking_first/")
+setwd(part)
+if(!dir.exists(paste0("analysis"))){dir.create(paste0("analysis"))}
+if(!dir.exists(paste0("din"))){dir.create(paste0("din"))}
+if(!dir.exists(paste0("din/log"))){dir.create(paste0("din/log"))}
+v_start<-list.files(paste0("out"))
+v_finish<-list.files(paste0("analysis"))
 
 b<-c()
 i<-1
@@ -25,7 +26,7 @@ v_finish<-unique(v_finish)
 v_start<-v_start[!v_start%in%v_finish]
 for (i in 1:length(v_start)) {
   a<-strsplit(v_start[i],split = ".",fixed = T)[[1]][1]
-  a<-paste0(part_start,"out/",a,".pdbqt ",part_start,"analysis/",a,"_MODEL_%d.pdb")
+  a<-paste0(part,"out/",a,".pdbqt ",part,"analysis/",a,"_MODEL_%d.pdb")
   system(command = paste0("python ", part_scriprs,"pdbqt_to_pdbs.py ",a),ignore.stdout=T,wait = T)
 }
 
