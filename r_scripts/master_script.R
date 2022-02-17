@@ -38,6 +38,12 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_to_stabilisation_MD.R ",part_name),ignore.stdout=T,wait = T)
 #  print(paste0("run namd from ",part_name,"r_scripts/namd_script.txt"))
 }
+#copy files to MD simulation
+for (i in 1:length(v_list_proteins)) {
+  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
+  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+  system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/structure_prediction/pdb_fin/ ",part_start,"output/predicted/",v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+}
 #generated scipts to run MD simulation are in this folder
 #to continue experiment you should run MD simulation
 print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r_scripts/namd_script.txt"))
@@ -45,16 +51,18 @@ print(paste0("run namd from ",part_start,v_list_proteins,"/MD_globular_protein/r
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/prepare_tcl_din.R ",part_name),ignore.stdout=T,wait = T)
+  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/second_stucture_compare.R ",part_name),ignore.stdout=T,wait = T)
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/Ramachadran.R ",part_name),ignore.stdout=T,wait = T)
     #make plot
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/make_plots_RMSD_RMSF.R ",part_name),ignore.stdout=T,wait = T)
 }
-#copy files from MD simulation
+#copy receptor structure to docking scripts
 for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein/")
-  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/structure_prediction/pdb_fin/ ",part_start,"output/predicted/",v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+  if(!dir.exists(paste0(part_start,"output"))){dir.create(paste0(part_start,"output"))}
+  if(!dir.exists(paste0(part_start,"output/stabilisation"))){dir.create(paste0(part_start,"output/stabilisation"))}
+  system(command = paste0("cp ",part_start,v_list_proteins[i],"/MD_globular_protein/",v_list_proteins[i],"/MD/stabilisation/din/fin_structure/",v_list_proteins[i],".pdb",
+                          " ",part_start,"output/stabilisation"),ignore.stdout=T,wait = T)
 }
 
 #docking first 
