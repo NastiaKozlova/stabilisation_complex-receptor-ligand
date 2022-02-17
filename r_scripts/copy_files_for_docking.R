@@ -13,8 +13,8 @@ if(!dir.exists(paste0(part_name,"docking_first/receptor/"))){dir.create(paste0(p
 #copying ligand's structures for docking
 system(command = paste0("cp -r ",part_start,"start/docking/docking_first/ligand/ ",part_name,"/docking_first/"),ignore.stdout=T,wait = T)
 #copying receptor structure for docking
-system(command = paste0("cp -r ",part_start,"output/stabilisation/fin_structure/",v_list_protein,".pdb ",part_name,"/docking_first/receptor_start/start.pdb"),ignore.stdout=T,wait = T)
+system(command = paste0("cp -r ",part_start,"output/stabilisation/",v_list_protein,".pdb ",part_name,"/docking_first/receptor_start/start.pdb"),ignore.stdout=T,wait = T)
 #copying amino acids for active center for docking
-system(command = paste0("cp ",part_start,"start/docking/active_center/",v_list_protein,"/active_center.csv ",part_name,"/docking_first/active_center.csv"),ignore.stdout=T,wait = T)
+system(command = paste0("cp ",part_start,"start/docking/active_center/",v_list_protein,".csv ",part_name,"/docking_first/active_center.csv"),ignore.stdout=T,wait = T)
 #copying programs for docking
 system(command = paste0("cp -r ",part_start,"programs/ ",part_name,"docking_first/"),ignore.stdout=T,wait = T)

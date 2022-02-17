@@ -57,7 +57,7 @@ for (i in 1:length(v_list_proteins)) {
     #make plot
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/make_plots_RMSD_RMSF.R ",part_name),ignore.stdout=T,wait = T)
 }
-#copy receptor structure to docking scripts
+#copy final receptor structure to output folder
 for (i in 1:length(v_list_proteins)) {
   if(!dir.exists(paste0(part_start,"output"))){dir.create(paste0(part_start,"output"))}
   if(!dir.exists(paste0(part_start,"output/stabilisation"))){dir.create(paste0(part_start,"output/stabilisation"))}
