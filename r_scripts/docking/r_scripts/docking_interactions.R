@@ -108,18 +108,8 @@ if(length(v_groups)>1){
     df_pdb<-rbind(df_pdb,df_pdb_add)
   }
 }
-print(nrow(df_pdb))
 df_pdb<-df_pdb%>%filter(total_persent_interactions>0)
-print(nrow(df_pdb))
-df_pdb<-df_pdb%>%filter(total_persent_interactions<100)
-print(nrow(df_pdb))
+
 df_pdb<-df_pdb%>%mutate(sorter=paste(size_of_group,receptor_ligand))
-df_pdb<-df_pdb%>%group_by(sorter)%>%
 p<-ggplot(data=df_pdb)+geom_freqpoly(aes(x=total_persent_interactions))+theme_bw()+facet_grid(size_of_group~receptor_ligand)
-ggsave(p,filename = paste0(part_name,"interaction_ligand_receptor.png"), width = 12, height = 12, units = c("cm"), dpi = 1000 ) 
-
-
-df_pdb<-df_pdb%>%mutate(aminoacids=paste(resno,resid))
-df_pdb<-df_pdb%>%select(resno, x, y, z, number_interactions, system, center, ligand, 
-                        grops, grops_number,persent_interactions, aminoacids )
-write.csv(df_pdb,"interaction_fin.csv",row.names = F)
+ggsave(p,filename = paste0("interaction_ligand_receptor.png"), width = 12, height = 12, units = c("cm"), dpi = 1000 ) 

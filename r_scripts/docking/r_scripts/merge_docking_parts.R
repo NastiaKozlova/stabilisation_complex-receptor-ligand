@@ -8,7 +8,7 @@ group_size<-3
 setwd(part_name)
 df_all<-read.csv(paste0(part_name,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
-
+group_size<-round(nrow(df_all)/100,digits = 0)
 part<-paste0(part_name,"din/")
 setwd(part)
 if(dir.exists(paste0(part,"fin_merged"))) {system(command = paste0("rm -r ",part,"fin_merged"),ignore.stdout=T,wait = T)}
