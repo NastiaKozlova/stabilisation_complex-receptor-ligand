@@ -130,8 +130,7 @@ for (i in 1:length(v_list_proteins)) {
 }
 
 #MD receptor-ligand stabilisation
-i<-1
-j<-1
+
 for (i in 1:length(v_list_proteins)) {
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/")
   print(v_list_proteins[i])
@@ -159,7 +158,6 @@ for (i in 1:length(v_list_proteins)) {
 #  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   
 }
-i<-1
 
 for (i in 1:length(v_list_proteins)) {
   if(file.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))){
@@ -198,7 +196,6 @@ j<-1
 for (i in 1:length(v_list_proteins)) {
   part_prepare<-paste0(part_start,"r_scripts/MD_globular_protein_ligand/")
   part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/") 
-#  part_start<-part_name
   if (file.exists(paste0(part_name,"complex.csv"))){
     df_complex<-read.csv(paste0(part_name,"complex.csv"),stringsAsFactors = F)
     for (j in 1:nrow(df_complex)) {
