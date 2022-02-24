@@ -60,5 +60,3 @@ for (i in 1:nrow(df_receptor)) {
 }
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part),ignore.stdout=T,wait = T)
-system(command = paste0("chmod +x ",part,"script_fin.txt "),ignore.stdout=T,wait = T)
-system(command = paste0(part,"script_fin.txt"),ignore.stdout=T,wait = T)

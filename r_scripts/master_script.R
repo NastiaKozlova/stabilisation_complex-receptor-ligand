@@ -28,7 +28,7 @@ for (i in 1:length(v_list_proteins)) {
   print(v_list_proteins[i])
   part_name<-paste0(part_start,",",v_list_proteins[i])
   print(part_name)
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_pre_MD_simulation_files.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/MD_globular_protein/r_scripts/copy_pre_MD_simulation_files.R ",part_name),ignore.stdout=T,wait = T)
 }
 #MD stabilisation
 #prepare files to run MD simulation

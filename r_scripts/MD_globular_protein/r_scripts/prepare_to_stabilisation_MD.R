@@ -3,7 +3,7 @@ part_start = commandArgs(trailingOnly=TRUE)
 v_namd<-"namd run script"
 #part_start<-part_name
 #quantity of 1 ns MD simulations, change it to Modify length of MD simulation 
-num_din<-100
+num_din<-1000
 library(dplyr)
 library(bio3d)
 setwd(part_start)

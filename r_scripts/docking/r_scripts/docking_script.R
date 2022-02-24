@@ -1,8 +1,8 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part <- commandArgs(trailingOnly=TRUE)
 library(ggplot2)
 library(bio3d)
 library(dplyr)
-setwd(part_start)
+setwd(part)
 #repetition
 max_num<-100
 v_receptor<-list.files("receptor_start")
@@ -61,7 +61,7 @@ for (j in 1:length(v_receptor)) {
   df_conf<-data.frame(matrix(nrow = length(ligand),ncol =nrow(df_doking)))
   for (q in 1:length(ligand)) {
     for (p in 1:nrow(df_doking)) {
-      a<-paste0(part_start,"programs/autodock_vina_1_1_2_linux_x86/bin/vina --config tcl/",
+      a<-paste0(part,"programs/autodock_vina_1_1_2_linux_x86/bin/vina --config tcl/",
                 v_receptor[j],"_",ligand[q],"_",df_doking$type[p],"_",1:max_num,"_config.txt --log log/",
                 v_receptor[j],"_",ligand[q],"_",df_doking$type[p],"_",1:max_num,".log\n")
       a<-paste0(a,collapse = "")
@@ -71,17 +71,11 @@ for (j in 1:length(v_receptor)) {
     }
   }
   df_conf[is.na(df_conf)]<-""
-  write.csv(df_conf,paste0("script/",v_receptor[j],"_readme.txt"),row.names = F)
+  df_conf_add<-data.frame(matrix(nrow=1,ncol=ncol(df_conf)))
+  colnames(df_conf_add)<-colnames(df_conf)
+  df_conf_add[1,1]<-paste0("cd ",part)
+  df_conf<-rbind(df_conf,df_conf_add)
+  write.table(df_conf,paste0("script/",v_receptor[j],"_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
+  system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
+  system(command = paste0(part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
 }
-df_conf<-read.csv(paste0("script/",v_receptor[1],"_readme.txt"),stringsAsFactors = F)
-if(length(v_receptor)>1){
-  for (j in 2:length(v_receptor)) {
-    df_conf_add<-read.csv(paste0("script/",v_receptor[j],"_readme.txt"),stringsAsFactors = F)
-    df_conf<-rbind(df_conf,df_conf_add)
-  }
-}
-df_conf_add<-data.frame(matrix(ncol=ncol(df_conf),nrow=1))
-colnames(df_conf_add)<-colnames(df_conf)
-df_conf_add[1,1]<-paste0("cd ",part_start)
-df_conf<-rbind(df_conf_add,df_conf)
-write.table(df_conf,paste0("script_fin.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
