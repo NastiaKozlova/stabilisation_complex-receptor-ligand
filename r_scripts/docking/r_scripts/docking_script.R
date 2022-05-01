@@ -74,7 +74,7 @@ for (j in 1:length(v_receptor)) {
   df_conf_add<-data.frame(matrix(nrow=1,ncol=ncol(df_conf)))
   colnames(df_conf_add)<-colnames(df_conf)
   df_conf_add[1,1]<-paste0("cd ",part)
-  df_conf<-rbind(df_conf,df_conf_add)
+  df_conf<-rbind(df_conf_add,df_conf)
   write.table(df_conf,paste0("script/",v_receptor[j],"_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
   system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
   system(command = paste0(part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
