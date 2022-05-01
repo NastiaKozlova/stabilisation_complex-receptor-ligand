@@ -12,14 +12,14 @@ df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 if(dir.exists("df_RMSD_merge")){dir.create("df_RMSD_merge")}
 for (i in 1:nrow(df_all)) {
-  if(!file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
+  if(!file.exists(paste0("RMSD_merged/",df_all$name[i],".csv"))){
     df_all$receptor[i]<-NA
   }
 }
 df_all<-df_all%>%filter(!is.na(receptor))
 for (i in 1:nrow(df_all)) {
   if(!file.exists(paste0("df_RMSD_merge/",df_all$name[i],".csv"))){
-    df_RMSD_all<-read.csv(paste0("RMSD_analysis/",df_all$name[i],".csv"),stringsAsFactors = F)
+    df_RMSD_all<-read.csv(paste0("RMSD_merged/",df_all$name[i],".csv"),stringsAsFactors = F)
     df_RMSD_all<-df_RMSD_all%>%mutate(RMSD=round(RMSD,digits = 1))
     df_RMSD_all<-df_RMSD_all%>%group_by(RMSD)%>%mutate(number=n())
     df_RMSD_all<-df_RMSD_all%>%select(RMSD,number)
