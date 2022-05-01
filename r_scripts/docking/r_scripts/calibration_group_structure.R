@@ -10,7 +10,7 @@ setwd(part)
 
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
-if(dir.exists("df_RMSD_all")){dir.create("df_RMSD_all")}
+if(!dir.exists("df_RMSD_all")){dir.create("df_RMSD_all")}
 for (i in 1:nrow(df_all)) {
   if(!file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
     df_all$receptor[i]<-NA
