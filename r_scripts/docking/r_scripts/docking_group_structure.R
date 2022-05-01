@@ -65,7 +65,7 @@ for (i in 1:nrow(df_all)) {
   if(file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
     if (!dir.exists(paste0("groups/",df_all$name[i]))) {dir.create(paste0("groups/",df_all$name[i]))}
     df_RMSD_all<-read.csv(paste0("RMSD_analysis/",df_all$name[i],".csv"),stringsAsFactors = F)
-    df_RMSD_all<-df_RMSD_all%>%filter(RMSD<4)
+    df_RMSD_all<-df_RMSD_all%>%filter(RMSD<v_rmsd)
     df_RMSD_all<-df_RMSD_all%>%group_by(models.x)%>%mutate(number=n())
     df_RMSD_all<-ungroup(df_RMSD_all)                                             
     df_RMSD_all<-df_RMSD_all%>%filter(number>5)
