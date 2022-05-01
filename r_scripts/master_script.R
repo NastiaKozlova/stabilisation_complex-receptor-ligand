@@ -1,6 +1,8 @@
 part_start<-"path to stabilisation_complex-receptor-ligand/"
 part_start<-paste0(getwd(),"/")
 setwd(part_start)
+#if you want don't count cout interactions of protein with protein surface surphase_conut<-F
+surphase_conut<-T
 
 v_list_proteins<-list.files("start/sequence/")
 a<-c()
@@ -81,53 +83,21 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
 i<-1
-#check protein surface
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-  system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_name,"docking_first/"),ignore.stdout=T,wait = T)
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"check_surface.R ",part_name),ignore.stdout=T,wait = T)
-  #add surf active center, optional 
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
-  #run docking
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
+if(surphase_conut){
+  #docking_main_surphase
+  for (i in 1:length(v_list_proteins)) {
+    part_protein<-paste0(part_start,",",v_list_proteins[i])
+    #copying sctipts for docking
+    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_surphase.R ",part_protein),ignore.stdout=T,wait = T)
+  }
+}else{
+  for (i in 1:length(v_list_proteins)) {
+    part_protein<-paste0(part_start,",",v_list_proteins[i])
+    #copying sctipts for docking
+    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_center.R ",part_protein),ignore.stdout=T,wait = T)
+  }
 }
-i<-1
-#pdbqt to pdb; log to csv
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
-}
-i<-1
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",part),ignore.stdout=T,wait = T)
-  system(command = paste0("chmod +x ",part_name,"prepare_log_csv.py "),ignore.stdout=T,wait = T)
-  system(command = paste0("python3 ", part_name,"prepare_log_csv.py"),ignore.stdout=T,wait = T)
-}
-i<-1
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
 
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_name),ignore.stdout=T,wait = T)
-}
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-  part_analysis<-paste0(part_name,"docking_first/")
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
-}
-i<-1
-for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/")
-  part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_parts.R ",part_name),ignore.stdout=T,wait = T)
-  system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_name),ignore.stdout=T,wait = T)
-}
 
 #MD receptor-ligand stabilisation
 
