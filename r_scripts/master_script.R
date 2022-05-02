@@ -95,6 +95,8 @@ if(surphase_conut){
     part_protein<-paste0(part_start,",",v_list_proteins[i])
     #copying sctipts for docking
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_center.R ",part_protein),ignore.stdout=T,wait = T)
+    #sctipts for cascade docking
+    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/cascade_docking_center.R ",part_protein),ignore.stdout=T,wait = T)
   }
 }
 
