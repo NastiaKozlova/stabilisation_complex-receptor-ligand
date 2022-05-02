@@ -1,15 +1,20 @@
 part_analysis <- commandArgs(trailingOnly=TRUE)
 #group ligand structures
-part_start<-part_analysis
+part_TEMP<-strsplit(part_analysis,split = ",")[[1]]
+part_start<-part_TEMP[1]
+v_rmsd<-as.numeric(part_TEMP[2])
 library(bio3d)
 library(readr)
 library(dplyr)
 library(ggplot2)
-v_rmsd<-4
+
 setwd(part_start)
 part<-paste0(part_start,"din/")
 setwd(part)
-
+if(dir.exists(paste0(part,"groups"))) {system(command = paste0("rm -r ",part,"groups"),ignore.stdout=T,wait = T)}
+if(dir.exists(paste0(part,"groups_fin"))) {system(command = paste0("rm -r ",part,"groups_fin"),ignore.stdout=T,wait = T)}
+if(dir.exists(paste0(part,"str"))) {system(command = paste0("rm -r ",part,"str"),ignore.stdout=T,wait = T)}
+if(dir.exists(paste0(part,"str_fin"))) {system(command = paste0("rm -r ",part,"str_fin"),ignore.stdout=T,wait = T)}
 if (!dir.exists("groups")) {dir.create("groups")}
 
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
@@ -73,7 +78,7 @@ for (i in 1:nrow(df_all)) {
 }
 
 #copy pdb files to groups spb dir
-if (!dir.exists("str")) {dir.create("str")}
+#if (!dir.exists("str")) {dir.create("str")}
 if (!dir.exists("str_fin")) {dir.create("str_fin")}
 i<-1
 j<-1
@@ -83,15 +88,17 @@ k<-2
 for (j in 1:length(df_all$name)) {
   if(file.exists(paste0("groups_fin/",df_all$name[j],".csv"))){
     df_RMSD<-read.csv(paste0("groups_fin/",df_all$name[j],".csv"),stringsAsFactors = F)
-    for (k in 1:nrow(df_RMSD)) {
-      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k]))) { dir.create(paste0("str/",df_RMSD$ligand_center[k]))}
-      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))) {
-        dir.create(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))}
-      pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[k],"/",df_RMSD$models.y[k]))
-      write.pdb(pdb,paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k],"/",df_RMSD$models.y[k]))
-    }
+#    for (k in 1:nrow(df_RMSD)) {
+#      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k]))) { dir.create(paste0("str/",df_RMSD$ligand_center[k]))}
+#      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))) {
+#        dir.create(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))}
+#      pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[k],"/",df_RMSD$models.y[k]))
+#      write.pdb(pdb,paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k],"/",df_RMSD$models.y[k]))
+ #   }
     df_RMSD<-df_RMSD%>%filter(models.y==models.x)
     for (q in 1:nrow(df_RMSD)){
+        pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[q],"/",df_RMSD$models.y[q]))
+      
         write.pdb(pdb,paste0("str_fin/",df_RMSD$ligand_center[q],"_",df_RMSD$grop_number[q],"_",df_RMSD$models.y[q]))
     }
   }
