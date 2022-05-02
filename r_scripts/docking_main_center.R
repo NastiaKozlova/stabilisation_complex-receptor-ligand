@@ -23,6 +23,8 @@ system(command = paste0("python3 ", part_analysis,"prepare_log_csv.py"),ignore.s
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
 
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions_center.R ",part_analysis),ignore.stdout=T,wait = T)
