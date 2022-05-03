@@ -88,13 +88,6 @@ k<-2
 for (j in 1:length(df_all$name)) {
   if(file.exists(paste0("groups_fin/",df_all$name[j],".csv"))){
     df_RMSD<-read.csv(paste0("groups_fin/",df_all$name[j],".csv"),stringsAsFactors = F)
-#    for (k in 1:nrow(df_RMSD)) {
-#      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k]))) { dir.create(paste0("str/",df_RMSD$ligand_center[k]))}
-#      if (!dir.exists(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))) {
-#        dir.create(paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k]))}
-#      pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[k],"/",df_RMSD$models.y[k]))
-#      write.pdb(pdb,paste0("str/",df_RMSD$ligand_center[k],"/",df_RMSD$grop_number[k],"/",df_RMSD$models.y[k]))
- #   }
     df_RMSD<-df_RMSD%>%filter(models.y==models.x)
     for (q in 1:nrow(df_RMSD)){
         pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[q],"/",df_RMSD$models.y[q]))
