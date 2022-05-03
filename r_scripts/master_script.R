@@ -92,6 +92,7 @@ if(surphase_conut){
   }
 }else{
   for (i in 1:length(v_list_proteins)) {
+    #prepare castade start_file
     part_protein<-paste0(part_start,",",v_list_proteins[i])
     #copying sctipts for docking
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_center.R ",part_protein),ignore.stdout=T,wait = T)
