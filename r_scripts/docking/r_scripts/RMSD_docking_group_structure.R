@@ -1,6 +1,9 @@
 part_analysis <- commandArgs(trailingOnly=TRUE)
 #group ligand structures
-part_start<-part_analysis
+v_test<-strsplit(part_analysis,split = ",")[[1]]
+part_start<-v_test[1]
+lig<-v_test[2]
+lig<-lig[!is.na(lig)]
 library(bio3d)
 library(readr)
 library(dplyr)
@@ -35,6 +38,9 @@ if(length(v_str)>0){
   v_str<-a
   df_all<-df_all[!df_all$name%in%v_str,]
 }
+if(length(lig)==1){
+  df_all<-df_all%>%filter(ligand==lig)
+}
 
 if(nrow(df_all)>0){
   for (i in 1:nrow(df_all)) {
@@ -55,3 +61,4 @@ if(nrow(df_all)>0){
     }
   }
 }
+print(Sys.time())
