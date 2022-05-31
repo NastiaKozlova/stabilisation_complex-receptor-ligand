@@ -13,7 +13,7 @@ system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_analysis),igno
 system(command = paste0("cp ",part_start,"start/docking/active_center/",v_list_protein,".csv ",part_name,"/docking_first/active_center.csv"),ignore.stdout=T,wait = T)
 
 #run docking
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_docking_center.R ",part_name),ignore.stdout=T,wait = T)
 #pdbqt to pdb
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
 #log to csv
