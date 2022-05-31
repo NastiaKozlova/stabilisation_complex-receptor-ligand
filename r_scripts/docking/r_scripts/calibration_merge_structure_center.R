@@ -1,14 +1,14 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 library(bio3d)
 library(readr)
 library(dplyr)
 library(ggplot2)
 v_rmsds<-seq(from=0,to=100,by=1)
-setwd(part_start)
-part<-paste0(part_start,"din/")
+setwd(part_analysis)
+part<-paste0(part_analysis,"din/")
 setwd(part)
 
-df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand))
 df_all$center<-NULL
 df_all<-unique(df_all)
