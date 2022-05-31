@@ -9,14 +9,10 @@ part<-paste0(part_analysis,"din/")
 setwd(part)
 
 df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
-df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
+df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand))
 if(dir.exists("df_RMSD_merge")){dir.create("df_RMSD_merge")}
-for (i in 1:nrow(df_all)) {
-  if(!file.exists(paste0("RMSD_merged/",df_all$name[i],".csv"))){
-    df_all$receptor[i]<-NA
-  }
-}
-df_all<-df_all%>%filter(!is.na(receptor))
+df_all$center<-NULL
+df_all<-unique(df_all)
 for (i in 1:nrow(df_all)) {
   if(!file.exists(paste0("df_RMSD_merge/",df_all$name[i],".csv"))){
     df_RMSD_all<-read.csv(paste0("RMSD_merged/",df_all$name[i],".csv"),stringsAsFactors = F)
