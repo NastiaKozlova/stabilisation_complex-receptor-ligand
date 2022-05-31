@@ -1,17 +1,18 @@
-part_name <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 #group ligand structures
 library(bio3d)
 library(dplyr)
 library(ggplot2)
-v_rmsd<-3.5
+v_rmsd<-1
+group_size<-1
 
-setwd(part_name)
-df_all<-read.csv(paste0(part_name,"df_all.csv"),stringsAsFactors = F)
+setwd(part_analysis)
+df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 
 #group_size<-round(nrow(df_all)/100,digits = 0)
 
-part<-paste0(part_name,"din/")
+part<-paste0(part_analysis,"din/")
 setwd(part)
 if(dir.exists(paste0(part,"fin_merged"))) {system(command = paste0("rm -r ",part,"fin_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"structure_merged"))) {system(command = paste0("rm -r ",part,"structure_merged"),ignore.stdout=T,wait = T)}
@@ -39,7 +40,6 @@ for (q in 1:nrow(df_analysis)) {
   df_structure_RMSD_TEMP<-df_structure_RMSD%>%filter(receptor==df_analysis$receptor[q])
   df_structure_RMSD_TEMP<-df_structure_RMSD_TEMP%>%filter(ligand==df_analysis$ligand[q])
   
-  group_size<-round(nrow(df_structure_RMSD_TEMP)/100,digits = 0)
   df_structure_RMSD_analysis<-read.csv(paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"),stringsAsFactors = F)
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(RMSD<v_rmsd)
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%group_by(name.x)%>%mutate(number=n())
