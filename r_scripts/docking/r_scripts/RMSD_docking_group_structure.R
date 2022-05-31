@@ -8,7 +8,7 @@ library(bio3d)
 library(readr)
 library(dplyr)
 library(ggplot2)
-v_rmsd<-4
+#v_rmsd<-4
 setwd(part_start)
 part<-paste0(part_start,"din/")
 setwd(part)
@@ -26,10 +26,14 @@ for (i in 1:nrow(df_all)) {
   models<-list.files(paste0("pdb_second/",df_all$name[i]))
   df_all$number[i]<-length(models)
 }
-print(Sys.time())
 df_all<-df_all%>%filter(number>0)
+
+
+
+print(Sys.time())
 v_str<-list.files(paste0("RMSD_analysis/"))
 a<-c()
+i<-1
 if(length(v_str)>0){
   for (i in 1:length(v_str)) {
     b<-strsplit(v_str[i],split = ".",fixed = T)[[1]][1]
