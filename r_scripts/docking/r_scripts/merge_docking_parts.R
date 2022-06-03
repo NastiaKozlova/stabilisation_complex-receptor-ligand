@@ -3,7 +3,7 @@ part_analysis <- commandArgs(trailingOnly=TRUE)
 library(bio3d)
 library(dplyr)
 library(ggplot2)
-v_rmsd<-1
+v_rmsd<-2.5
 group_size<-1
 
 setwd(part_analysis)
@@ -37,10 +37,21 @@ df_analysis<-unique(df_analysis)
 df_analysis<-df_analysis%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
 q<-1
 for (q in 1:nrow(df_analysis)) {
-  df_structure_RMSD_TEMP<-df_structure_RMSD%>%filter(receptor==df_analysis$receptor[q])
-  df_structure_RMSD_TEMP<-df_structure_RMSD_TEMP%>%filter(ligand==df_analysis$ligand[q])
-  
   df_structure_RMSD_analysis<-read.csv(paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"),stringsAsFactors = F)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis%>%mutate(name.y=name.x)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis_add%>%mutate(center.y=center.x)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis_add%>%mutate(RMSD=0)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis_add%>%mutate(x.y=x.x)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis_add%>%mutate(y.y=y.x)
+  df_structure_RMSD_analysis_add<-df_structure_RMSD_analysis_add%>%mutate(z.y=z.x)
+
+  df_structure_RMSD_analysis<-unique(df_structure_RMSD_analysis_add)
+  
+  df_structure_RMSD_analysis_add<-rbind(df_structure_RMSD_analysis,df_structure_RMSD_analysis_add)
+#  "name.x"      "receptor"    "ligand"      "center.x"    "RMSD"        "x.x"         "y.x"         "z.x"  
+  
+  
+  df_structure_RMSD_analysis<-df_structure_RMSD_analysis
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(RMSD<v_rmsd)
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%group_by(name.x)%>%mutate(number=n())
   df_structure_RMSD_analysis<-ungroup(df_structure_RMSD_analysis)       
