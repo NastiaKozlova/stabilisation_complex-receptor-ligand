@@ -8,7 +8,19 @@ library(ggplot2)
 setwd(part_analysis)
 df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
-
+df_all<-df_all%>%mutate(x=NA)
+df_all<-df_all%>%mutate(y=NA)
+df_all<-df_all%>%mutate(z=NA)
+i<-1
+for (i in 1:nrow(df_all)) {
+  a<-strsplit(df_all$center[i],split = "_")[[1]]
+  df_all$x[i]<-as.numeric(a[3])
+  df_all$y[i]<-as.numeric(a[5])
+  df_all$z[i]<-as.numeric(a[7])
+}
+df_all<-df_all%>%filter(is.na(x))
+#df_all$name<-NULL
+df_all<-df_all%>%select(name,receptor,ligand,center)
 #group_size<-round(nrow(df_all)/100,digits = 0)
 
 part<-paste0(part_analysis,"din/")
@@ -26,7 +38,13 @@ v_structure_RMSD<-list.files(paste0("str_fin/"))
 df_structure_RMSD<-data.frame(matrix(ncol=5,nrow = length(v_structure_RMSD)))
 colnames(df_structure_RMSD)<-c("name","receptor","ligand","center","RMSD")
 df_structure_RMSD$name<-v_structure_RMSD
-
+j<-1
+a<-c()
+for (j in 1:nrow(df_all)) {
+  b<-df_structure_RMSD$name[grepl(x = df_structure_RMSD$name,pattern = df_all$name[j])]
+  a<-c(a,b)
+}
+df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$name%in%a,]
 for (j in 1:nrow(df_structure_RMSD)) {
   a<-strsplit(x = df_structure_RMSD$name[j],split = "_frame")[[1]][1]
   a<-strsplit(x = a,split = "_")[[1]]
