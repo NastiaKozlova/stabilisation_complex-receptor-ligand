@@ -69,7 +69,7 @@ df_RMSD_all<-rbind(df_RMSD_all,df_RMSD_add)
 #df_RMSD_all<-df_RMSD_all%>%select(RMSD_new,group_new)
 #df_RMSD_all<-unique(df_RMSD_all)
 p<-ggplot(data=df_RMSD_all)+
-  labs(title = "ACHE")+
+#  labs(title = "ACHE")+
   geom_line(aes(x=RMSD,y=group))+
   geom_point(aes(x=RMSD,y=group))+
   theme_bw()+
