@@ -1,44 +1,37 @@
-part_name <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 library(bio3d)
 library(dplyr)
 library(ggplot2)
 v_rmsd<-4
 
-setwd(part_name)
+setwd(part_analysis)
 setwd("din")
 
-part_name<-paste0(part_start,"MD_analysis/docking/docking_first/")
-part<-strsplit(part_name,split = "/")[[1]]
+part_analysis<-paste0(part_analysis)
+part<-strsplit(part_analysis,split = "/")[[1]]
 part<-part[1:(length(part)-3)]
 part<-paste0(part,collapse = "/")
 part<-paste0(part,"/")
-df_center<-read.csv(paste0(part,"start/active_center.csv"),stringsAsFactors = F)
-df_center<-df_center%>%mutate(center=type)
-df_center<-df_center%>%select(center)
-df_center<-df_center%>%mutate(c=NA)
-df_center<-unique(df_center)
-df_all<-read.csv(paste0(part,"start/all_systems.csv"),stringsAsFactors = F)
-df_all<-df_all%>%mutate(receptor=paste0("charmm-gui-",system_name))
-df_all<-df_all%>%select(receptor)
-df_all<-df_all%>%mutate(c=NA)
-df_all<-left_join(df_all,df_center,by="c")
-v_ligand<-list.files(paste0(part,"start/ligand_start"))
-df_ligand<-data.frame(matrix(nrow = length(v_ligand),ncol=2))
-colnames(df_ligand)<-c("ligand","c")
-df_ligand$ligand<-v_ligand
-
-for (i in 1:nrow(df_ligand)) {
-  df_ligand$ligand[i]<-strsplit(df_ligand$ligand[i],split = ".",fixed = T)[[1]][1]
+df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
+df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
+df_all<-df_all%>%mutate(x=NA)
+df_all<-df_all%>%mutate(y=NA)
+df_all<-df_all%>%mutate(z=NA)
+i<-1
+for (i in 1:nrow(df_all)) {
+  a<-strsplit(df_all$center[i],split = "_")[[1]]
+  df_all$x[i]<-as.numeric(a[3])
+  df_all$y[i]<-as.numeric(a[5])
+  df_all$z[i]<-as.numeric(a[7])
 }
-df_all<-left_join(df_all,df_ligand,by="c")
-df_all$c<-NULL
-df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
-j<-1
+df_all<-df_all%>%filter(is.na(x))
+#df_all$name<-NULL
+df_all<-df_all%>%select(name,receptor,ligand,center)
 df_all<-df_all%>%mutate(ligand_center=paste0(receptor,"_",ligand,"_",center))
 
-if (dir.exists(paste0("interaction/"))) { system(command = paste0("rm -r ",part_name,"din/interaction/"))}
-if (dir.exists(paste0("interaction_TEMP/"))) {system(command = paste0("rm -r ",part_name,"din/interaction_TEMP/"))}
-if (dir.exists(paste0("interaction_complex/"))) {system(command = paste0("rm -r ",part_name,"din/interaction_complex/"))}
+if (dir.exists(paste0("interaction/"))) { system(command = paste0("rm -r ",part_analysis,"din/interaction/"))}
+if (dir.exists(paste0("interaction_TEMP/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_TEMP/"))}
+if (dir.exists(paste0("interaction_complex/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_complex/"))}
 
 if (!dir.exists(paste0("interaction/"))) { dir.create(paste0("interaction/"))}
 if (!dir.exists("interaction_TEMP/")){dir.create("interaction_TEMP/")}
@@ -80,7 +73,7 @@ for (j in 1:nrow(df_all)) {
   #    df_all<-df_all%>%group_by(models.x)%>%mutate(size_of_group=n())
   
   
-  a<-read.pdb(paste0(part_name,"receptor_start/",df_all$receptor[j],".pdb"))
+  a<-read.pdb(paste0(part_analysis,"receptor_start/",df_all$receptor[j],".pdb"))
   b<-read.pdb(paste0("pdb_second/",df_all$ligand_center[j],"/",df_all$models.y[j]))
   bs<-binding.site(a,b,cutoff=12)
   m<-bs$resnames
@@ -117,7 +110,7 @@ df_topology<-df_all%>%select(receptor_ligand,receptor,ligand, center,size_of_gro
 df_topology<-unique(df_topology)
 for (j in 1:nrow(df_topology)) {
   if (!dir.exists(paste0("interaction_TEMP/",df_topology$receptor_ligand[j]))){dir.create(paste0("interaction_TEMP/",df_topology$receptor_ligand[j]))}
-  pdb<-read.pdb(paste0(part_name,"receptor_start/",df_topology$receptor[j],".pdb"))
+  pdb<-read.pdb(paste0(part_analysis,"receptor_start/",df_topology$receptor[j],".pdb"))
   df_pdb<-pdb$atom
   df_pdb<-df_pdb%>%filter(elety=="CA")
   df_pdb<-df_pdb%>%select(type,resid,resno, x,y,z)
@@ -169,4 +162,4 @@ if(length(v_groups)>1){
 df_pdb<-df_pdb%>%filter(total_persent_interactions>0)
 
 p<-ggplot(data=df_pdb)+geom_freqpoly(aes(x=total_persent_interactions))+theme_bw()+facet_grid(size_of_group~receptor_ligand)
-ggsave(p,filename = paste0(part_name,"interaction_ligand_receptor.png"), width = 12, height = 12, units = c("cm"), dpi = 1000 ) 
+ggsave(p,filename = paste0(part_analysis,"interaction_ligand_receptor.png"), width = 12, height = 12, units = c("cm"), dpi = 1000 ) 
