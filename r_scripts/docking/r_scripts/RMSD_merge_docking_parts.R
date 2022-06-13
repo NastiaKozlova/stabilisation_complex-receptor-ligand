@@ -102,21 +102,23 @@ for (j in 1:nrow(df_analysis)) {
     df_all_sorte_start<-df_all_sorte%>%filter(!is.na(RMSD))
     print(paste(df_analysis$receptor_ligand[j],Sys.time()))
     v_sorte<-unique(df_all_sorte$center.x)
-    for (p in 1:length(v_sorte)) {
-      df_all_sorte_add<-df_all_sorte%>%filter(center.x==v_sorte[p])
-      df_all_sorte<-df_all_sorte%>%filter(center.x!=v_sorte[p])
-      
-      for (i in 1:nrow(df_all_sorte_add)) {
-        pdb_1<-read.pdb(paste0(part_analysis,"din/str_fin/",df_all_sorte_add$name.x[i]))
-        pdb_2<-read.pdb(paste0(part_analysis,"din/str_fin/",df_all_sorte_add$name.y[i]))
+    if(nrow(df_all_sorte)>0){
+      for (p in 1:length(v_sorte)) {
+        df_all_sorte_add<-df_all_sorte%>%filter(center.x==v_sorte[p])
+        df_all_sorte<-df_all_sorte%>%filter(center.x!=v_sorte[p])
         
-        df_all_sorte_add$RMSD[i]<-rmsd(pdb_1,pdb_2)
+        for (i in 1:nrow(df_all_sorte_add)) {
+          pdb_1<-read.pdb(paste0(part_analysis,"din/str_fin/",df_all_sorte_add$name.x[i]))
+          pdb_2<-read.pdb(paste0(part_analysis,"din/str_fin/",df_all_sorte_add$name.y[i]))
+          
+          df_all_sorte_add$RMSD[i]<-rmsd(pdb_1,pdb_2)
+        }
+        df_all_sorte_add<-df_all_sorte_add%>%filter(RMSD<50)
+        df_all_sorte_start<-rbind(df_all_sorte_start,df_all_sorte_add)
       }
-      df_all_sorte_add<-df_all_sorte_add%>%filter(RMSD<50)
-      df_all_sorte_start<-rbind(df_all_sorte_start,df_all_sorte_add)
+      print(paste(df_analysis$receptor_ligand[j],Sys.time()))
+      write.csv(df_all_sorte_start,paste0("RMSD_merged/",df_analysis$receptor_ligand[j],".csv"),row.names=F)
     }
-    print(paste(df_analysis$receptor_ligand[j],Sys.time()))
-    write.csv(df_all_sorte_start,paste0("RMSD_merged/",df_analysis$receptor_ligand[j],".csv"),row.names=F)
   }
 }
 
