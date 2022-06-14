@@ -8,12 +8,10 @@ setwd(part_analysis)
 setwd("din")
 
 
-df_all<-read.csv(paste0("df_merge_structure_log.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0("df_merge_structure_log_center.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand,"_",center))
 
-#if (dir.exists(paste0("interaction/"))) { system(command = paste0("rm -r ",part_analysis,"din/interaction/"))}
-#if (dir.exists(paste0("interaction_TEMP/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_TEMP/"))}
-#if (dir.exists(paste0("interaction_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_center/"))}
+if (dir.exists(paste0("interaction_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_center/"))}
 
 if (!dir.exists(paste0("interaction_center/"))) { dir.create(paste0("interaction_center/"))}
 i<-1
