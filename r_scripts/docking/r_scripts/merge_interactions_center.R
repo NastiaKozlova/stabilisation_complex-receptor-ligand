@@ -13,11 +13,11 @@ df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand,"_",center))
 
 #if (dir.exists(paste0("interaction/"))) { system(command = paste0("rm -r ",part_analysis,"din/interaction/"))}
 #if (dir.exists(paste0("interaction_TEMP/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_TEMP/"))}
-#if (dir.exists(paste0("interaction_serf/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_serf/"))}
+#if (dir.exists(paste0("interaction_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_center/"))}
 
-if (!dir.exists(paste0("interaction_serf/"))) { dir.create(paste0("interaction_serf/"))}
+if (!dir.exists(paste0("interaction_center/"))) { dir.create(paste0("interaction_center/"))}
 i<-1
-j<-3
+j<-1
 p<-1
 v_structure<-unique(df_all$name.x)
 for (j in 1:length(v_structure)) {
@@ -44,6 +44,6 @@ for (j in 1:length(v_structure)) {
     df_pdb<-df_pdb%>%select(resno,resid,x,y,z,number_interactions,tested_structure,total_structure)
     df_pdb<-df_pdb%>%mutate(persent_interactions=number_interactions/total_structure*100)
     write.csv(df_pdb,
-              paste0("interaction_serf/",v_structure[j],".csv"),row.names = F)
+              paste0("interaction_center/",v_structure[j],".csv"),row.names = F)
   }
 }
