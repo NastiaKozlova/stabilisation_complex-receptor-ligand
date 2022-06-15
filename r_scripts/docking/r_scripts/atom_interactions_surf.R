@@ -16,19 +16,19 @@ i<-1
 #  }
 #}
 #df_all<-df_all%>%filter(!is.na(receptor))
-df_merge<-read.csv(paste0(part_name,"df_merge_structure_log_center.csv"),stringsAsFactors = F)
+df_merge<-read.csv(paste0(part_name,"df_merge_structure_log.csv"),stringsAsFactors = F)
 #df_merge<-semi_join(df_merge,df_all)
 df_merge<-df_merge%>%select(name.x,receptor,ligand, size_of_group)
 df_merge<-unique(df_merge)
 i<-1
-if(!dir.exists("complex_structure_center")){dir.create("complex_structure_center")}
-if(!dir.exists("make_picture_tcl_center")){dir.create("make_picture_tcl_center")}
+if(!dir.exists("complex_structure_surf")){dir.create("complex_structure_surf")}
+if(!dir.exists("make_picture_tcl_surf")){dir.create("make_picture_tcl_surf")}
 df_merge<-df_merge%>%mutate(complex_name=paste0(receptor,"_",ligand,"_",size_of_group))
 i<-1
 for (i in 1:nrow(df_merge)) {
   df_hbonds<-read.csv(paste0(part_analysis,"/hbonds.csv"),stringsAsFactors = F)
   df_hbonds<-df_hbonds%>%filter(persent>50)
-  df_interactions<-read.csv(paste0("interaction_center/",df_merge$name.x[i],".csv"),stringsAsFactors = F)
+  df_interactions<-read.csv(paste0("interaction_surf/",df_merge$name.x[i],".csv"),stringsAsFactors = F)
   df_interactions<-df_interactions%>%filter(persent_interactions>0)
   df_interactions<-df_interactions%>%select(resid,resno,persent_interactions)
   df_interactions<-unique(df_interactions)
@@ -67,7 +67,7 @@ for (i in 1:nrow(df_merge)) {
   df_interaction<-ungroup(df_interaction)
   
   df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-  df_tcl[1,1]<-paste0('cd ', part_name,"complex_structure_center/\n\n",
+  df_tcl[1,1]<-paste0('cd ', part_name,"complex_structure_surf/\n\n",
                       'mol new {',df_merge$name.x[i],'} type {pdb}')
   b<-paste('(resid ',df_interaction$resno.x,' and name ',df_interaction$elety.x," and resname ",df_interaction$resid.x,")")
   a<-paste0(b,collapse = " or ")
@@ -122,13 +122,13 @@ for (i in 1:nrow(df_merge)) {
     }
   }
   df_tcl[is.na(df_tcl)]<-""
-  write.csv(df_tcl,paste0("make_picture_tcl_center/",df_merge$name.x[i],".tcl"),row.names = F)
+  write.csv(df_tcl,paste0("make_picture_tcl_surf/",df_merge$name.x[i],".tcl"),row.names = F)
 } 
 
-df_tcl<-read.csv(paste0("make_picture_tcl_center/",df_merge$name.x[1],".tcl"),stringsAsFactors = F)
+df_tcl<-read.csv(paste0("make_picture_tcl_surf/",df_merge$name.x[1],".tcl"),stringsAsFactors = F)
 i<-2
 for (i in 2:nrow(df_merge)) {
-  df_tcl_add<-read.csv(paste0("make_picture_tcl_center/",df_merge$name.x[i],".tcl"),stringsAsFactors = F)
+  df_tcl_add<-read.csv(paste0("make_picture_tcl_surf/",df_merge$name.x[i],".tcl"),stringsAsFactors = F)
   df_tcl<-rbind(df_tcl,df_tcl_add)
 }
-write.table(df_tcl,paste0("make_picture_tcl_center.tcl"),row.names = F,col.names = F,quote = F,sep = "\n",na="")
+write.table(df_tcl,paste0("make_picture_tcl_surf.tcl"),row.names = F,col.names = F,quote = F,sep = "\n",na="")
