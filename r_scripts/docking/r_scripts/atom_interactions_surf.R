@@ -82,30 +82,32 @@ for (i in 1:nrow(df_merge)) {
                       'color Labels Bonds black\n\n')
   
   df_tcl[1,3]<-paste0('mol modselect 0 ',i-1,' protein\n',
-                      'mol material Transparent\n',
-                      'mol modstyle 0 ' ,i-1, ' NewCartoon\n'),
-#                     'mol selection resid ',paste0(unique(df_hbonds$number),collapse = " "))
-#  df_tcl[1,4]<-paste0('mol material Transparent\n',
-#                      'mol addrep ',(i-1),'\n',
-#                      'mol modstyle 1 ',(i-1),' QuickSurf\n',
-#                      'mol modcolor 1 ',(i-1),' Type \n')
+                      'mol modmaterial 0 ',(i-1),' Transparent\n',
+                      'mol modstyle 0 ' ,i-1, ' NewCartoon\n')#,
+  #                      'mol modcolor 0 ' ,i-1, ' ColorID 11 \n'
+  #                      )#,
+  #  df_tcl[1,4]<-paste0('mol selection resid ',paste0(unique(df_hbonds$number),collapse = " "),'\n',
+  #                      'mol material Transparent\n',
+  #                      'mol addrep ',(i-1),'\n',
+  #                      'mol modstyle 1 ',(i-1),' QuickSurf\n',
+  #                      'mol modcolor 1 ',(i-1),' Type \n')
   
-#  df_tcl[1,5]<-paste0('mol selection resid ',paste0(c(158:161,431:434),collapse = " "))
-#  df_tcl[1,6]<-paste0('mol material Opaque\n',
-#                      'mol addrep ',(i-1),'\n',
-#                      'mol modstyle 2 ',(i-1),' Licorice\n',
-#                      'mol modcolor 2 ',(i-1),' ColorID 16 \n')
+  #  df_tcl[1,4]<-paste0('mol selection resid ',paste0(c(158:161,431:434),collapse = " "))
+  #  df_tcl[1,5]<-paste0('mol material Opaque\n',
+  #                      'mol addrep ',(i-1),'\n',
+  #                      'mol modstyle 1 ',(i-1),' Licorice\n',
+  #                      'mol modcolor 1 ',(i-1),' ColorID 16 \n')
   if (nrow(df_interaction)>0){
     df_tcl[1,4]<-paste0('mol selection resname ',paste0(unique(df_interaction$resid.y),collapse = " "))
-    df_tcl[1,5]<-paste0('mol material Opaque\n',
+    df_tcl[1,5]<-paste0('mol modmaterial 1 ',(i-1),' Opaque\n',
                         'mol addrep ',(i-1),'\n',
-                        'mol modstyle 3 ',(i-1),' Licorice\n',
-                        'mol modcolor 3 ',(i-1),' Name\n')
+                        'mol modstyle 1 ',(i-1),' Licorice \n',
+                        'mol modcolor 1 ',(i-1),' Name\n')
     df_tcl[1,6]<-paste0('mol selection (resid ',paste0(unique(df_interaction$resno.x),collapse = " "),")")
-    df_tcl[1,7]<-paste0(' mol material Opaque\n',
-                         'mol addrep ',(i-1),'\n',
-                         'mol modstyle 4 ',(i-1),' Licorice\n',
-                         'mol modcolor 4 ',(i-1),' Type')
+    df_tcl[1,7]<-paste0(' mol modmaterial 2 ',(i-1),' Opaque\n',
+                        'mol addrep ',(i-1),'\n',
+                        'mol modstyle 2 ',(i-1),' Licorice 0.1 12 12 \n',
+                        'mol modcolor 2 ',(i-1),' Type')
     
     for (p in 1:nrow(df_interaction)) {
       df_tcl[(p+1),1]<-paste0('set atomID1 [[atomselect ',(i-1),' "(resid ',df_interaction$resno.x[p],
