@@ -3,7 +3,7 @@ part_analysis <- commandArgs(trailingOnly=TRUE)
 library(bio3d)
 library(dplyr)
 library(ggplot2)
-paste0(part_analysis)
+#paste0(part_analysis)
 df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%select(receptor,ligand)
 df_all<-unique(df_all)
@@ -83,8 +83,9 @@ for (i in 1:nrow(df_merge)) {
   
   df_tcl[1,3]<-paste0('mol modselect 0 ',i-1,' protein\n',
                       'mol modmaterial 0 ',(i-1),' Transparent\n',
-                      'mol modstyle 0 ' ,i-1, ' NewCartoon\n',
-                      'mol modcolor 0 ' ,i-1, ' ColorID 0 \n')#,
+                      'mol modstyle 0 ' ,i-1, ' NewCartoon\n')#,
+#                      'mol modcolor 0 ' ,i-1, ' ColorID 11 \n'
+#                      )#,
 #  df_tcl[1,4]<-paste0('mol selection resid ',paste0(unique(df_hbonds$number),collapse = " "),'\n',
 #                      'mol material Transparent\n',
 #                      'mol addrep ',(i-1),'\n',
@@ -100,12 +101,12 @@ for (i in 1:nrow(df_merge)) {
     df_tcl[1,4]<-paste0('mol selection resname ',paste0(unique(df_interaction$resid.y),collapse = " "))
     df_tcl[1,5]<-paste0('mol modmaterial 1 ',(i-1),' Opaque\n',
                         'mol addrep ',(i-1),'\n',
-                        'mol modstyle 1 ',(i-1),' Licorice\n',
+                        'mol modstyle 1 ',(i-1),' Licorice \n',
                         'mol modcolor 1 ',(i-1),' Name\n')
     df_tcl[1,6]<-paste0('mol selection (resid ',paste0(unique(df_interaction$resno.x),collapse = " "),")")
     df_tcl[1,7]<-paste0(' mol modmaterial 2 ',(i-1),' Opaque\n',
                          'mol addrep ',(i-1),'\n',
-                         'mol modstyle 2 ',(i-1),' Licorice\n',
+                         'mol modstyle 2 ',(i-1),' Licorice 0.1 12 12 \n',
                          'mol modcolor 2 ',(i-1),' Type')
     
     for (p in 1:nrow(df_interaction)) {
