@@ -9,7 +9,7 @@ setwd("din")
 
 
 df_all<-read.csv(paste0("df_merge_structure_log_center.csv"),stringsAsFactors = F)
-df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand,"_",center))
+df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
 
 if (dir.exists(paste0("interaction_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_center/"))}
 
@@ -29,8 +29,8 @@ for (j in 1:length(v_structure)) {
   df_pdb<-df_pdb%>%mutate(total_structure=nrow(df_complex))
   test<-nrow(df_pdb)
   for (p in 1:nrow(df_complex)) {
-    if(file.exists(paste0("interaction/",df_complex$receptor_ligand[p],"/",df_complex$new_number[p],".csv"))){
-      df_protein<-read.csv(paste0("interaction/",df_complex$receptor_ligand[p],"/",df_complex$new_number[p],".csv"),
+    if(file.exists(paste0("interaction/",df_complex$receptor_ligand[p],"_",df_complex$center.y[p],"/",df_complex$new_number[p],".csv"))){
+      df_protein<-read.csv(paste0("interaction/",df_complex$receptor_ligand[p],"_",df_complex$center.y[p],"/",df_complex$new_number[p],".csv"),
                            stringsAsFactors = F) 
       df_pdb$number_interactions[df_pdb$resno%in%df_protein$resid]<-df_pdb$number_interactions[df_pdb$resno%in%df_protein$resid]+1
       df_pdb$tested_structure<-df_pdb$tested_structure+1
