@@ -46,7 +46,7 @@ for (q in 1:nrow(df_analysis)) {
 df_analysis<-df_analysis%>%filter(!is.na(receptor))
 q<-1
 for (q in 1:nrow(df_analysis)) {
-
+  
   df_structure_RMSD_analysis<-read.csv(paste0("RMSD_merged_center/",df_analysis$receptor_ligand[q],".csv"),stringsAsFactors = F)
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(RMSD<v_rmsd)
   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%group_by(name.x)%>%mutate(number=n())
@@ -82,7 +82,7 @@ for (q in 1:nrow(df_analysis)) {
       df_RMSD$name.x[df_RMSD$name.x%in%df_structure_RMSD_complex_test$name.y]<-NA
       df_RMSD$name.x[df_RMSD$name.x%in%df_structure_RMSD_complex_test$name.x]<-NA
     }
-  
+    
     
     df_structure_RMSD_complex<-df_structure_RMSD_analysis
     df_structure_RMSD_complex<-df_structure_RMSD_complex[!df_structure_RMSD_complex$name.x%in%v_structure,]
@@ -90,10 +90,11 @@ for (q in 1:nrow(df_analysis)) {
     df_RMSD<-df_structure_RMSD_complex%>%select(name.x,number)
     df_RMSD<-unique(df_RMSD)
     df_RMSD<-df_RMSD%>%arrange(desc(number))
-    for (j in 1:nrow(df_RMSD)+temp) {
-      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%mutate(grop_number=j)
-      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%filter(grop_number==j)
-      write.csv(df_structure_RMSD_complex_test,paste0("groups_merged_center/",df_analysis$receptor_ligand[q],"/grop_",j,".csv"),row.names = F) 
+    j<-1
+    for (j in (1:nrow(df_RMSD))) {
+      df_structure_RMSD_complex_test<-df_structure_RMSD_complex[j,]
+      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%mutate(grop_number=j+temp)
+      write.csv(df_structure_RMSD_complex_test,paste0("groups_merged_center/",df_analysis$receptor_ligand[q],"/grop_",j+temp,".csv"),row.names = F) 
       
     }
   }
