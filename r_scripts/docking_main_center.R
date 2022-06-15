@@ -32,3 +32,6 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_merge_st
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_center.R ",part_analysis),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_interactions_center.R ",part_analysis),ignore.stdout=T,wait = T)
+
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"complex_structure_center.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"atom_interactions_center.R ",part_analysis),ignore.stdout=T,wait = T)
