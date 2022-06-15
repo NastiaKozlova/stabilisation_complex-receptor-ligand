@@ -4,7 +4,7 @@ library(bio3d)
 library(dplyr)
 library(ggplot2)
 v_rmsd<-1
-group_size<-2.5
+group_size<-1
 
 setwd(part_analysis)
 df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
@@ -75,10 +75,10 @@ for (q in 1:nrow(df_analysis)) {
     df_RMSD<-df_structure_RMSD_complex%>%select(name.x,number)
     df_RMSD<-unique(df_RMSD)
     df_RMSD<-df_RMSD%>%arrange(desc(number))
-    for (j in 1:nrow(df_RMSD)+temp) {
-      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%mutate(grop_number=j)
-      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%filter(grop_number==j)
-      write.csv(df_structure_RMSD_complex_test,paste0("groups_merged/",df_analysis$receptor_ligand[q],"/grop_",j,".csv"),row.names = F) 
+    for (j in (1:nrow(df_RMSD))) {
+      df_structure_RMSD_complex_test<-df_structure_RMSD_complex[j,]
+      df_structure_RMSD_complex_test<-df_structure_RMSD_complex_test%>%mutate(grop_number=j+temp)
+      write.csv(df_structure_RMSD_complex_test,paste0("groups_merged/",df_analysis$receptor_ligand[q],"/grop_",j+temp,".csv"),row.names = F) 
       
     }
   }
