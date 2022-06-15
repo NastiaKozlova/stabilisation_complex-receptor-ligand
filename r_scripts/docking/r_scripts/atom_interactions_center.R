@@ -128,10 +128,10 @@ for (i in 1:nrow(df_merge)) {
 } 
 
 v_structure<-list.files("make_picture_tcl_center/")
-df_tcl<-read.csv(paste0("make_picture_tcl_center/",v_structure[1],".tcl"),stringsAsFactors = F)
+df_tcl<-read.csv(paste0("make_picture_tcl_center/",v_structure[1]),stringsAsFactors = F)
 i<-2
 for (i in 2:length(v_structure)) {
-  df_tcl_add<-read.csv(paste0("make_picture_tcl_center/",v_structure[i],".tcl"),stringsAsFactors = F)
+  df_tcl_add<-read.csv(paste0("make_picture_tcl_center/",v_structure[i]),stringsAsFactors = F)
   df_tcl<-rbind(df_tcl,df_tcl_add)
 }
 write.table(df_tcl,paste0("make_picture_tcl_center.tcl"),row.names = F,col.names = F,quote = F,sep = "\n",na="")
