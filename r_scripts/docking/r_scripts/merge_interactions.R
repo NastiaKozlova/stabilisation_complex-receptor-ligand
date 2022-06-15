@@ -11,9 +11,9 @@ setwd("din")
 df_all<-read.csv(paste0("df_merge_structure_log.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
 
-if (dir.exists(paste0("interaction_serf/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_serf/"))}
+if (dir.exists(paste0("interaction_surf/"))) {system(command = paste0("rm -r ",part_analysis,"din/interaction_surf/"))}
 
-if (!dir.exists(paste0("interaction_serf/"))) { dir.create(paste0("interaction_serf/"))}
+if (!dir.exists(paste0("interaction_surf/"))) { dir.create(paste0("interaction_surf/"))}
 i<-1
 j<-1
 p<-1
@@ -42,6 +42,6 @@ for (j in 1:length(v_structure)) {
     df_pdb<-df_pdb%>%select(resno,resid,x,y,z,number_interactions,tested_structure,total_structure)
     df_pdb<-df_pdb%>%mutate(persent_interactions=number_interactions/total_structure*100)
     write.csv(df_pdb,
-              paste0("interaction_serf/",v_structure[j],".csv"),row.names = F)
+              paste0("interaction_surf/",v_structure[j],".csv"),row.names = F)
   }
 }
