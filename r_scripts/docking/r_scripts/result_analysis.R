@@ -25,14 +25,7 @@ df_structure_RMSD<-ungroup(df_structure_RMSD)
 df_structure_RMSD$name.x<-NULL
 df_structure_RMSD<-unique(df_structure_RMSD)
 
-#df_structure_RMSD_add<-data.frame(matrix(ncol=ncol(df_structure_RMSD),nrow = max(df_structure_RMSD$group_size)))
-#colnames(df_structure_RMSD_add)<-colnames(df_structure_RMSD)
-#df_structure_RMSD_add$number<-0
-#df_structure_RMSD_add$group_size<-1:nrow(df_structure_RMSD_add)
-#print(nrow(df_structure_RMSD_add))
-#df_structure_RMSD_add<-df_structure_RMSD_add[!df_structure_RMSD_add$group_size%in%df_structure_RMSD$group_size,]
-#print(nrow(df_structure_RMSD_add))
-#df_structure_RMSD<-rbind(df_structure_RMSD,df_structure_RMSD_add)
+
 df_structure_RMSD<-df_structure_RMSD%>%arrange(group_size)
 p<-30
 df_structure_RMSD<-df_structure_RMSD%>%mutate(mean_number=NA)
