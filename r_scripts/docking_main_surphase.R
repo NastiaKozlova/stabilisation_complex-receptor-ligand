@@ -33,4 +33,5 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_merge_st
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_parts.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
 
-
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"complex_structure_surf.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"atom_interactions_surf.R ",part_analysis),ignore.stdout=T,wait = T)
