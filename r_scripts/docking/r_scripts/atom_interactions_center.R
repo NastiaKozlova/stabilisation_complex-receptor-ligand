@@ -21,7 +21,9 @@ df_merge<-read.csv(paste0(part_name,"df_merge_structure_log_center.csv"),strings
 df_merge<-df_merge%>%select(name.x,receptor,ligand, size_of_group)
 df_merge<-unique(df_merge)
 i<-1
-if(!dir.exists("complex_structure_center")){dir.create("complex_structure_center")}
+#if (dir.exists(paste0("complex_structure_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/complex_structure_center/"))}
+if (dir.exists(paste0("make_picture_tcl_center/"))) {system(command = paste0("rm -r ",part_analysis,"din/make_picture_tcl_center/"))}
+#if(!dir.exists("complex_structure_center")){dir.create("complex_structure_center")}
 if(!dir.exists("make_picture_tcl_center")){dir.create("make_picture_tcl_center")}
 df_merge<-df_merge%>%mutate(complex_name=paste0(receptor,"_",ligand,"_",size_of_group))
 i<-1
@@ -124,7 +126,7 @@ for (i in 1:nrow(df_merge)) {
     }
     df_tcl[is.na(df_tcl)]<-""
     write.csv(df_tcl,paste0("make_picture_tcl_center/",df_merge$name.x[i],".tcl"),row.names = F)
-  }
+  }else{print(i)}
 } 
 
 v_structure<-list.files("make_picture_tcl_center/")
