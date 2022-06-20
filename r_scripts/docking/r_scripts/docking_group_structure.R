@@ -16,7 +16,8 @@ if(dir.exists(paste0(part,"groups_fin"))) {system(command = paste0("rm -r ",part
 if(dir.exists(paste0(part,"str"))) {system(command = paste0("rm -r ",part,"str"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"str_fin"))) {system(command = paste0("rm -r ",part,"str_fin"),ignore.stdout=T,wait = T)}
 if (!dir.exists("groups")) {dir.create("groups")}
-
+if (!dir.exists("groups_fin")) {dir.create("groups_fin")}
+if (!dir.exists("str_fin")) {dir.create("str_fin")}
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 #sort to grops
