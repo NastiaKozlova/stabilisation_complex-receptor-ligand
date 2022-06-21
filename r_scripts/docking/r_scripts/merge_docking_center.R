@@ -150,5 +150,5 @@ df_structure_RMSD_analysis<-df_structure_RMSD%>%select(name.x,receptor,ligand,si
 df_structure_RMSD_analysis<-unique(df_structure_RMSD_analysis)
 for (j in 1:nrow(df_structure_RMSD_analysis)) {
   pdb_1<-read.pdb(paste0("str_fin/",df_structure_RMSD_analysis$name.x[j]))  
-  write.pdb(pdb_1,paste0("structure_merged/",df_structure_RMSD_analysis$name.x[j]))
+  write.pdb(pdb_1,paste0("structure_merged_center/",df_structure_RMSD_analysis$name.x[j]))
 }
