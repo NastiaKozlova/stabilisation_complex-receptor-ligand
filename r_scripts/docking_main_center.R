@@ -25,7 +25,7 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_center.R ",part_analysis,",1"),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis,",1"),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_merge_docking_center.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_merge_structure_center.R ",part_analysis),ignore.stdout=T,wait = T)
