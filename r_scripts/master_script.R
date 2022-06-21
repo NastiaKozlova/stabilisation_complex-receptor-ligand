@@ -103,35 +103,40 @@ if(surphase_conut){
 
 
 #MD receptor-ligand stabilisation
-
+#copy_files_for_MD_receptor_ligand
+i<-1
 for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/")
-  print(v_list_proteins[i])
-  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/"))}
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"))}
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"))}
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"))}
-  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/"))}
+  part_protein<-paste0(part_start,",",v_list_proteins[i])
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_MD_receptor_ligand.R ",part_protein),ignore.stdout=T,wait = T)
+  
+#  copy_files_for_MD_receptor_ligand
+#  part_name<-paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/")
+#  print(v_list_proteins[i])
+#  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein/programs/"),ignore.stdout=T,wait = T)
+#  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/"))}
+#  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"))}
+#  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"))}
+#  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"))}
+#  if(!dir.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/"))){dir.create(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/"))}
  
-  system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/receptor_start/start.pdb ", part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))
-  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/receptor_start/start.pdb ", part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))
+#  system(command = paste0("cp -r ",part_start,"programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"),ignore.stdout=T,wait = T)
 #  system(command = paste0("tar -xvzf ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/NAMD_2.14_Linux-x86_64-multicore.tar.gz ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/programs/"),ignore.stdout=T,wait = T)
 
 
-  v_ligands<-list.files(paste0(part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/"))
-  if (length(v_ligands)>0){
-    for (j in 1:length(v_ligands)) {
-      system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/",v_ligands[j]," ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"),ignore.stdout=T,wait = T)
-    }
-  }
-#  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
-  system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/toppar/"),ignore.stdout=T,wait = T)
-#  system(command = paste0("cp -r ",part_start,"start/receptor_ligand_MD/resname_mutate.csv ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"),ignore.stdout=T,wait = T)
+#  v_ligands<-list.files(paste0(part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/"))
+#  if (length(v_ligands)>0){
+#    for (j in 1:length(v_ligands)) {
+#      system(command = paste0("cp -r ",part_start,v_list_proteins[i],"/docking/docking_first/din/structure_merged/",v_ligands[j]," ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/ligands/"),ignore.stdout=T,wait = T)
+#    }
+#  }
+##  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
+#  system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/toppar/"),ignore.stdout=T,wait = T)
+##  system(command = paste0("cp -r ",part_start,"start/receptor_ligand_MD/resname_mutate.csv ",part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/"),ignore.stdout=T,wait = T)
 #  system(command = paste0("cp -r ",part_start,"r_scripts/MD_globular_protein_ligand/ ",part_start,v_list_proteins[i],"/"),ignore.stdout=T,wait = T)
   
 }
-
+i<-1
 for (i in 1:length(v_list_proteins)) {
   if(file.exists(paste0(part_start,v_list_proteins[i],"/MD_globular_protein_ligand/start/receptor/start.pdb"))){
     part_prepare<-paste0(part_start,",",v_list_proteins[i])
