@@ -21,9 +21,6 @@ if (!dir.exists("str_fin")) {dir.create("str_fin")}
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 #sort to grops
-i<-1
-#df_all<-df_all%>%filter(ligand=="Propidium")
-#df_all<-df_all[df_all$center%in%c("cat_trio","anion_cite","perefer_anion_cite","acyl_poket","hydroxyanion_hole"),]
 for (i in 1:nrow(df_all)) {
 
   if(file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
