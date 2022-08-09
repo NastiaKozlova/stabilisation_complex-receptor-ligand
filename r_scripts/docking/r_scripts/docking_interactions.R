@@ -19,7 +19,7 @@ for (j in 1:nrow(df_all)) {
     if(!file.exists(paste0("interaction/",df_all$receptor_ligand[j],"/",df_all$new_number[j],".csv"))){
       a<-read.pdb(paste0(part_name,"receptor_start/",df_all$receptor[j],".pdb"))
       b<-read.pdb(paste0("pdb_second/",df_all$receptor_ligand[j],"/frame_",df_all$new_number[j],".pdb"))
-      bs<-binding.site(a,b,cutoff=12)
+      bs<-binding.site(a,b)
       m<-bs$resnames
       a<-c()
       b<-c()
