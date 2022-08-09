@@ -3,7 +3,7 @@ part_name = commandArgs(trailingOnly=TRUE)
 v_namd<-"namd run script"
 #quantity of 25 ns MD simulations, change it to Modify length of MD simulation 
 
-num_din<-100
+num_din<-1
 library(dplyr)
 library(bio3d)
 setwd(part_name)
@@ -15,7 +15,7 @@ df_complex<-unique(df_complex)
 #df_complex<-left_join(df_complex,df_replase,by=c("ligand"="ligand_name"))
 part<-1
 for (part in 1:nrow(df_complex)) {
-  print(paste0(df_complex$file_name[part]))
+  print(paste0(df_complex$name.x[part]))
   if(!dir.exists(paste0("prepared_structures"))){dir.create(paste0("prepared_structures"))}
   if(!dir.exists(paste0("prepared_structures/start_structure"))){dir.create(paste0("prepared_structures/start_structure"))}
   if(!dir.exists(paste0("prepared_structures/prepared"))){dir.create(paste0("prepared_structures/prepared"))}
@@ -28,7 +28,7 @@ for (part in 1:nrow(df_complex)) {
   if(!dir.exists(paste0("MD/",df_complex$number[part]))){dir.create(paste0("MD/",df_complex$number[part]))}
   system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$number[part]),ignore.stdout=T,wait = T)
   #prepare psf and pdb parts of complex
-  pdb_ligand<-read.pdb(paste0("start/ligands/",df_complex$file_name[part]))
+  pdb_ligand<-read.pdb(paste0("start/ligands_center/",df_complex$name.x[part]))
   pdb_receptor<-read.pdb(paste0("start/receptor/",df_complex$receptor[part],".pdb"))
   pdb_ligand$atom$chain<-"Z"
   pdb_ligand$atom$elesy<-"Z"
@@ -40,27 +40,27 @@ for (part in 1:nrow(df_complex)) {
   df_chain<-data.frame(matrix(nrow = length(v_chain),ncol = 2))
   colnames(df_chain)<-c("models","chain")
   df_chain$chain<-v_chain
-  df_chain$models<-df_complex$number[part]
+  df_chain$models<-df_complex$name.x[part]
   
   df_chain_test<-df_chain%>%filter(is.na(chain))
   df_chain<-df_chain%>%filter(!is.na(chain))
-  write.pdb(pdb_receptor,paste0("prepared_structures/start_structure/",df_complex$ligand[part],"_",df_chain$models[1],"_",df_chain$chain[1],".pdb"))
-  write.pdb(pdb_ligand,paste0("prepared_structures/start_structure/",df_complex$ligand[part],"_",df_chain$models[2],"_",df_chain$chain[2],".pdb"))
-  write.csv(df_chain,paste0("prepared_structures/chains/",df_complex$file_name[part],".csv"),row.names = F)
+  write.pdb(pdb_receptor,paste0("prepared_structures/start_structure/",df_chain$models[1],"_",df_chain$chain[1],".pdb"))
+  write.pdb(pdb_ligand,paste0("prepared_structures/start_structure/",df_chain$models[2],"_",df_chain$chain[2],".pdb"))
+  write.csv(df_chain,paste0("prepared_structures/chains/",df_complex$name.x[part],".csv"),row.names = F)
 }
 v_chains<-list.files(paste0("prepared_structures/chains/"))
 df_chains<-read.csv(paste0("prepared_structures/chains/",v_chains[1]),stringsAsFactors = F)
-#i<-2
+i<-1
 if(length(v_chains)>1){
   for (i in 2:length(v_chains)) {
     df_chains_add<-read.csv(paste0("prepared_structures/chains/",v_chains[i]),stringsAsFactors = F)
     df_chains<-rbind(df_chains,df_chains_add)
   }
 }
-df_chains<-left_join(df_complex,df_chains,by=c("number"="models"))
+df_chains<-left_join(df_complex,df_chains,by=c("name.x"="models"))
 i<-1
 for (i in 1:nrow(df_chains)) {
-  df_psfgen<-data.frame(matrix(ncol = 1,nrow = 3))
+  df_psfgen<-data.frame(matrix(ncol = 1,nrow = 1))
   df_psfgen[1,1]<-paste0('cd ',part_name,'prepared_structures/\n',
                          'mol delete all\n',  
                          'package require psfgen\n',  
@@ -77,23 +77,26 @@ for (i in 1:nrow(df_chains)) {
   }
   df_psfgen[3,1]<-paste0('pdbalias residue HIS HSE\n',  
                          'pdbalias atom ILE CD1 CD\n')
-  if (!is.na(df_chains$resname_change[i])){  
-    pdb<-
-    df_psfgen[4,1]<-paste0('pdbalias residue ',df_chains$resname_change[i],' ', df_chains$charmm_name[i],'\n')}
+  if ((df_chains$chain[i]=="Z")){  
+    pdb<-read.pdb(paste0(part_name,'prepared_structures/start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb'))
+    a<-unique(pdb$atom$resid)
+    df_psfgen[4,1]<-paste0('pdbalias residue ',a,' ', df_chains$charmm_name[i],'\n')
+  }
   
-  df_psfgen[5,1]<-paste0('segment ',df_chains$chain[i],' { pdb start_structure/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb\n',
+  df_psfgen[5,1]<-paste0('segment ',df_chains$chain[i],' { pdb start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb\n',
                          '}',
-                         '\ncoordpdb start_structure/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb ',df_chains$chain[i],'\n',  
-                         'regenerate angles dihedrals\n', 
-                         'guesscoord\n',
-                         'writepdb prepared/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.pdb\n',
-                         'writepsf prepared/',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.psf\n',
+                         '\ncoordpdb start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb ',df_chains$chain[i],'\n',
+                         '\nregenerate angles dihedrals\n', 
+                         '\nguesscoord\n',
+                        
+                         'writepdb prepared/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb\n',
+                         'writepsf prepared/',df_chains$name.x[i],"_",df_chains$chain[i],'.psf\n',
                          'mol delete all \n \n \n exit now')
-  write.table(df_psfgen,paste0('prepared_structures/tcl/psfgen_',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
-  system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$ligand[i],"_",df_chains$number[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
+  write.table(df_psfgen,paste0('prepared_structures/tcl/psfgen_',df_chains$name.x[i],"_",df_chains$chain[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
+  system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$name.x[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
 df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
-df_chains<-df_chains%>%mutate(structure_name=paste0(ligand,"_",number))
+df_chains<-df_chains%>%mutate(structure_name=name.x)
 v_complex<-unique(df_chains$structure_name)
 
 i<-1
@@ -128,13 +131,13 @@ for (part in 1:length(v_complex)) {
     pdb_start<-read.pdb(paste0("prepared_structures/complex_structure/",v_complex[part],'.pdb'))
     df_pdb<-pdb_start$atom
     
-    x_min<-min(df_pdb$x)-10
-    y_min<-min(df_pdb$y)-10
-    z_min<-min(df_pdb$z)-10
+    x_min<-min(df_pdb$x)-20
+    y_min<-min(df_pdb$y)-20
+    z_min<-min(df_pdb$z)-20
     
-    x_max<-max(df_pdb$x)+10
-    y_max<-max(df_pdb$y)+10
-    z_max<-max(df_pdb$z)+10
+    x_max<-max(df_pdb$x)+20
+    y_max<-max(df_pdb$y)+20
+    z_max<-max(df_pdb$z)+20
     #prepare script to solvate and ionize protein pstructure
     df_psfgen<-data.frame(matrix(ncol = 1,nrow = 1))
     df_psfgen[1,1]<-paste0("cd ",part_name,"prepared_structures/\n",
