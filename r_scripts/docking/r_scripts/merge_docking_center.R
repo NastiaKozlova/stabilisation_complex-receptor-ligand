@@ -139,10 +139,13 @@ df_structure_RMSD<-left_join(df_structure_RMSD_analysis_start,df_log,by=c("name.
 df_structure_RMSD<-ungroup(df_structure_RMSD)
 df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(size_of_group=n())
 df_structure_RMSD<-df_structure_RMSD%>%filter(size_of_group>90)
+df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
+                                  "choline","Propidium", "shelx"),]
 write.csv(df_structure_RMSD,"df_merge_structure_log_center.csv",row.names = F)
-a<-seq(from=min(df_structure_RMSD$affinity),to=max(df_structure_RMSD$affinity),by=0.1)
-p<-ggplot(data=df_structure_RMSD)+geom_freqpoly(aes(x=affinity,colour=name.x),binwidth=0.1)+facet_grid(receptor~ligand)+
-  scale_x_continuous(breaks=a,labels=a)+theme_bw()+guides(color = "none", size = "none")
+a<-seq(from=quantile(df_structure_RMSD$affinity,probs = 0.025),to=quantile(df_structure_RMSD$affinity,probs = 0.975),by=1)
+a<-round(a,digits = 1)
+p<-ggplot(data=df_structure_RMSD)+geom_boxplot(aes(y=affinity,x=ligand))+facet_grid(center.x~.)+
+  scale_y_continuous(breaks=a,labels=a)+theme_bw()+guides(color = "none", size = "none")
 ggsave(p,filename = paste0("energy_ligand_receptor_center.png"), width = 24, height = 15, units = c("cm"), dpi = 200 )
 
 
