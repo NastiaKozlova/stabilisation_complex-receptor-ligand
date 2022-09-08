@@ -139,8 +139,8 @@ df_structure_RMSD<-left_join(df_structure_RMSD_analysis_start,df_log,by=c("name.
 df_structure_RMSD<-ungroup(df_structure_RMSD)
 df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(size_of_group=n())
 df_structure_RMSD<-df_structure_RMSD%>%filter(size_of_group>90)
-df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
-                                  "choline","Propidium", "shelx"),]
+#df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
+#                                  "choline","Propidium", "shelx"),]
 write.csv(df_structure_RMSD,"df_merge_structure_log_center.csv",row.names = F)
 a<-seq(from=quantile(df_structure_RMSD$affinity,probs = 0.025),to=quantile(df_structure_RMSD$affinity,probs = 0.975),by=1)
 a<-round(a,digits = 1)
