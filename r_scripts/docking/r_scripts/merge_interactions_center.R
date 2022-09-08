@@ -59,6 +59,9 @@ for (j in 2:nrow(df_all)) {
 }
 df_pdb<-left_join(df_pdb,df_all,by="name.x")
 df_pdb<-df_pdb%>%filter(persent_interactions==100)
+df_pdb<-df_pdb[df_pdb$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
+                                  "choline","Propidium", "shelx"),]
+#unique(df_pdb$ligand)
 #df_pdb<-df_pdb[df_pdb$ligand%in%c("Na","HPO4"),]
 #df_pdb<-df_pdb%>%filter(receptor=="charmm-gui-1717818438")
 part_start<-strsplit(part_analysis,split = "/",fixed = T)[[1]]
