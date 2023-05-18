@@ -62,10 +62,10 @@ for (i in 1:nrow(df_structure)) {
   df_pdb_filtered<-filter_structure(df_pdb = df_pdb,
                                     x_min = df_structure$x_min[i],
                                     x_max = df_structure$x_max[i],
-                                    y_min = df_structure$x_min[i],
-                                    y_max = df_structure$x_max[i],
-                                    z_min = df_structure$x_min[i],
-                                    z_max = df_structure$x_max[i])
+                                    y_min = df_structure$y_min[i],
+                                    y_max = df_structure$y_max[i],
+                                    z_min = df_structure$z_min[i],
+                                    z_max = df_structure$z_max[i])
   if(ncol(df_pdb_filtered)==3){
     df_type<-rbind(df_type,df_pdb_filtered)
     
