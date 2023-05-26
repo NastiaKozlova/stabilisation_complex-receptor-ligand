@@ -28,6 +28,6 @@ if(length(v_start)>0){
   for (i in 1:length(v_start)) {
     a<-strsplit(v_start[i],split = ".",fixed = T)[[1]][1]
     a<-paste0(part,"out/",a,".pdbqt ",part,"analysis/",a,"_MODEL_%d.pdb")
-    system(command = paste0("python ", part_scriprs,"pdbqt_to_pdbs.py ",a),ignore.stdout=T,wait = T)
+    system(command = paste0("python3 ", part_scriprs,"pdbqt_to_pdbs.py ",a),ignore.stdout=T,wait = T)
   }
 }
