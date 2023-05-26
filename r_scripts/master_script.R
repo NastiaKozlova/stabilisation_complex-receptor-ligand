@@ -82,18 +82,19 @@ for (i in 1:length(v_list_proteins)) {
   #copying sctipts for docking
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
 }
-i<-1
+i<-2
+part_proteins<-paste0(part_start,",",v_list_proteins)
 if(surphase_conut){
   #docking_main_surphase
   for (i in 1:length(v_list_proteins)) {
-    part_protein<-paste0(part_start,",",v_list_proteins[i])
+    part_protein<-part_proteins[i]
     #copying sctipts for docking
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_surphase.R ",part_protein),ignore.stdout=T,wait = T)
   }
 }else{
   for (i in 1:length(v_list_proteins)) {
     #prepare castade start_file
-    part_protein<-paste0(part_start,",",v_list_proteins[i])
+    part_protein<-part_proteins[i]
     #copying sctipts for docking
     system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_center.R ",part_protein),ignore.stdout=T,wait = T)
     #sctipts for cascade docking
