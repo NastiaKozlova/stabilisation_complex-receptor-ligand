@@ -1,21 +1,21 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 #create new log file and save pdb_second
 
 library(bio3d)
 library(dplyr)
 library(ggplot2)
 v_rmsd<-4
-#part_start<-part_analysis
-setwd(part_start)
-df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
+#part_analysis<-part_analysis
+setwd(part_analysis)
+df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 write.csv(df_all,"df_all.csv",row.names = F)
 num_model<-1
 max_num<-5
 if (!file.exists("din/")) {dir.create("din/")}
-if (!dir.exists(paste0(part_start,"din/"))){dir.create(paste0(part_start,"din/"))}
-if (!dir.exists(paste0(part_start,"din/log/"))){dir.create(paste0(part_start,"din/log/"))}
-if (!dir.exists(paste0(part_start,"din/pdb_second/"))){dir.create(paste0(part_start,"din/pdb_second/"))}
+if (!dir.exists(paste0(part_analysis,"din/"))){dir.create(paste0(part_analysis,"din/"))}
+if (!dir.exists(paste0(part_analysis,"din/log/"))){dir.create(paste0(part_analysis,"din/log/"))}
+if (!dir.exists(paste0(part_analysis,"din/pdb_second/"))){dir.create(paste0(part_analysis,"din/pdb_second/"))}
 a<-list.files(paste0("out/"))
 df_topology<-data.frame(matrix(nrow=length(a),ncol =  3))
 colnames(df_topology)<-c("name","run","name_log")
@@ -28,8 +28,10 @@ for (i in 1:length(a)) {
   b<-strsplit(b,split = "_")[[1]]
   df_topology$run[i]<-b[length(b)]
   df_topology$name[i]<-paste0(b[1:(length(b)-1)],collapse="_")
-  if (file.exists(paste0("out/",df_topology$name_log[i],".pdbqt"))){
-    df_topology$exists[i]<-"YES"
+  if (file.exists(paste0("din/log/",df_topology$name_log[i],".csv"))){
+    if (file.exists(paste0("out/",df_topology$name_log[i],".pdbqt"))){
+      df_topology$exists[i]<-"YES"
+    }
   }
 }
 df_topology<-df_topology%>%filter(!is.na(exists))
