@@ -45,11 +45,11 @@ if(length(v_str)>0){
 if(length(lig)==1){
   df_all<-df_all%>%filter(ligand==lig)
 }
-
+i<-1
 if(nrow(df_all)>0){
   for (i in 1:nrow(df_all)) {
     models<-list.files(paste0("pdb_second/",df_all$name[i]))
-    if(length(models)>1){
+    if(length(models)>0){
       if(!file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
         df_RMSD<-data.frame(matrix(ncol = 2,nrow=length(models)))
         colnames(df_RMSD)<-c("models","RMSD")
