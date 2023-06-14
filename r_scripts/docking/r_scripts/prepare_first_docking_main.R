@@ -28,7 +28,7 @@ df_center<-data.frame(matrix(ncol=2,nrow=length(v_center)))
 colnames(df_center)<-c("center","c")
 df_center$center<-v_center
 
-df_ligand_center<-full_join(df_ligand,df_center,by="c")
+df_ligand_center<-full_join(df_ligand,df_center,by="c",relationship = "many-to-many")
 df_ligand_center$c<-NULL
 write.csv(df_ligand_center,paste0("ligand_center.csv"),row.names = F)
 
