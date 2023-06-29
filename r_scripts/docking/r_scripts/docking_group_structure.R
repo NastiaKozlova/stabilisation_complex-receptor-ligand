@@ -3,6 +3,7 @@ part_analysis <- commandArgs(trailingOnly=TRUE)
 part_TEMP<-strsplit(part_analysis,split = ",")[[1]]
 part_start<-part_TEMP[1]
 v_rmsd<-as.numeric(part_TEMP[2])
+v_str<-0
 library(bio3d)
 library(readr)
 library(dplyr)
@@ -20,18 +21,20 @@ if (!dir.exists("groups_fin")) {dir.create("groups_fin")}
 if (!dir.exists("str_fin")) {dir.create("str_fin")}
 df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
+df_all<-df_all%>%mutate(stuture_number=NA)
 #sort to grops
 for (i in 1:nrow(df_all)) {
-
+  
   if(file.exists(paste0("RMSD_analysis/",df_all$name[i],".csv"))){
     print(df_all$name[i])
     if (!dir.exists(paste0("groups/",df_all$name[i]))) {dir.create(paste0("groups/",df_all$name[i]))}
     df_RMSD_all<-read.csv(paste0("RMSD_analysis/",df_all$name[i],".csv"),stringsAsFactors = F)
     df_RMSD_all<-df_RMSD_all%>%filter(RMSD<v_rmsd)
+    df_all$stuture_number[i]<-nrow(df_RMSD_all)
     df_RMSD_all<-df_RMSD_all%>%group_by(models.x)%>%mutate(number=n())
     df_RMSD_all<-ungroup(df_RMSD_all)                                             
-    df_RMSD_all<-df_RMSD_all%>%filter(number>5)
-    if (nrow(df_RMSD_all)>0){
+    df_RMSD_all<-df_RMSD_all%>%filter(number>v_str)
+    if (nrow(df_RMSD_all)>v_str){
       df_RMSD<-df_RMSD_all%>%select(models.x,number)
       df_RMSD<-unique(df_RMSD)
       df_RMSD<-df_RMSD%>%arrange(desc(number))
@@ -39,7 +42,7 @@ for (i in 1:nrow(df_all)) {
       for (j in 1:nrow(df_RMSD)) {
         if (!is.na(df_RMSD$models.x[j])) {
           df_RMSD_all_test<-df_RMSD_all%>%filter(models.x==df_RMSD$models.x[j])
-          if (nrow(df_RMSD_all_test)>5) {
+          if (nrow(df_RMSD_all_test)>0) {
             df_RMSD_all_test<-df_RMSD_all_test%>%mutate(grop_number=j)
             write.csv(df_RMSD_all_test,paste0("groups/",df_all$name[i],"/grop_",j,".csv"),row.names = F) 
           }
@@ -55,7 +58,8 @@ for (i in 1:nrow(df_all)) {
     }
   }
 }
-
+#ggplot(data=df_all)+
+#geom_freqpoly(aes(x=stuture_number))
 
 #combine all groups logs files
 i<-3
@@ -91,9 +95,9 @@ for (j in 1:length(df_all$name)) {
     df_RMSD<-read.csv(paste0("groups_fin/",df_all$name[j],".csv"),stringsAsFactors = F)
     df_RMSD<-df_RMSD%>%filter(models.y==models.x)
     for (q in 1:nrow(df_RMSD)){
-        pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[q],"/",df_RMSD$models.y[q]))
+      pdb<-read.pdb(paste0("pdb_second/",df_RMSD$ligand_center[q],"/",df_RMSD$models.y[q]))
       
-        write.pdb(pdb,paste0("str_fin/",df_RMSD$ligand_center[q],"_",df_RMSD$grop_number[q],"_",df_RMSD$models.y[q]))
+      write.pdb(pdb,paste0("str_fin/",df_RMSD$ligand_center[q],"_",df_RMSD$grop_number[q],"_",df_RMSD$models.y[q]))
     }
   }
 }
@@ -112,6 +116,9 @@ for (i in 1:nrow(df_all)) {
     write.csv(df_fin,paste0("log_fin/",df_all$name[i],".csv"),row.names = F)
   }
 }
+a<-list.files("log_fin")
+df_all<-df_all[paste0(df_all$name,".csv")%in%a,]
+
 df_fin<-read.csv(paste0("log_fin/",df_all$name[1],".csv"),stringsAsFactors = F)
 for (i in 2:length(df_all$name)) {
   if(file.exists(paste0("groups_fin/",df_all$name[i],".csv"))){
