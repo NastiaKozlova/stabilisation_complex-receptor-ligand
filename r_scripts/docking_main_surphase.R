@@ -34,6 +34,8 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_merge_docking_p
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_merge_structure.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_parts.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"affinity_distribution_plot.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"energy_path.R ",part_analysis,"din/"),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"complex_structure_surf.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"atom_interactions_surf.R ",part_analysis),ignore.stdout=T,wait = T)
