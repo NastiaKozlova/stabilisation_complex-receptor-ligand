@@ -11,8 +11,8 @@ v_group_size<-3
 setwd(part_analysis)
 df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
-
 part<-paste0(part_analysis,"din/")
+
 setwd(part)
 if(dir.exists(paste0(part,"fin_merged"))) {system(command = paste0("rm -r ",part,"fin_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"structure_merged"))) {system(command = paste0("rm -r ",part,"structure_merged"),ignore.stdout=T,wait = T)}
@@ -25,18 +25,20 @@ if (!dir.exists("fin_merged")) {dir.create("fin_merged")}
 df_analysis<-df_all%>%select(receptor,ligand)
 df_analysis<-unique(df_analysis)
 df_analysis<-df_analysis%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
-q<-1
+q<-2
 for (q in 1:nrow(df_analysis)) {
    if(!file.exists(paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"))){
       df_analysis$receptor_ligand[q]<-NA
    }
 }
 df_analysis<-df_analysis%>%filter(!is.na(receptor_ligand))
+q<-1
 for (q in 1:nrow(df_analysis)) {
    
    df_structure_RMSD_analysis<-read.csv(paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"),stringsAsFactors = F)
    df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(RMSD<v_rmsd)
    df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%group_by(name.x)%>%mutate(number=n())
+   df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(number>1)
    df_structure_RMSD_analysis<-ungroup(df_structure_RMSD_analysis)       
    if (!dir.exists(paste0("groups_merged/",df_analysis$receptor_ligand[q]))) {
       dir.create(paste0("groups_merged/",df_analysis$receptor_ligand[q]))
@@ -121,7 +123,7 @@ df_log<-df_log%>%mutate(name=paste0(receptor,"_", ligand,"_",                 ce
 df_structure_RMSD<-left_join(df_structure_RMSD_analysis_start,df_log,by=c("name.y" ="name","ligand","receptor"))
 df_structure_RMSD<-ungroup(df_structure_RMSD)
 df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(size_of_group=n())
-a<-seq(from=0,to=max(df_structure_RMSD$size_of_group),by=2)
+a<-seq(from=0,to=max(df_structure_RMSD$size_of_group),by=3)
 p<-ggplot(data = df_structure_RMSD)+
    geom_freqpoly(aes(x=size_of_group),binwidth=1)+
    theme_bw()+
@@ -130,33 +132,16 @@ ggsave(p,filename = paste0("freqpoly_group_size.png"), width = 24, height = 15, 
 
 write.csv(df_structure_RMSD,"df_merge_structure_log.csv",row.names = F)
 df_structure_RMSD<-read.csv("df_merge_structure_log.csv",stringsAsFactors = F)
-v_group_size<-median(df_structure_RMSD$size_of_group)
-#df_structure_RMSD<-df_structure_RMSD%>%filter(size_of_group>v_group_size)
 
-a<-seq(from=round(min(df_structure_RMSD$affinity),digits = 0),to=round(max(df_structure_RMSD$affinity),digits = 0),by=0.5)
+df_structure_RMSD<-df_structure_RMSD%>%filter(size_of_group>v_group_size)
+a<-seq(from=round(min(df_structure_RMSD$affinity,na.rm = T),digits = 0),to=round(max(df_structure_RMSD$affinity,na.rm = T),digits = 0),by=0.5)
+#df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("DMPE","DPPE", "DYPE","PYPE"),]
+df_structure_RMSD_analysis<-ungroup(df_structure_RMSD)
 
-#df_structure_RMSD<-df_structure_RMSD%>%mutate(receptor_ligand=as.factor(receptor_ligand))
-
-kruskal <- df_structure_RMSD %>% kruskal_test(affinity ~ receptor_ligand)
-
-pwc2 <- df_structure_RMSD %>% 
-   dunn_test(affinity ~ receptor_ligand, p.adjust.method = "bonferroni") 
-pwc2<-pwc2%>%filter(p.adj.signif!="ns")
-pwc2<-pwc2%>%filter(p.adj.signif!="*")
-pwc2 <- pwc2 %>% add_xy_position(x = "receptor_ligand")
-p<-ggboxplot(df_structure_RMSD, x = "receptor_ligand", y = "affinity") +
-   stat_pvalue_manual(pwc2) +
-   theme_bw()+
-   labs(
-      subtitle = get_test_label(kruskal, detailed = TRUE),
-      caption = get_pwc_label(pwc2)
-   )
-
-ggsave(p,filename = paste0("energy_ligand_receptor_interactions.png"), width = 24, height = 20, units = c("cm"), dpi = 200 )
-df_structure_RMSD_analysis<-df_structure_RMSD
-df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%group_by(receptor,ligand)%>%
-   mutate(quantile_affinity=quantile(affinity,probs = 0.75))
-df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(affinity<quantile_affinity)
+p<-ggplot(data= df_structure_RMSD)+
+   geom_freqpoly(aes(x=affinity,colour=ligand),binwidth=0.1)
+ggsave(p,   filename = paste0("energy_ligand_receptor_interactions.png"), width = 32, height = 18, units = c("cm"), dpi = 200 ) 
+#energy_ligand_receptor_interactions
 df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%filter(name.x==name.y)
 df_structure_RMSD_analysis<-df_structure_RMSD_analysis%>%select(name.x,receptor,ligand,size_of_group)
 
