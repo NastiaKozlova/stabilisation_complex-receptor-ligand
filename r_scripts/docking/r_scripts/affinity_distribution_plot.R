@@ -16,13 +16,13 @@ library(ggpmisc)
 part<-paste0(part_analysis,"din/")
 setwd(part)
 df_structure_RMSD<-read.csv("df_merge_structure_log.csv",stringsAsFactors = F)
-df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("DMPE","DPPE",
-                                                                   "DPPG","DYPE",
-                                                                   "DYPG","PYPE"),]
+#df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("DMPE","DPPE",
+#                                                                   "DPPG","DYPE",
+#                                                                   "DYPG","PYPE"),]
 # Ненормальное распределение
-ggboxplot(df_structure_RMSD, x = "receptor_ligand", y = "affinity")
+#ggboxplot(df_structure_RMSD, x = "receptor_ligand", y = "affinity")
 
-ggqqplot(df_structure_RMSD, "affinity", facet.by = "receptor_ligand")
+#ggqqplot(df_structure_RMSD, "affinity", facet.by = "receptor_ligand")
 
 kruskal <- df_structure_RMSD %>% kruskal_test(affinity ~ receptor_ligand)
 # Не достоверно!
