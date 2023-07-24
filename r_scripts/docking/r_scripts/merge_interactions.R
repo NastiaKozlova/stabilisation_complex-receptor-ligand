@@ -96,7 +96,7 @@ df_pdb<-left_join(df_pdb,df_all,by="name.x")
 v_seq<-seq(from=0,to =max(df_pdb$resno),by=30)
 #v_seq<-seq(from=0,to =10000,by=10)
 #"MET" "SER" "LEU" "TRP" "LYS" "ILE" "GLY" "VAL" "ALA" "PHE" "THR" "HIS" "ASP" "ARG" "PRO" "TYR" "GLU" "GLN" "ASN" "CYS"
-df_pdb<-df_pdb[df_pdb$ligand%in%c("DMPE", "DPPG", "DYPE", "DYPG",  "PYPE"),]
+#df_pdb<-df_pdb[df_pdb$ligand%in%c("DMPE", "DPPG", "DYPE", "DYPG",  "PYPE"),]
 #df_pdb<-df_pdb[df_pdb$ligand%in%c("DMPE", "DPPG", "DYPE", "DYPG"),]
 df_pdb<-df_pdb%>%group_by(name.x)%>%mutate(total_structure=median(resno))
 df_structure<-df_pdb%>%select(name.x, total_structure, receptor,ligand,receptor_ligand)
@@ -122,7 +122,7 @@ p<-ggplot(df_pdb)+
    theme_bw()+facet_grid(ligand~receptor, scales = "free")+
    scale_x_continuous(breaks = v_seq,labels = v_seq)+
    guides(alpha = "none")
-ggsave(p,   filename = paste0("surf_interactions.png"), width = 50, height = 10*length(unique(df_pdb$ligand)), units = c("cm"), dpi = 200 ) 
+ggsave(p,   filename = paste0("surf_interactions.png"), width = 10*length(unique(df_pdb$ligand)/12*9, height = 10*length(unique(df_pdb$ligand)), units = c("cm"), dpi = 200 ) 
 #part_name<-paste0(part_name,"din/")
 if (!dir.exists(paste0("tost/"))) {dir.create(paste0("tost/"))}
 if (!dir.exists(paste0("tcl/"))) {dir.create(paste0("tcl/"))}
