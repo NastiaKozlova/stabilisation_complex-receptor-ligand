@@ -29,7 +29,7 @@ for (i in 1:nrow(df_active_center)) {
 }
 df_active_center<-df_active_center%>%filter(is.na(x))
 df_active_center<-df_active_center%>%select(type,amino,resno)
-
+j<-1
 for (j in 1:length(v_receptor)) {
   pdb<-read.pdb(paste0("receptor_start/",v_receptor[j],".pdb"))
   df_pdb<-pdb$atom
@@ -41,13 +41,13 @@ for (j in 1:length(v_receptor)) {
   for (i in 1:nrow(df_doking)) {
     df_active<-df_active_center%>%filter(type==df_doking$type[i])
     df_pdb_a<-df_pdb[df_pdb$resno%in%df_active$resno,]
-    df_doking$x_len[i]<-max(df_pdb_a$x)-min(df_pdb_a$x)+10
+    df_doking$x_len[i]<-max(df_pdb_a$x)-min(df_pdb_a$x)+30
     df_doking$x_mean[i]<-(max(df_pdb_a$x)+min(df_pdb_a$x))/2
   
-    df_doking$y_len[i]<-max(df_pdb_a$y)-min(df_pdb_a$y)+10
+    df_doking$y_len[i]<-max(df_pdb_a$y)-min(df_pdb_a$y)+30
     df_doking$y_mean[i]<-(max(df_pdb_a$y)+min(df_pdb_a$y))/2
   
-    df_doking$z_len[i]<-max(df_pdb_a$z)-min(df_pdb_a$z)+10
+    df_doking$z_len[i]<-max(df_pdb_a$z)-min(df_pdb_a$z)+30
     df_doking$z_mean[i]<-(max(df_pdb_a$z)+min(df_pdb_a$z))/2
   }
   a<-list.files("ligand/")
