@@ -44,7 +44,7 @@ for (q in 1:nrow(df_analysis)) {
   }
 }
 df_analysis<-df_analysis%>%filter(!is.na(receptor))
-q<-15
+q<-1
 for (q in 1:nrow(df_analysis)) {
   
   df_structure_RMSD_analysis<-read.csv(paste0("RMSD_merged_center/",df_analysis$receptor_ligand[q],".csv"),stringsAsFactors = F)
@@ -117,7 +117,7 @@ df_structure_RMSD_analysis_start<-read.csv(paste0("fin_merged_center/",df_analys
 
 df_structure_RMSD_analysis_start<-df_structure_RMSD_analysis_start%>%filter(is.na(name.x))
 df_structure_RMSD_analysis_start<-df_structure_RMSD_analysis_start%>%filter(!is.na(name.x))
-j<-15
+j<-1
 if(nrow(df_analysis)>0){
   for (j in 1:nrow(df_analysis)) {
     if(file.exists(paste0("fin_merged_center/",df_analysis$receptor_ligand[j],".csv"))){
@@ -131,27 +131,39 @@ df_structure_RMSD_analysis_start<-df_structure_RMSD_analysis_start%>%mutate(rece
 df_structure_RMSD_analysis_start<-df_structure_RMSD_analysis_start%>%group_by(name.x)%>%mutate(size_of_group=n())
 df_structure_RMSD_analysis<-df_structure_RMSD_analysis_start%>%select(name.x,receptor,ligand)
 
-df_log<-read.csv("log_fin.csv",stringsAsFactors = F)
+df_log<-read.csv("log_fin_center.csv",stringsAsFactors = F)
 df_log<-df_log%>%select(models.x,models.y,grop_number,ligand,affinity,center,receptor,ligand,new_number)
 
-df_log<-df_log%>%mutate(name=paste0(receptor,"_", ligand,"_",                 center,"_",grop_number,"_",models.x))
-df_structure_RMSD<-left_join(df_structure_RMSD_analysis_start,df_log,by=c("name.y" ="name","ligand","receptor"))
-df_structure_RMSD<-ungroup(df_structure_RMSD)
-df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(size_of_group=n())
-df_structure_RMSD<-df_structure_RMSD%>%filter(size_of_group>90)
-#df_structure_RMSD<-df_structure_RMSD[df_structure_RMSD$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
-#                                  "choline","Propidium", "shelx"),]
-write.csv(df_structure_RMSD,"df_merge_structure_log_center.csv",row.names = F)
-a<-seq(from=quantile(df_structure_RMSD$affinity,probs = 0.025),to=quantile(df_structure_RMSD$affinity,probs = 0.975),by=1)
-a<-round(a,digits = 1)
-p<-ggplot(data=df_structure_RMSD)+geom_boxplot(aes(y=affinity,x=ligand))+facet_grid(center.x~.)+
-  scale_y_continuous(breaks=a,labels=a)+theme_bw()+guides(color = "none", size = "none")
+#a<-seq(from=quantile(df_structure_RMSD$affinity,probs = 0.025,na.rm = T),
+#       to=quantile(df_structure_RMSD$affinity,na.rm = T,probs = 0.975),by=1)
+#a<-round(a,digits = 1)
+p<-ggplot(data=df_log)+geom_density(aes(x=affinity,colour=ligand))+facet_grid(center~.)+
+  #scale_y_continuous(breaks=a,labels=a)+
+  theme_bw()#+guides(color = "none", size = "none")
+p
 ggsave(p,filename = paste0("energy_ligand_receptor_center.png"), width = 24, height = 15, units = c("cm"), dpi = 200 )
 
 
-df_structure_RMSD_analysis<-df_structure_RMSD%>%select(name.x,receptor,ligand,size_of_group)
-df_structure_RMSD_analysis<-unique(df_structure_RMSD_analysis)
+#df_structure_RMSD_analysis<-df_structure_RMSD%>%select(name.x,receptor,ligand,size_of_group)
+#df_structure_RMSD_analysis<-unique(df_structure_RMSD_analysis)
+
+df_log<-df_log%>%mutate(name=paste0(receptor,"_", ligand,"_",                 center,"_",grop_number,"_",models.x))
+df_structure_RMSD<-left_join(df_structure_RMSD_analysis_start,df_log,by=c("name.x" ="name",
+                                                                          "ligand","receptor"),relationship = "many-to-many")
+df_structure_RMSD<-ungroup(df_structure_RMSD)
+df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(size_of_group=n())
+write.csv(df_structure_RMSD,"df_merge_structure_log_center.csv",row.names = F)
+#a<-seq(from=quantile(df_structure_RMSD$affinity,probs = 0.025,na.rm = T),
+#       to=quantile(df_structure_RMSD$affinity,na.rm = T,probs = 0.975),by=1)
+#a<-round(a,digits = 1)
+#p<-ggplot(data=df_structure_RMSD)+geom_boxplot(aes(y=affinity,x=ligand))+facet_grid(center.x~.)+
+#  scale_y_continuous(breaks=a,labels=a)+theme_bw()+guides(color = "none", size = "none")
+#ggsave(p,filename = paste0("energy_ligand_receptor_center.png"), width = 24, height = 15, units = c("cm"), dpi = 200 )
+
+
+#df_structure_RMSD_analysis<-df_structure_RMSD%>%select(name.x,receptor,ligand,size_of_group)
+#df_structure_RMSD_analysis<-unique(df_structure_RMSD_analysis)
 for (j in 1:nrow(df_structure_RMSD_analysis)) {
-  pdb_1<-read.pdb(paste0("str_fin/",df_structure_RMSD_analysis$name.x[j]))  
+  pdb_1<-read.pdb(paste0("str_fin_center/",df_structure_RMSD_analysis$name.x[j]))  
   write.pdb(pdb_1,paste0("structure_merged_center/",df_structure_RMSD_analysis$name.x[j]))
 }
