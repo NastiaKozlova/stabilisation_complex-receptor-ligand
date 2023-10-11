@@ -68,15 +68,12 @@ for (j in 1:length(v_structure)) {
    }
 }
 
-#df_all_test<-df_all
-#df_all<-df_all_test
-#df_all<-df_all[df_all$name.x%in%v_structure_test,]
 df_all<-df_all%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
 df_all<-df_all%>%select(name.x,receptor,ligand,receptor_ligand)
 df_all<-unique(df_all)
-df_all<-df_all%>%group_by(receptor_ligand)%>%mutate(number=1:n())
-df_all<-df_all%>%mutate(number=as.character(number))
-df_all<-ungroup(df_all)
+#df_all<-df_all%>%group_by(receptor_ligand)%>%mutate(number=1:n())
+#df_all<-df_all%>%mutate(number=as.character(number))
+#df_all<-ungroup(df_all)
 df_pdb<-read.csv(paste0("interaction_surf/",df_all$name.x[1],".csv"),stringsAsFactors = F)
 df_pdb<-df_pdb%>%mutate(name.x=df_all$name.x[1])
 df_pdb<-df_pdb%>%filter(persent_interactions==100)
@@ -89,23 +86,24 @@ for (j in 2:nrow(df_all)) {
 
 df_pdb<-left_join(df_pdb,df_all,by="name.x")
 
-#part_start<-strsplit(part_name,split = "/",fixed = T)[[1]]
-#part_start<-paste0(part_start[1:(length(part_start)-3)],collapse = "/")
-#part_start<-paste0(part_start,"/")
-#df_topology<-read.csv(paste0(part_start,"start/df_topology.csv"),stringsAsFactors = F)
 v_seq<-seq(from=0,to =max(df_pdb$resno),by=30)
-#v_seq<-seq(from=0,to =10000,by=10)
-#"MET" "SER" "LEU" "TRP" "LYS" "ILE" "GLY" "VAL" "ALA" "PHE" "THR" "HIS" "ASP" "ARG" "PRO" "TYR" "GLU" "GLN" "ASN" "CYS"
-#df_pdb<-df_pdb[df_pdb$ligand%in%c("DMPE", "DPPG", "DYPE", "DYPG",  "PYPE"),]
-#df_pdb<-df_pdb[df_pdb$ligand%in%c("DMPE", "DPPG", "DYPE", "DYPG"),]
-df_pdb<-df_pdb%>%group_by(name.x)%>%mutate(total_structure=median(resno))
-df_structure<-df_pdb%>%select(name.x, total_structure, receptor,ligand,receptor_ligand)
+df_structure<-df_pdb%>%select(name.x, z, receptor,ligand,receptor_ligand)
+df_structure<-df_structure%>%group_by(receptor_ligand)%>%mutate(z=median(z))#%>%mutate(total_structure=1:n())
+#df_structure<-df_structure[df_structure$ligand%in%c("chloramphenicol"),]
 df_structure<-unique(df_structure)
+df_structure<-df_structure%>%group_by(receptor_ligand)%>%arrange(z)%>%mutate(total_structure=1:n())
+#df_pdb<-df_pdb%>%mutate(total_structure=z)
+
+
+
 df_structure<-df_structure%>%group_by(ligand,receptor)%>%arrange(total_structure)%>%mutate(number=1:n())
+ggplot(data=df_structure)+
+  geom_point(aes(x=number,y=total_structure))+
+  facet_grid(ligand~receptor)
 df_pdb$number<-NULL
 df_pdb<-left_join(df_pdb,df_structure)
 #df_pdb<-df_pdb%>%group_by(name.x)%>%mutate(total_structure=median(resno))
-df_pdb<-df_pdb%>%mutate(number=as.numeric(number))
+#df_pdb<-df_pdb%>%mutate(number=as.numeric(number))
 #write.csv(df_pdb,"full_aminoacids_interactions.csv",row.names = F)
 #ggplot(df_pdb)+
 #   geom_point(aes(x =total_structure , y =number))
@@ -115,20 +113,23 @@ df_pdb$resid[df_pdb$resid%in%c("MET","SER", "LEU","ILE", "GLY", "VAL", "ALA", "T
 df_pdb$resid[df_pdb$resid%in%c("TRP", "PHE", "TYR")]<-"AROMATIC"
 write.csv(df_pdb,"full_aminoacids_interactions.csv",row.names = F)
 p<-ggplot(df_pdb)+
-   geom_rect(aes(xmin = resno-0.5, xmax = resno+0.5, ymin =number-0.5 , ymax = number+0.5,fill=resid,colour=resid))+
+   geom_rect(aes(xmin = resno-0.5, xmax = resno+0.5, ymin =z-0.5 , ymax = z+0.5,fill=resid,colour=resid))+
    #geom_freqpoly(aes(x=resno),binwidth=1,data=df_pdb)+
    #geom_point(aes(x =resno , y =number))+
    
    theme_bw()+facet_grid(ligand~receptor, scales = "free")+
-   scale_x_continuous(breaks = v_seq,labels = v_seq)+
+ #  scale_x_continuous(breaks = v_seq,labels = v_seq)+
    guides(alpha = "none")
-ggsave(p,   filename = paste0("surf_interactions.png"), width = 10*length(unique(df_pdb$ligand)/12*9, height = 10*length(unique(df_pdb$ligand)), units = c("cm"), dpi = 200 ) 
+ggsave(p,   filename = paste0("surf_interactions.png"), 
+       width = (10*length(unique(df_pdb$ligand))/12*9), height = 10*length(unique(df_pdb$ligand)), units = c("cm"), dpi = 200 ) 
 #part_name<-paste0(part_name,"din/")
 if (!dir.exists(paste0("tost/"))) {dir.create(paste0("tost/"))}
 if (!dir.exists(paste0("tcl/"))) {dir.create(paste0("tcl/"))}
 if (!dir.exists(paste0("interaction_path/"))) {dir.create(paste0("interaction_path/"))}
 i<-1
 write.csv(df_structure,"path_structures.csv",row.names = F)
+if (dir.exists(paste0("tost/"))) {system(command = paste0("rm -r ",part_name,"din/tost/"))}
+if (!dir.exists(paste0("tost/"))) { dir.create(paste0("tost/"))}
 for (i in 1:nrow(df_structure)) {
    if (!dir.exists(paste0("tost/",df_structure$receptor[i],"_",df_structure$ligand[i]))) {
       dir.create(paste0("tost/",df_structure$receptor[i],"_",df_structure$ligand[i]))}
@@ -141,6 +142,29 @@ for (i in 1:nrow(df_structure)) {
    #  pdb<-read.pdb(paste0(part_name,"str_fin/",df_merge$name.x[i]))
    write.pdb(pdb_complex,paste0("tost/",df_structure$receptor[i],"_",df_structure$ligand[i],"/",df_structure$number[i],"_",df_structure$name.x[i]))
 }
+
+if (dir.exists(paste0("affinity_structures/"))) {system(command = paste0("rm -r ",part_name,"din/affinity_structures/"))}
+if (!dir.exists(paste0("affinity_structures/"))) { dir.create(paste0("affinity_structures/"))}
+df_structure_RMSD<-read.csv("df_merge_structure_log.csv",stringsAsFactors = F)
+df_structure_RMSD<-left_join(df_structure,df_structure_RMSD,by=c("name.x", "receptor", "ligand"))
+df_structure_RMSD<-df_structure_RMSD%>%group_by(name.x)%>%mutate(mean_affinity=mean(affinity))
+df_structure_RMSD<-df_structure_RMSD%>%mutate(mean_affinity=round(mean_affinity,digits = 0))
+df_structure_RMSD<-df_structure_RMSD%>%select(name.x,receptor,ligand,mean_affinity)
+df_structure_RMSD<-unique(df_structure_RMSD)
+i<-1
+for (i in 1:nrow(df_structure_RMSD)) {
+  if (!dir.exists(paste0("affinity_structures/",df_structure_RMSD$receptor[i],"_",df_structure_RMSD$ligand[i]))) {
+    dir.create(paste0("affinity_structures/",df_structure_RMSD$receptor[i],"_",df_structure_RMSD$ligand[i]))}
+  receptor_name<-paste0(part_name,"receptor_start/",df_structure_RMSD$receptor[i],".pdb")
+  ligand_name<-paste0("str_fin/",df_structure$name.x[i])
+  pdb_receptor<-read.pdb(receptor_name)
+  pdb_ligand<-read.pdb(ligand_name)
+  pdb_complex<-cat.pdb(pdb_receptor, pdb_ligand, rechain=TRUE)
+  
+  #  pdb<-read.pdb(paste0(part_name,"str_fin/",df_merge$name.x[i]))
+  write.pdb(pdb_complex,paste0("affinity_structures/",df_structure_RMSD$receptor[i],"_",df_structure_RMSD$ligand[i],"/",df_structure_RMSD$mean_affinity[i],"_",df_structure$name.x[i]))
+}
+
 df_select<-df_structure%>%select(receptor,ligand)
 df_select<-unique(df_select)
 i<-1
