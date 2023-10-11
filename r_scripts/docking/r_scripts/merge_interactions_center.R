@@ -18,6 +18,8 @@ i<-1
 j<-1
 p<-1
 v_structure<-unique(df_all$name.x)
+#df_all<-df_all%>%filter(!is.na(receptor))
+#df_all<-df_all%>%mutate(receptor=receptor.x)
 for (j in 1:length(v_structure)) {
   df_complex<-df_all%>%filter(name.x==v_structure[j])
   pdb<-read.pdb(paste0(part_analysis,"receptor_start/",df_all$receptor[j],".pdb"))
@@ -50,8 +52,12 @@ df_all<-unique(df_all)
 df_all<-df_all%>%group_by(receptor_ligand)%>%mutate(number=1:n())
 df_all<-df_all%>%mutate(number=as.character(number))
 df_all<-ungroup(df_all)
-df_pdb<-read.csv(paste0("interaction_center/",df_all$name.x[1],".csv"),stringsAsFactors = F)
+a<-list.files("interaction_center/")
+#df_all<-df_all$name.x
+#1:length(v_structure)
+df_pdb<-read.csv(paste0("interaction_center/",v_structure[1],".csv"),stringsAsFactors = F)
 df_pdb<-df_pdb%>%mutate(name.x=df_all$name.x[1])
+
 for (j in 2:nrow(df_all)) {
   df_pdb_add<-read.csv(paste0("interaction_center/",df_all$name.x[j],".csv"),stringsAsFactors = F)
   df_pdb_add<-df_pdb_add%>%mutate(name.x=df_all$name.x[j])
@@ -59,8 +65,8 @@ for (j in 2:nrow(df_all)) {
 }
 df_pdb<-left_join(df_pdb,df_all,by="name.x")
 df_pdb<-df_pdb%>%filter(persent_interactions==100)
-df_pdb<-df_pdb[df_pdb$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
-                                  "choline","Propidium", "shelx"),]
+#df_pdb<-df_pdb[df_pdb$ligand%in%c("ACh","BCh", "bogdan21", "bukharov214",       
+#                                  "choline","Propidium", "shelx"),]
 #unique(df_pdb$ligand)
 #df_pdb<-df_pdb[df_pdb$ligand%in%c("Na","HPO4"),]
 #df_pdb<-df_pdb%>%filter(receptor=="charmm-gui-1717818438")
@@ -75,4 +81,4 @@ p<-ggplot()+
 #  geom_rect(aes(xmin = seq_beg-0.5, xmax = seq_end+0.5, ymin = -Inf, ymax = Inf,fill=topology,alpha=0.1),data=df_topology)+
   theme_bw()+facet_grid(ligand~center.x, scales = "free")+
   scale_x_continuous(breaks = v_seq,labels = v_seq)+guides(alpha = "none")
-ggsave(p,   filename = paste0("center_interactions.png"), width = 60, height = 15, units = c("cm"), dpi = 200 ) 
+ggsave(p,   filename = paste0("center_interactions.png"), width = 60, height = 30, units = c("cm"), dpi = 200 ) 
