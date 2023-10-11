@@ -54,7 +54,8 @@ if(nrow(df_all)>0){
         df_RMSD<-data.frame(matrix(ncol = 2,nrow=length(models)))
         colnames(df_RMSD)<-c("models","RMSD")
         df_RMSD$models<-models
-        df_RMSD_all<-full_join(df_RMSD,df_RMSD,by="RMSD")
+        df_RMSD_all<-full_join(df_RMSD,df_RMSD,by="RMSD",
+                               relationship ="many-to-many")
         for (j in 1:nrow(df_RMSD_all)) {
           pdb_1<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.x[j]))
           pdb_2<-read.pdb(paste0("pdb_second/",df_all$name[i],"/",df_RMSD_all$models.y[j]))
