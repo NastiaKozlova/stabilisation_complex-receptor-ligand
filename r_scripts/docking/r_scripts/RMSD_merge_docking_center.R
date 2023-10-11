@@ -34,7 +34,7 @@ if (!dir.exists("structure_merged_center")) {dir.create("structure_merged_center
 if (!dir.exists("fin_merged_center")) {dir.create("fin_merged_center")}
 
 v_protein_name<-unique(df_all$receptor)
-v_structure_RMSD<-list.files(paste0("str_fin/"))
+v_structure_RMSD<-list.files(paste0("str_fin_center/"))
 df_structure_RMSD<-data.frame(matrix(ncol=5,nrow = length(v_structure_RMSD)))
 colnames(df_structure_RMSD)<-c("name","receptor","ligand","center","RMSD")
 df_structure_RMSD$name<-v_structure_RMSD
@@ -58,14 +58,17 @@ df_analysis<-df_structure_RMSD%>%select(receptor,ligand)
 df_analysis<-unique(df_analysis)
 df_analysis<-df_analysis%>%mutate(receptor_ligand=paste0(receptor,"_",ligand))
 q<-1
+j<-1
 for (q in 1:nrow(df_analysis)) {
   df_structure_RMSD_TEMP<-df_structure_RMSD%>%filter(receptor==df_analysis$receptor[q])
   df_structure_RMSD_TEMP<-df_structure_RMSD_TEMP%>%filter(ligand==df_analysis$ligand[q])
   if(!file.exists(paste0("RMSD_merged_center/",df_analysis$receptor_ligand[q],".csv"))){
-    df_structure_RMSD_analysis<-left_join(df_structure_RMSD_TEMP,df_structure_RMSD_TEMP,by=c("receptor","ligand","RMSD"))
+    df_structure_RMSD_analysis<-left_join(df_structure_RMSD_TEMP,df_structure_RMSD_TEMP,
+                                          by=c("receptor","ligand","RMSD"),
+                                          relationship = "many-to-many")
     for (j in 1:nrow(df_structure_RMSD_analysis)) {
-      pdb_1<-read.pdb(paste0("str_fin/",df_structure_RMSD_analysis$name.x[j]))
-      pdb_2<-read.pdb(paste0("str_fin/",df_structure_RMSD_analysis$name.y[j]))
+      pdb_1<-read.pdb(paste0("str_fin_center/",df_structure_RMSD_analysis$name.x[j]))
+      pdb_2<-read.pdb(paste0("str_fin_center/",df_structure_RMSD_analysis$name.y[j]))
       
       df_structure_RMSD_analysis$RMSD[j]<-rmsd(pdb_1,pdb_2)
     }
