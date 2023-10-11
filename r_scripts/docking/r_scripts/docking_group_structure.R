@@ -3,7 +3,7 @@ part_analysis <- commandArgs(trailingOnly=TRUE)
 part_TEMP<-strsplit(part_analysis,split = ",")[[1]]
 part_start<-part_TEMP[1]
 v_rmsd<-as.numeric(part_TEMP[2])
-v_str<-0
+v_str<-1
 library(bio3d)
 library(readr)
 library(dplyr)
