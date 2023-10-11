@@ -4,7 +4,7 @@ library(bio3d)
 library(dplyr)
 setwd(part)
 #repetition
-max_num<-100
+max_num<-10
 v_receptor<-list.files("receptor_start")
 a<-c()
 for (i in 1:length(v_receptor)){
