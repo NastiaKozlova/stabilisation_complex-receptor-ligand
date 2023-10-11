@@ -18,20 +18,25 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_first_dockin
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_name),ignore.stdout=T,wait = T)
 #log to csv
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",part_analysis),ignore.stdout=T,wait = T)
-system(command = paste0("chmod +x ",part_analysis,"prepare_log_csv.py "),ignore.stdout=T,wait = T)
-system(command = paste0("python3 ", part_analysis,"prepare_log_csv.py"),ignore.stdout=T,wait = T)
+#convert all data to the appropriate format for analysis
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis_center.R ",part_analysis),ignore.stdout=T,wait = T)
+#calculate interactions between receptor and ligands
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
+#system(command = paste0("chmod +x ",part_analysis,"prepare_log_csv.py "),ignore.stdout=T,wait = T)
+#system(command = paste0("python3 ", part_analysis,"prepare_log_csv.py"),ignore.stdout=T,wait = T)
 
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
+
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_structure.R ",part_analysis,",1"),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_group_structure_center.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_group_center.R ",part_analysis,",2.5"),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_merge_docking_center.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_merge_structure_center.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_docking_center.R ",part_analysis),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"merge_interactions_center.R ",part_analysis),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"affinity_distribution_plot_center.R ",part_analysis),ignore.stdout=T,wait = T)
 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"complex_structure_center.R ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"atom_interactions_center.R ",part_analysis),ignore.stdout=T,wait = T)
