@@ -6,7 +6,7 @@ library(bio3d)
 library(dplyr)
 library(ggplot2)
 library(rstatix)
-v_rmsd<-2.5
+v_rmsd<-3
 
 setwd(part_analysis)
 df_all<-read.csv(paste0("df_all.csv"),stringsAsFactors = F)
