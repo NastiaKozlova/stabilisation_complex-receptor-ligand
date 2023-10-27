@@ -16,7 +16,7 @@ if(dir.exists(paste0(part_analysis,"din/complex_structure_center"))) {system(com
 if(!dir.exists(paste0(part_analysis,"din/complex_structure_center"))){dir.create(paste0(part_analysis,"din/complex_structure_center"))}
 for (i in 1:nrow(df_merge)) {
   receptor_name<-paste0(part_analysis,"receptor_start/",df_merge$receptor[i],".pdb")
-  ligand_name<-paste0(part_analysis,"din/str_fin/",df_merge$name.x[i])
+  ligand_name<-paste0(part_analysis,"din/str_fin_center/",df_merge$name.x[i])
   pdb_receptor<-read.pdb(receptor_name)
   pdb_ligand<-read.pdb(ligand_name)
   pdb_complex<-cat.pdb(pdb_receptor, pdb_ligand, rechain=TRUE)
