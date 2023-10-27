@@ -16,8 +16,11 @@ df_active_center<-df_active_center%>%select(name.x,receptor,ligand,center.x,
 df_active_center<-ungroup(df_active_center)
 df_active_center<-unique(df_active_center)
 df_active_center<-df_active_center%>%mutate(name=paste0(receptor,"_",ligand,"_",center.x))
-df_active_center<-left_join(df_active_center,df_resname_change,by=c("ligand"="ligand_name"))
-df_active_center<-df_active_center%>%filter(!is.na(charmm_name))
+df_active_center<-df_active_center%>%filter(ligand!="chloramphenicol")
+df_active_center<-df_active_center%>%filter(ligand!="norfloxacin")
+#df_active_center<-left_join(df_active_center,df_resname_change,by=c("ligand"="ligand_name"))
+
+#df_active_center<-df_active_center%>%filter(!is.na(charmm_name))
 #df_active_center<-df_active_center%>%filter("models.x"      "RMSD"          "models.y"      "number"        "grop_number"   "group"         "ligand_center" "receptor"     
 #                                            [9] "ligand"        "center"        "size_of_group" "name")
 #<-data.frame(matrix(ncol = 4,nrow = length(v_ligands)))
