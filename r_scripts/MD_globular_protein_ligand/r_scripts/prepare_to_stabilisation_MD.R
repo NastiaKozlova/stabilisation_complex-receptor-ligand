@@ -26,13 +26,13 @@ for (part in 1:nrow(df_complex)) {
   if(!dir.exists(paste0("MD/"))){dir.create(paste0("MD/"))}
   if(!dir.exists(paste0("MD/",df_complex$number[part]))){dir.create(paste0("MD/",df_complex$number[part]))}
   if(!dir.exists(paste0("MD/",df_complex$number[part]))){dir.create(paste0("MD/",df_complex$number[part]))}
-  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$number[part]),ignore.stdout=T,wait = T)
+  #  system(command = paste0("cp -r ",part_name,"start/toppar/ ",part_name,"MD/",df_complex$number[part]),ignore.stdout=T,wait = T)
   #prepare psf and pdb parts of complex
   pdb_ligand<-read.pdb(paste0("start/ligands_center/",df_complex$name.x[part]))
   pdb_receptor<-read.pdb(paste0("start/receptor/",df_complex$receptor[part],".pdb"))
   pdb_ligand$atom$chain<-"Z"
   pdb_ligand$atom$elesy<-"Z"
-
+  
   v_chain_ligand<-unique(pdb_ligand$atom$chain)
   v_chain_receptor<-unique(pdb_receptor$atom$chain)
   
@@ -65,22 +65,70 @@ for (i in 1:nrow(df_chains)) {
                          'mol delete all\n',  
                          'package require psfgen\n',  
                          'resetpsf\n',  
-                         'topology ',part_name,'start/toppar/top_all36_prot.rtf\n',  
-                         'topology ',part_name,'start/toppar/toppar_water_ions_namd.str\n',  
-                         'topology ',part_name,'start/toppar/top_all36_carb.rtf\n',  
-                         'topology ',part_name,'start/toppar/top_all36_cgenff.rtf\n',  
-                         'topology ',part_name,'start/toppar/top_all36_lipid.rtf\n',  
-                         'topology ',part_name,'start/toppar/top_all36_na.rtf\n',  
-                         'topology ',part_name,'start/toppar/top_all36_prot.rtf\n')
-  if (!is.na(df_chains$force_field[i])){  
-    df_psfgen[2,1]<-paste0('topology ',part_name,'start/toppar/',df_chains$force_field[i],'\n')
-  }
+                         'topology ',part_name,'start/toppar/toppar_water_ions.str\n',
+                         'topology ',part_name,'start/toppar/toppar_ions_won.str\n',
+                         'topology ',part_name,'start/toppar/toppar_dum_noble_gases.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_synthetic_polymer_patch.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_synthetic_polymer.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_retinol.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_na_combined.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_modify_res.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_model.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_heme.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_fluoro_alkanes.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_c36m_d_aminoacids.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_prot_arg0.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_polymer_solvent.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_na_rna_modified.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_nano_lig_patch.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_nano_lig.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_na_nad_ppi.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_moreions.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_yeast.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_tag.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_sphingo.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_prot.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_mycobacterial.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_model.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_miscellaneous.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_lps.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_lnp.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_inositol.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_hmmm.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_ether.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_detergent.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_dag.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_cholesterol.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_cardiolipin.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_bacterial.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_lipid_archaeal.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_label_spin.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_label_fluorophore.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_carb_imlab.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_carb_glycopeptide.str\n',
+                         'topology ',part_name,'start/toppar/toppar_all36_carb_glycolipid.str\n',
+                         'topology ',part_name,'start/toppar/top_interface.rtf\n',
+                         'topology ',part_name,'start/toppar/top_all36_prot.rtf\n',
+                         'topology ',part_name,'start/toppar/top_all36_na.rtf\n',
+                         'topology ',part_name,'start/toppar/top_all36_lipid.rtf\n',
+                         'topology ',part_name,'start/toppar/top_all36_cgenff.rtf\n',
+                         'topology ',part_name,'start/toppar/top_all36_carb.rtf\n',
+                         'topology ',part_name,'start/toppar/tip216.crd\n',
+                         'topology ',part_name,'start/toppar/cam.str\n')
+  #  if (!is.na(df_chains$force_field[i])){  
+  #  df_psfgen[2,1]<-paste0('topology ',part_name,'start/toppar/',df_chains$ligand[i],'\n')
+  #  }
   df_psfgen[3,1]<-paste0('pdbalias residue HIS HSE\n',  
                          'pdbalias atom ILE CD1 CD\n')
+  b<-paste0(strsplit(df_chains$ligand[i],split = "",fixed = T)[[1]][3:4],collapse = "")
   if ((df_chains$chain[i]=="Z")){  
     pdb<-read.pdb(paste0(part_name,'prepared_structures/start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb'))
     a<-unique(pdb$atom$resid)
-    df_psfgen[4,1]<-paste0('pdbalias residue ',a,' ', df_chains$charmm_name[i],'\n')
+    if(b=="CL"){
+      df_psfgen[4,1]<-paste0('pdbalias residue ',a,' ', df_chains$ligand[i],2,'\n')
+    }else{
+      df_psfgen[4,1]<-paste0('pdbalias residue ',a,' ', df_chains$ligand[i],'\n')
+    }
   }
   
   df_psfgen[5,1]<-paste0('segment ',df_chains$chain[i],' { pdb start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb\n',
@@ -88,14 +136,14 @@ for (i in 1:nrow(df_chains)) {
                          '\ncoordpdb start_structure/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb ',df_chains$chain[i],'\n',
                          '\nregenerate angles dihedrals\n', 
                          '\nguesscoord\n',
-                        
+                         
                          'writepdb prepared/',df_chains$name.x[i],"_",df_chains$chain[i],'.pdb\n',
                          'writepsf prepared/',df_chains$name.x[i],"_",df_chains$chain[i],'.psf\n',
                          'mol delete all \n \n \n exit now')
   write.table(df_psfgen,paste0('prepared_structures/tcl/psfgen_',df_chains$name.x[i],"_",df_chains$chain[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
   system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/psfgen_',df_chains$name.x[i],"_",df_chains$chain[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
-df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
+#df_complex<-read.csv("start/complex.csv",stringsAsFactors = F)
 df_chains<-df_chains%>%mutate(structure_name=name.x)
 v_complex<-unique(df_chains$structure_name)
 
@@ -105,7 +153,7 @@ for (i in 1:length(v_complex)) {
   df_chain_TEMP<-df_chains%>%filter(structure_name==v_complex[i])
   df_chain_TEMP<-df_chain_TEMP%>%mutate(psf_merge=paste0(structure_name,"_",chain))
   df_chain_TEMP<-unique(df_chain_TEMP)
-
+  
   df_tcl<-  c(paste0("cd ",part_name,"prepared_structures/\n",
                      "mol delete all\n",
                      "package require psfgen\n",
@@ -124,320 +172,65 @@ for (i in 1:length(v_complex)) {
   write.table(df_tcl,paste0('prepared_structures/tcl/combine_',v_complex[i],'.tcl'),na = "\n",col.names = F,row.names = F,quote = F)
   system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/combine_',v_complex[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
-part<-2
-for (part in 1:length(v_complex)) {
-  print(paste0(v_complex[part]))
-  if(file.exists(paste0("prepared_structures/complex_structure/",v_complex[part],'.pdb'))){
-    pdb_start<-read.pdb(paste0("prepared_structures/complex_structure/",v_complex[part],'.pdb'))
-    df_pdb<-pdb_start$atom
-    
-    x_min<-min(df_pdb$x)-20
-    y_min<-min(df_pdb$y)-20
-    z_min<-min(df_pdb$z)-20
-    
-    x_max<-max(df_pdb$x)+20
-    y_max<-max(df_pdb$y)+20
-    z_max<-max(df_pdb$z)+20
-    #prepare script to solvate and ionize protein pstructure
-    df_psfgen<-data.frame(matrix(ncol = 1,nrow = 1))
-    df_psfgen[1,1]<-paste0("cd ",part_name,"prepared_structures/\n",
-                           'package require solvate \n','package require autoionize \n',
-                           'solvate complex_structure/',v_complex[part],'.psf ',
-                           'complex_structure/',v_complex[part],'.pdb',
-                           ' -o complex_structure/solvate_',v_complex[part],' -b 1.5 -minmax {{',x_min,' ',y_min,' ',z_min,'} {',x_max,' ',y_max,' ',z_max,'}}\n',
-                           'autoionize -psf complex_structure/solvate_',v_complex[part],'.psf -pdb complex_structure/solvate_',v_complex[part],'.pdb -sc 0.15 -o fin_complex_structure/ionized_',v_complex[part],
-                           '\nmol delete all\n\nexit now')
-    write.table(df_psfgen,paste0('prepared_structures/tcl/solvate_',v_complex[part],'.tcl'),col.names = F,row.names = F,quote = F)
-    system(command = paste0("vmd -dispdev text -e ",part_name,'prepared_structures/tcl/solvate_',v_complex[part],'.tcl'),ignore.stdout=T,wait = T) 
-  }
-}
+
+
+#Energy counting
 i<-1
 for (i in 1:length(v_complex)) {
-  if(!dir.exists(paste0(v_complex[i]))){dir.create(paste0(v_complex[i]))}
-  if(!dir.exists(paste0(v_complex[i],"/MD"))){dir.create(paste0(v_complex[i],"/MD"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/quench/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/quench/"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/protein/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/protein/"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/dcd/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/dcd/"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/din/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/din/"))}
-  if(!dir.exists(paste0(v_complex[i],"/MD/stabilisation/pdb/"))){dir.create(paste0(v_complex[i],"/MD/stabilisation/pdb/"))}
+  df_chain_TEMP<-df_chains%>%filter(structure_name==v_complex[i])
+  df_chain_TEMP<-df_chain_TEMP%>%mutate(psf_merge=paste0(structure_name,"_",chain))
+  df_chain_TEMP<-unique(df_chain_TEMP)
   
-  if(file.exists(paste0(part_name,'prepared_structures/fin_complex_structure/ionized_',v_complex[i],".psf"))){
-    system(command = paste0("cp ",part_name,'prepared_structures/fin_complex_structure/ionized_',v_complex[i],".psf ",part_name,v_complex[i],"/MD/stabilisation/protein/"),ignore.stdout=T,wait = T) 
-    system(command = paste0("cp ",part_name,'prepared_structures/fin_complex_structure/ionized_',v_complex[i],".pdb ",part_name,v_complex[i],"/MD/stabilisation/protein/"),ignore.stdout=T,wait = T) 
-    pdb_ionized<-read.pdb(paste0(v_complex[i],'/MD/stabilisation/protein/ionized_',v_complex[i],'.pdb'))
-    df_pdb<-pdb_ionized$atom
-    x_min<-min(df_pdb$x)
-    y_min<-min(df_pdb$y)
-    z_min<-min(df_pdb$z)
-    
-    x_max<-max(df_pdb$x)
-    y_max<-max(df_pdb$y)
-    z_max<-max(df_pdb$z)
-    
-    x_mean<-mean(df_pdb$x)
-    y_mean<-mean(df_pdb$y)
-    z_mean<-mean(df_pdb$z)
-    #energy minimisation 
-    df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-    df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
-                        '\ncoordinates protein/ionized_',v_complex[i],'.pdb',
-                        '\nset temperature 300',
-                        '\nfirsttimestep 0',
-                        '\n#############################################################',
-                        '\n## SIMULATION PARAMETERS ##',
-                        '\n#############################################################',
-                        '\nparaTypeCharmm on',
-                        '\nparameters toppar/par_all36_carb.prm',
-                        '\nparameters toppar/par_all36_cgenff.prm',
-                        '\nparameters toppar/par_all36_lipid.prm',
-                        '\nparameters toppar/par_all36m_prot.prm',
-                        '\nparameters toppar/par_all36_na.prm',
-                        '\nparameters toppar/toppar_water_ions_namd.str',
-                        '\ntemperature $temperature',
-                        '\n# Force-Field Parameters',
-                        '\nexclude scaled1-4',
-                        '\n1-4scaling 1.0',
-                        '\nswitching on',
-                        '\nswitchdist 8.0',
-                        '\ncutoff 12.0',
-                        '\npairlistdist 13.5',
-                        '\nstepspercycle 20',
-                        '\nPME on',
-                        '\nPMETolerance 0.000001',
-                        '\nPMEGridSizeX ',round(x_max-x_min,digits = 0), 
-                        '\nPMEGridSizeY ',round(y_max-y_min,digits = 0),	
-                        '\nPMEGridSizeZ ',round(z_max-z_min,digits = 0),
-                        '\nfullElectFrequency 4',
-                        '\ncellBasisVector1 ',round(x_max-x_min,digits = 0),' 0.0 0.0',
-                        '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
-                        '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
-                        '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                        '\nwrapAll on',
-                        '\nminimization on',
-                        '\nnumsteps 100000',
-                        '\noutputenergies 1000',
-                        '\ndcdfreq 1000',
-                        '\ndcdfile dcd/min_',v_complex[i],'.dcd',
-                        '\nbinaryoutput no',
-                        '\noutputname pdb/min_',v_complex[i])
-    write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/min_',v_complex[i],'.conf'),row.names = F,col.names = F,quote = F)
-    
-    df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-    #structure heating 
-    df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
-                        '\ncoordinates pdb/min_',v_complex[i],'.coor',
-                        '\n#############################################################',
-                        '\n## SIMULATION PARAMETERS ##',
-                        '\n#############################################################',
-                        '\nparaTypeCharmm on',
-                        '\nparameters toppar/par_all36_prot.prm',
-                        '\nparameters toppar/par_all36_carb.prm',
-                        '\nparameters toppar/par_all36_cgenff.prm',
-                        '\nparameters toppar/par_all36_lipid.prm',
-                        '\nparameters toppar/par_all36_na.prm',
-                        '\nparameters toppar/toppar_water_ions_namd.str',
-                        '\n# Force-Field Parameters',
-                        '\nexclude scaled1-4',
-                        '\n1-4scaling 1.0',
-                        '\nswitching on',
-                        '\nswitchdist 8.0',
-                        '\ncutoff 12.0',
-                        '\npairlistdist 13.5',
-                        '\nstepspercycle 20',
-                        '\nPME on',
-                        '\nPMETolerance 0.000001',
-                        '\nPMEGridSizeX ',round(x_max-x_min,digits = 0),
-                        '\nPMEGridSizeY ',round(y_max-y_min,digits = 0),	
-                        '\nPMEGridSizeZ ',round(z_max-z_min,digits = 0),
-                        '\nfullElectFrequency 4',
-                        '\ncellBasisVector1 ',round(x_max-x_min,digits = 0),' 0.0 0.0',
-                        '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
-                        '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
-                        '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                        '\nwrapAll on',
-                        '\ntimestep 1.0',
-                        '\ntemperature 0',
-                        '\nreassignFreq 10',
-                        '\nreassignIncr 0.01',
-                        '\nreassignHold 300',
-                        '\nfirsttimestep 0',
-                        '\nnumsteps 300000',
-                        '\noutputenergies 100',
-                        '\ndcdfreq 100',
-                        '\ndcdfile dcd/head_',v_complex[i],'.dcd',
-                        '\nbinaryoutput no',
-                        '\noutputname pdb/head_',v_complex[i])
-    write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/heat_',v_complex[i],'.conf'),row.names = F,col.names = F,quote = F)  
-    df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-    #first eqvilibration
-    df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
-                        '\ncoordinates pdb/head_',v_complex[i],'.coor',
-                        '\n#############################################################',
-                        '\n## SIMULATION PARAMETERS ##',
-                        '\n#############################################################',
-                        '\nparaTypeCharmm on',
-                        '\nparameters toppar/par_all36_prot.prm',
-                        '\nparameters toppar/par_all36_carb.prm',
-                        '\nparameters toppar/par_all36_cgenff.prm',
-                        '\nparameters toppar/par_all36_lipid.prm',
-                        '\nparameters toppar/par_all36_na.prm',
-                        '\nparameters toppar/toppar_water_ions_namd.str',
-                        '\nexclude		scaled1-4',
-                        '\n1-4scaling	1.0',
-                        '\nswitching	on',
-                        '\nswitchdist	8.0',
-                        '\ncutoff		12.0',
-                        '\npairlistdist	13.5',
-                        '\nstepspercycle	20',
-                        '\nPME		on',
-                        '\nPMETolerance 	0.000001',
-                        '\nPMEGridSizeX ',round(x_max-x_min,digits = 0),
-                        '\nPMEGridSizeY ',round(y_max-y_min,digits = 0),	
-                        '\nPMEGridSizeZ ',round(z_max-z_min,digits = 0),
-                        '\nfullElectFrequency 4',
-                        '\ncellBasisVector1 ',round(x_max-x_min,digits = 0),' 0.0 0.0',
-                        '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
-                        '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
-                        '\nwrapAll on',
-                        '\ntimestep		1.0',
-                        '\ntemperature		300',
-                        '\nreassignFreq		10',
-                        '\nnumsteps		2000000',
-                        '\nseed			11552514',
-                        '\noutputenergies	100',
-                        '\ndcdfreq 100',
-                        '\ndcdfile dcd/eqv_',v_complex[i],'.dcd',
-                        '\nbinaryoutput no',
-                        '\noutputname pdb/eqv_',v_complex[i])
-    
-    write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/eqv_',v_complex[i],'.conf'),row.names = F,col.names = F,quote = F)
-    
-    df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-    #first MD
-    df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
-                        '\ncoordinates pdb/eqv_',v_complex[i],'.coor',
-                        '\ntemperature 310',
-                        '\n#############################################################',
-                        '\n## SIMULATION PARAMETERS ##',
-                        '\n#############################################################',
-                        '\nparaTypeCharmm on',
-                        '\nparameters toppar/par_all36_prot.prm',
-                        '\nparameters toppar/par_all36_carb.prm',
-                        '\nparameters toppar/par_all36_cgenff.prm',
-                        '\nparameters toppar/par_all36_lipid.prm',
-                        '\nparameters toppar/par_all36_na.prm',
-                        '\nparameters toppar/toppar_water_ions_namd.str',
-                        '\nexclude		scaled1-4',
-                        '\n1-4scaling	1.0',
-                        '\nswitching	on',
-                        '\nswitchdist	8.0',
-                        '\ncutoff		12.0',
-                        '\npairlistdist	13.5',
-                        '\nstepspercycle	20',
-                        '\nPME		on',
-                        '\nPMETolerance 	0.000001',
-                        '\nPMEGridSizeX ',round(x_max-x_min,digits = 0),
-                        '\nPMEGridSizeY ',round(y_max-y_min,digits = 0),	
-                        '\nPMEGridSizeZ ',round(z_max-z_min,digits = 0),
-                        '\nfullElectFrequency 4',
-                        '\ncellBasisVector1 ',round(x_max-x_min,digits = 0),' 0.0 0.0',
-                        '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
-                        '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
-                        '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                        '\nwrapWater               on',
-                        '\nwrapAll                off',
-                        '\ntimestep 1.0',
-                        '\nnumsteps 1000000',
-                        '\nseed 322223322', 
-                        #'\nuseGroupPressure yes',
-                        #'\nuseFlexibleCell no',
-                        #'\nuseConstantRatio no',
-                        '\nLangevinPiston on', 
-                        '\nLangevinPistonTarget 1.01325 ;# pressure in bar -> 1 atm',
-                        '\nLangevinPistonPeriod 100. ;# oscillation period around 100 fs',
-                        '\nLangevinPistonDecay 50. ;# oscillation decay time of 50 fs',
-                        '\nLangevinPistonTemp 300',
-                        '\noutputenergies	10000',
-                        '\ndcdfreq		10000',
-                        '\ndcdfile quench/quench_',v_complex[i],'_1.dcd',
-                        '\nbinaryoutput no',
-                        '\noutputname pdb/quench_',v_complex[i],'_1')
-    
-    write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/quench_',v_complex[i],'_1.conf'),row.names = F,col.names = F,quote = F)
-    
-    
-    
-    #MD 2-5
-    
-    for (j in 2:num_din) { 
-      
-      df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
-      
-      df_tcl[1,1]<-paste0('structure protein/ionized_',v_complex[i],'.psf',
-                          '\ncoordinates pdb/quench_',v_complex[i],'_',(j-1),'.coor',
-                          '\n#############################################################',
-                          '\n## SIMULATION PARAMETERS ##',
-                          '\n#############################################################',
-                          '\nparaTypeCharmm on',
-                          '\nparameters toppar/par_all36_prot.prm',
-                          '\nparameters toppar/par_all36_carb.prm',
-                          '\nparameters toppar/par_all36_cgenff.prm',
-                          '\nparameters toppar/par_all36_lipid.prm',
-                          '\nparameters toppar/par_all36_na.prm',
-                          '\nparameters toppar/toppar_water_ions_namd.str',
-                          '\nexclude		scaled1-4',
-                          '\n1-4scaling	1.0',
-                          '\nswitching	on',
-                          '\nswitchdist	8.0',
-                          '\ncutoff		12.0',
-                          '\npairlistdist	13.5',
-                          '\nstepspercycle	20',
-                          '\nPME		on',
-                          '\nPMEGridSizeX ',round(x_max-x_min,digits = 0),
-                          '\nPMEGridSizeY ',round(y_max-y_min,digits = 0),	
-                          '\nPMEGridSizeZ ',round(z_max-z_min,digits = 0),
-                          '\nfullElectFrequency 4',
-                          '\ncellBasisVector1 ',round(x_max-x_min,digits = 0),' 0.0 0.0',
-                          '\ncellBasisVector2 0.0 ',round(y_max-y_min,digits = 0),' 0.0',
-                          '\ncellBasisVector3 0.0 0.0 ',round(z_max-z_min,digits = 0),
-                          '\ncellOrigin ',x_mean,' ',y_mean,' ',z_mean,
-                          '\nwrapWater               on;                 # wrap water to central cell',
-                          '\nwrapAll                off;                 ',
-                          '\ntimestep 1.0',
-                          '\nnumsteps 1000000',
-                          '\nseed 322223322', 
-                          #'\nuseGroupPressure yes',
-                          #'\nuseFlexibleCell no',
-                          #'\nuseConstantRatio no',
-                          '\nLangevinPiston on', 
-                          '\nLangevinPistonTarget 1.01325 ;# pressure in bar -> 1 atm',
-                          '\nLangevinPistonPeriod 100. ;# oscillation period around 100 fs',
-                          '\nLangevinPistonDecay 50. ;# oscillation decay time of 50 fs',
-                          '\nLangevinPistonTemp 300',
-                          '\noutputenergies	10000',
-                          '\ndcdfreq		10000', 
-                          '\ndcdfile quench/quench_',v_complex[i],'_',j,'.dcd',
-                          '\nbinaryoutput no',
-                          '\noutputname pdb/quench_',v_complex[i],'_',j,
-                          '\nset inputname           pdb/quench_',v_complex[i],'_',(j-1),
-                          '\nVelocities           $inputname.vel;     # velocities from last run (binary)',
-                          '\nextendedSystem          $inputname.xsc;     # cell dimensions from last run (binary)')
-      
-      write.table(df_tcl,paste0(v_complex[i],'/MD/stabilisation/quench_',v_complex[i],'_',j,'.conf'),row.names = F,col.names = F,quote = F)
-    }
-  }
+  df_tcl<-data.frame(matrix(nrow = 1,ncol = 1))
+  v_topology<-paste0(' -par ',part_name,'start/toppar/toppar_all36_synthetic_polymer_patch.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_synthetic_polymer.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_retinol.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_na_combined.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_modify_res.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_model.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_heme.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_fluoro_alkanes.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_prot_arg0.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_polymer_solvent.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_na_rna_modified.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_nano_lig_patch.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_nano_lig.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_na_nad_ppi.str ',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_tag.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_prot.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_mycobacterial.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_model.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_miscellaneous.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_lps.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_lnp.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_inositol.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_hmmm.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_ether.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_detergent.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_dag.str ',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_cardiolipin.str ',
+                     ' -par ',part_name,'start/toppar/toppar_all36_lipid_archaeal.str ',
+                     ' -par ',part_name,'start/toppar/toppar_all36_label_fluorophore.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_carb_imlab.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_carb_glycopeptide.str',
+                     ' -par ',part_name,'start/toppar/toppar_all36_carb_glycolipid.str',
+                     ' -par ',part_name,'start/toppar/par_interface.prm',
+                     ' -par ',part_name,'start/toppar/par_all36_na.prm',
+                     ' -par ',part_name,'start/toppar/par_all36m_prot.prm',
+                     ' -par ',part_name,'start/toppar/par_all36_lipid.prm',
+                     ' -par ',part_name,'start/toppar/par_all36_cgenff.prm',
+                     ' -par ',part_name,'start/toppar/par_all36_carb.prm')
+  df_tcl[1,1]<-paste0('cd ', part_name,'prepared_structures/\npackage require namdenergy')
+  df_tcl[1,2]<-paste0('mol new {complex_structure/',v_complex[i],'.psf} type {psf}')
+  df_tcl[1,3]<-paste0('mol addfile {complex_structure/',v_complex[i],'.pdb} type {pdb} waitfor all')
+  df_tcl[1,4]<-paste0('set sel2 [atomselect top "protein"]')
+  df_tcl[1,5]<-paste0('set sel1 [atomselect top "not (protein or water or ions)"]')
+  df_tcl[1,6]<-paste0('\nnamdenergy -sel $sel1 $sel2 -vdw -elec -nonb -cutoff 12 -skip 0 -ofile Energy/interactions_',v_complex[i],'.txt -switch 10 -exe ',part_name,'programs/NAMD_2.14_Linux-x86_64-multicore/namd2 ',v_topology)
+  
+  #  df_tcl[1,7]<-paste0('\nnamdenergy -sel $sel2  -bond -angl -dihe -impr -conf -vdw -elec -nonb -all -cutoff 12 -skip 0 -ofile din/Energy/protein_',based_name[name],'.txt -switch 10 -exe /home/nastia/NAMD_2.14_Linux-x86_64-multicore/namd2 ',v_topology)
+  df_tcl[1,7]<-'mol delete all'
+  df_tcl[1,8]<-'\n\nexit now'
+  write.table(df_tcl,file =paste0('prepared_structures/tcl/Energy_',v_complex[i],'.tcl'),sep = '\n',na = '' ,row.names = F,col.names = F,quote = F)
+  print(paste0('vmd -dispdev text -e ',part_name,'prepared_structures/tcl/Energy_',v_complex[i],'.tcl'))
+  system(command = paste0('vmd -dispdev text -e ',part_name,'prepared_structures/tcl/Energy_',v_complex[i],'.tcl'),ignore.stdout=T,wait = T) 
 }
-#print MD script
-df_conf<-data.frame(matrix(nrow = length(v_complex),ncol = 1))
-for (part in 1:length(v_complex)) {
-  if(file.exists(paste0(v_complex[part],'/MD/stabilisation/protein/ionized_',v_complex[part],'.pdb'))){
-    df_conf[part,1]<-paste0(c(paste0("cd ",part_name,v_complex[part],"/MD/stabilisation/\n"),
-                              paste0(v_namd," " , c(paste0(" min_",v_complex[part],".conf > min_",v_complex[part],".out\n"),
-                                                    paste0(" heat_",v_complex[part],".conf > heat_",v_complex[part],".out\n"),
-                                                    paste0(" eqv_",v_complex[part],".conf > eqv_",v_complex[part],".out\n"),
-                                                    paste0(" quench_",v_complex[part],"_",1:num_din,".conf > quench_",v_complex[part],"_",1:num_din,".out\n")))),collapse = "")
-    
-  }
-}
-write.table(df_conf,paste0(part_name,"namd_script.txt"),row.names = F,col.names = F,quote = F,na = "")
