@@ -10,6 +10,9 @@ part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
   
 system(command = paste0("cp -r ",part_start,"start/toppar/ ",part_analysis),ignore.stdout=T,wait = T)
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"check_surface.R ",part_name),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"ring_calculation.R ",part_name),ignore.stdout=T,wait = T)
+system(command = paste0("Rscript --vanilla  ",part_scriprs,"ring_conversion.R ",part_name),ignore.stdout=T,wait = T)
+
 #add surf active center, optional 
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_add_serf_active_centers.R ",part_name),ignore.stdout=T,wait = T)
 #run docking
