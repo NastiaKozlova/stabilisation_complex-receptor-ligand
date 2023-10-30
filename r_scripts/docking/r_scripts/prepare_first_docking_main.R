@@ -22,7 +22,7 @@ df_ligand<-data.frame(matrix(ncol=2,nrow=length(v_ligand)))
 colnames(df_ligand)<-c("ligand","c")
 df_ligand$ligand<-v_ligand
 
-df_active_center<-read.csv(paste0("active_center.csv"),stringsAsFactors = F)
+df_active_center<-read.csv(paste0("active_center_surf.csv"),stringsAsFactors = F)
 v_center<-unique(df_active_center$type)
 df_center<-data.frame(matrix(ncol=2,nrow=length(v_center)))
 colnames(df_center)<-c("center","c")
@@ -30,10 +30,10 @@ df_center$center<-v_center
 
 df_ligand_center<-full_join(df_ligand,df_center,by="c",relationship = "many-to-many")
 df_ligand_center$c<-NULL
-write.csv(df_ligand_center,paste0("ligand_center.csv"),row.names = F)
+write.csv(df_ligand_center,paste0("ligand_center_surf.csv"),row.names = F)
 
 #docking
-df_ligand_center<-read.csv(paste0("ligand_center.csv"),stringsAsFactors = F)
+df_ligand_center<-read.csv(paste0("ligand_center_surf.csv"),stringsAsFactors = F)
 df_ligand_center<-df_ligand_center%>%mutate(c="C")
 v_receptor<-list.files(paste0("receptor_start/"))
 a<-c()
@@ -47,9 +47,10 @@ df_receptor<-data.frame(matrix(ncol=2,nrow=length(v_receptor)))
 colnames(df_receptor)<-c("receptor","c")
 df_receptor$receptor<-v_receptor
 df_receptor<-df_receptor%>%mutate(c="C")
-df_all<-full_join(df_receptor,df_ligand_center,by="c")
+df_all<-full_join(df_receptor,df_ligand_center,by="c",
+                  relationship = "many-to-many")
 df_all$c<-NULL
-write.csv(df_all,paste0(part,"df_all.csv"),row.names = F)
+write.csv(df_all,paste0(part,"df_all_surf.csv"),row.names = F)
 if (!dir.exists(paste0(part,"ligand/"))){dir.create(paste0(part,"ligand/"))}
 if (!dir.exists(paste0(part,"receptor/"))){dir.create(paste0(part,"receptor/"))}
 i<-1
