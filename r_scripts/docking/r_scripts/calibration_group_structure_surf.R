@@ -1,14 +1,14 @@
-part_start <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 library(bio3d)
 library(readr)
 library(dplyr)
 library(ggplot2)
 v_rmsds<-seq(from=0,to=100,by=1)
-setwd(part_start)
-part<-paste0(part_start,"din/")
+setwd(part_analysis)
+part<-paste0(part_analysis,"din/")
 setwd(part)
 
-df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0(part_analysis,"df_all_surf.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 if(!dir.exists("df_RMSD_all")){dir.create("df_RMSD_all")}
 for (i in 1:nrow(df_all)) {
@@ -62,4 +62,4 @@ p<-ggplot(data=df_RMSD_all)+
   geom_point(aes(x=RMSD_new,y=group_new))+
   theme_bw()+
   scale_x_continuous(breaks = v_rmsds,labels = v_rmsds)
-ggsave(p,filename = paste0("calibration_RMSD_group_structure.png"), width = 24, height = 15, units = c("cm"), dpi = 200 )
+ggsave(p,filename = paste0("calibration_RMSD_group_structure_surf.png"), width = 24, height = 15, units = c("cm"), dpi = 200 )
