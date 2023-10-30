@@ -19,7 +19,7 @@ if(dir.exists(paste0(part,"str_fin"))) {system(command = paste0("rm -r ",part,"s
 if (!dir.exists("groups")) {dir.create("groups")}
 if (!dir.exists("groups_fin")) {dir.create("groups_fin")}
 if (!dir.exists("str_fin")) {dir.create("str_fin")}
-df_all<-read.csv(paste0(part_start,"df_all.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0(part_start,"df_all_surf.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 df_all<-df_all%>%mutate(stuture_number=NA)
 #sort to grops
@@ -107,7 +107,7 @@ for (j in 1:length(df_all$name)) {
 i<-1
 if (!dir.exists("log_fin")) {dir.create("log_fin")}
 if (!dir.exists("plot")) {dir.create("plot")}
-df_log<-read.csv("df_log_all.csv",stringsAsFactors = F)
+df_log<-read.csv("df_log_all_surf.csv",stringsAsFactors = F)
 df_log<-df_log%>%mutate(models.y=paste0("frame_",new_number,".pdb"))
 for (i in 1:nrow(df_all)) {
   if(file.exists(paste0("groups_fin/",df_all$name[i],".csv"))){
@@ -126,4 +126,4 @@ for (i in 2:length(df_all$name)) {
     df_fin<-rbind(df_fin,df_fin_add)
   }
 }
-write.csv(df_fin,"log_fin.csv",row.names = F)
+write.csv(df_fin,"log_fin_surf.csv",row.names = F)
