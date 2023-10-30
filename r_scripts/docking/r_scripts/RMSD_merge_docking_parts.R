@@ -9,7 +9,7 @@ v_rmsd<-3.5
 print(Sys.time())
 
 setwd(part_analysis)
-df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0(part_analysis,"df_all_surf.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
 df_all<-df_all%>%mutate(x=NA)
 df_all<-df_all%>%mutate(y=NA)
@@ -29,7 +29,7 @@ setwd(part)
 if(dir.exists(paste0(part,"fin_merged"))) {system(command = paste0("rm -r ",part,"fin_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"structure_merged"))) {system(command = paste0("rm -r ",part,"structure_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"groups_merged"))) {system(command = paste0("rm -r ",part,"groups_merged"),ignore.stdout=T,wait = T)}
-if (!dir.exists("RMSD_merged")) {dir.create("RMSD_merged")}
+if (!dir.exists("RMSD_merged_surf")) {dir.create("RMSD_merged_surf")}
 if (!dir.exists("groups_merged")) {dir.create("groups_merged")}
 if (!dir.exists("structure_merged")) {dir.create("structure_merged")}
 if (!dir.exists("fin_merged")) {dir.create("fin_merged")}
@@ -50,7 +50,8 @@ for (i in 1:length(v_center)) {
 }
 df_structure<-df_structure%>%filter(!is.na(center))
 
-df_structure<-left_join(df_structure,df_all,by=c("receptor", "ligand", "center"))
+df_structure<-left_join(df_structure,df_all,by=c("receptor", "ligand", "center"),
+                        relationship = "many-to-many")
 
 df_analysis<-df_structure%>%select(receptor,ligand)
 df_analysis<-unique(df_analysis)
@@ -60,7 +61,7 @@ i<-1
 print(Sys.time())
 
 for (q in 1:nrow(df_analysis)) {
-   if(!file.exists(paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"))){
+   if(!file.exists(paste0("RMSD_merged_surf/",df_analysis$receptor_ligand[q],".csv"))){
       df_structure_TEMP<-df_structure%>%filter(receptor==df_analysis$receptor[q])
       df_structure_TEMP<-df_structure_TEMP%>%filter(ligand==df_analysis$ligand[q])
       
@@ -91,7 +92,7 @@ for (q in 1:nrow(df_analysis)) {
          df_structure_merge_start<-df_structure_merge_start%>%filter(RMSD<50)
       }
       
-      write.csv(df_structure_merge_start,paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"),row.names=F)
+      write.csv(df_structure_merge_start,paste0("RMSD_merged_surf/",df_analysis$receptor_ligand[q],".csv"),row.names=F)
       print(paste(df_analysis$receptor_ligand[q],Sys.time()))
    }
 }
