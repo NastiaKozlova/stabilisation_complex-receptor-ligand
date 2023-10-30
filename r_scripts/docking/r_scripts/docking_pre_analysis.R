@@ -7,9 +7,9 @@ library(ggplot2)
 v_rmsd<-4
 #part_analysis<-part_analysis
 setwd(part_analysis)
-df_all<-read.csv(paste0(part_analysis,"df_all.csv"),stringsAsFactors = F)
+df_all<-read.csv(paste0(part_analysis,"df_all_surf.csv"),stringsAsFactors = F)
 df_all<-df_all%>%mutate(name=paste0(receptor,"_",ligand,"_",center))
-write.csv(df_all,"df_all.csv",row.names = F)
+write.csv(df_all,"df_all_surf.csv",row.names = F)
 num_model<-1
 max_num<-5
 if (!file.exists("din/")) {dir.create("din/")}
@@ -37,7 +37,8 @@ for (i in 1:length(a)) {
 df_topology<-df_topology%>%filter(!is.na(exists))
 df_topology<-df_topology%>%filter(exists=="YES")
 #print(nrow(df_topology))
-df_topology<-left_join(df_topology,df_all,by="name")
+df_topology<-left_join(df_topology,df_all,by="name",
+                       relationship = "many-to-many")
 df_topology<-df_topology%>%filter(!is.na(receptor))
 
 df_log<-read.csv(paste0("din/log/",df_topology$name_log[1],".csv"),header = F)
@@ -53,14 +54,15 @@ for (i in 2:nrow(df_topology)) {
 }
 df_log$affinity<-as.numeric(df_log$affinity)
 df_log<-df_log%>%filter(!is.na(affinity))
-df_log<-left_join(df_log,df_topology,by=c("name_files"="name_log"))
+df_log<-left_join(df_log,df_topology,by=c("name_files"="name_log"),
+                  relationship = "many-to-many")
 #df_log<-df_log%>%mutate(ligand_center=paste0(ligand,"_",center,"_",system))
 
 df_log$mode<-as.numeric(df_log$mode)
 
-write.csv(df_log,"din/df_log_all.csv",row.names = F)
+write.csv(df_log,"din/df_log_all_surf.csv",row.names = F)
 
-write.csv(df_topology,"din/df_topology.csv",row.names = F)
+write.csv(df_topology,"din/df_topology_surf.csv",row.names = F)
 if (!file.exists("din/pdb_second")) {dir.create("din/pdb_second")}
 v_analysis<-list.files("analysis")
 df_analysis<-data.frame(matrix(ncol=3,nrow = length(v_analysis)))
@@ -79,9 +81,10 @@ df_fin<-left_join(df_log,df_analysis,by=c("name_files","mode"))
 df_fina<-df_fin%>%group_by(name)%>%mutate(new_number=1:n())
 df_fina<-ungroup(df_fina)
 i<-1
+#getwd()
 for (i in 1:nrow(df_fina)){
   if (!file.exists(paste0("din/pdb_second/",df_fina$name[i]))) {dir.create(paste0("din/pdb_second/",df_fina$name[i]))}
   pdb<-read.pdb(paste0("analysis/",df_fina$files[i]))
   write.pdb(pdb,paste0("din/pdb_second/",df_fina$name[i],"/frame_",df_fina$new_number[i],".pdb"))
 }
-write.csv(df_fina,"din/df_log_all.csv",row.names = F)
+write.csv(df_fina,"din/df_log_all_surf.csv",row.names = F)
