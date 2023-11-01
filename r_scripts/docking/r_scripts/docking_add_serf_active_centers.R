@@ -72,8 +72,8 @@ for (i in 1:nrow(df_structure)) {
   }else{df_structure$type[i]<-NA}
 }
 df_structure<-df_structure%>%filter(!is.na(type))
-df_add<-read.csv("active_center.csv",stringsAsFactors = F)
-df_type<-rbind(df_type,df_add)
+#df_add<-read.csv("active_center.csv",stringsAsFactors = F)
+#df_type<-rbind(df_type,df_add)
 df_type<-unique(df_type)
-write.csv(df_type,"active_center.csv",row.names = F)
+write.csv(df_type,"active_center_surf.csv",row.names = F)
 #type,amino,resno
