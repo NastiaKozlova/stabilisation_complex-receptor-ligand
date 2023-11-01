@@ -14,7 +14,7 @@ for (i in 1:length(v_receptor)){
 v_receptor<-a
 j<-1
 i<-1
-df_active_center<-read.csv("active_center.csv",stringsAsFactors = F)
+df_active_center<-read.csv("active_center_surf.csv",stringsAsFactors = F)
 for (j in 1:length(v_receptor)) {
   pdb<-read.pdb(paste0("receptor_start/",v_receptor[j],".pdb"))
   df_pdb<-pdb$atom
@@ -75,7 +75,7 @@ for (j in 1:length(v_receptor)) {
   colnames(df_conf_add)<-colnames(df_conf)
   df_conf_add[1,1]<-paste0("cd ",part)
   df_conf<-rbind(df_conf_add,df_conf)
-  write.table(df_conf,paste0("script/",v_receptor[j],"_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
-  system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
-  system(command = paste0(part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
+  write.table(df_conf,paste0("script/",v_receptor[j],"_surf_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
+  system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_surf_readme.txt"),ignore.stdout=T,wait = T)
+  system(command = paste0(part,"script/",v_receptor[j],"_surf_readme.txt"),ignore.stdout=T,wait = T)
 }
