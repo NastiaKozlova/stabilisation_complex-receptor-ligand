@@ -4,7 +4,7 @@ library(bio3d)
 library(dplyr)
 setwd(part)
 #repetition
-max_num<-10
+max_num<-100
 v_receptor<-list.files("receptor_start")
 a<-c()
 for (i in 1:length(v_receptor)){
@@ -14,7 +14,7 @@ for (i in 1:length(v_receptor)){
 v_receptor<-a
 j<-1
 i<-1
-df_active_center<-read.csv("active_center_surf.csv",stringsAsFactors = F)
+df_active_center<-read.csv("active_center.csv",stringsAsFactors = F)
 for (j in 1:length(v_receptor)) {
   pdb<-read.pdb(paste0("receptor_start/",v_receptor[j],".pdb"))
   df_pdb<-pdb$atom
@@ -26,25 +26,28 @@ for (j in 1:length(v_receptor)) {
   for (i in 1:nrow(df_doking)) {
     df_active<-df_active_center%>%filter(type==df_doking$type[i])
     df_pdb_a<-df_pdb[df_pdb$resno%in%df_active$resno,]
-    df_doking$x_len[i]<-max(df_pdb_a$x)-min(df_pdb_a$x)+10
+    df_doking$x_len[i]<-max(df_pdb_a$x)-min(df_pdb_a$x)+20
     df_doking$x_mean[i]<-(max(df_pdb_a$x)+min(df_pdb_a$x))/2
   
-    df_doking$y_len[i]<-max(df_pdb_a$y)-min(df_pdb_a$y)+10
+    df_doking$y_len[i]<-max(df_pdb_a$y)-min(df_pdb_a$y)+20
     df_doking$y_mean[i]<-(max(df_pdb_a$y)+min(df_pdb_a$y))/2
   
-    df_doking$z_len[i]<-max(df_pdb_a$z)-min(df_pdb_a$z)+10
+    df_doking$z_len[i]<-max(df_pdb_a$z)-min(df_pdb_a$z)+20
     df_doking$z_mean[i]<-(max(df_pdb_a$z)+min(df_pdb_a$z))/2
   }
+  df_doking<-unique(df_doking)
   a<-list.files("ligand/")
   ligand<-c()
   for (i in 1:length(a)) {
     b<-strsplit(a[i],split = ".",fixed = T)[[1]][1]
     ligand<-c(ligand,b)
   }
+  ligand<-unique(ligand)
   if (!dir.exists("tcl")){dir.create("tcl")}
   if (!dir.exists("script")){dir.create("script")}
   if (!dir.exists("log")){dir.create("log")}
   if (!dir.exists("out")){dir.create("out")}
+
   for (q in 1:length(ligand)) {
     for (p in 1:nrow(df_doking)) {
       for (num in 1:max_num) {
@@ -75,7 +78,7 @@ for (j in 1:length(v_receptor)) {
   colnames(df_conf_add)<-colnames(df_conf)
   df_conf_add[1,1]<-paste0("cd ",part)
   df_conf<-rbind(df_conf_add,df_conf)
-  write.table(df_conf,paste0("script/",v_receptor[j],"_surf_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
-  system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_surf_readme.txt"),ignore.stdout=T,wait = T)
-  system(command = paste0(part,"script/",v_receptor[j],"_surf_readme.txt"),ignore.stdout=T,wait = T)
+  write.table(df_conf,paste0("script/",v_receptor[j],"_readme.txt"),row.names = F,quote = F,col.names = F,sep = "\n",na="")
+  system(command = paste0("chmod +x ",part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
+  system(command = paste0(part,"script/",v_receptor[j],"_readme.txt"),ignore.stdout=T,wait = T)
 }

@@ -5,9 +5,9 @@ v_list_protein<-part_TEMP[2]
 part_name<-  paste0(part_start,v_list_protein,"/docking/")
 setwd(part_start)
 #copying sctipts for docking
-if(!dir.exists(paste0(part_name))){dir.create(paste0(part_name))}
 system(command = paste0("cp -r ",part_start,"r_scripts/docking/ ",part_start,v_list_protein,"/"),ignore.stdout=T,wait = T)
 #create directories
+if(!dir.exists(paste0(part_name))){dir.create(paste0(part_name))}
 if(!dir.exists(paste0(part_name,"docking_first/"))){dir.create(paste0(part_name,"docking_first/"))}
 if(!dir.exists(paste0(part_name,"docking_first/receptor_start/"))){dir.create(paste0(part_name,"docking_first/receptor_start/"))}
 if(!dir.exists(paste0(part_name,"docking_first/receptor/"))){dir.create(paste0(part_name,"docking_first/receptor/"))}
