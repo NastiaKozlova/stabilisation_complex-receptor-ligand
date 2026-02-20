@@ -32,6 +32,7 @@ for(q in 1:length(v_temp)){
   #docking
   df_ligand_center<-read.csv(paste0("ligand_center.csv"),stringsAsFactors = F)
   df_ligand_center<-df_ligand_center%>%mutate(c="C")
+  df_ligand_center<-df_ligand_center%>%mutate(center=type)
   v_receptor<-list.files(paste0("receptor_start/"))
   a<-c()
   for (i in 1:length(v_receptor)) {
