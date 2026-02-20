@@ -1,4 +1,4 @@
-part_name <- commandArgs(trailingOnly=TRUE)
+part_analysis <- commandArgs(trailingOnly=TRUE)
 library(dplyr)
 library(bio3d)
 library(readr)
@@ -17,7 +17,7 @@ filter_structure<-function(df_pdb,x_min,x_max,y_min,y_max,z_min,z_max){
   return(df_pdb_filtered)
 }
 
-part<-paste0(part_name,"docking_first/")
+part<-part_analysis
 setwd(part)
 start<-read.pdb(paste0("receptor_start/start.pdb"))
 df_hbonds<-read.csv(paste0("hbonds.csv"),stringsAsFactors = F)
@@ -74,6 +74,6 @@ for (i in 1:nrow(df_structure)) {
 df_structure<-df_structure%>%filter(!is.na(type))
 #df_add<-read.csv("active_center.csv",stringsAsFactors = F)
 #df_type<-rbind(df_type,df_add)
-df_type<-unique(df_type)
-write.csv(df_type,"active_center_surf.csv",row.names = F)
+#df_type<-unique(df_type)
+write.csv(df_type,"active_center.csv",row.names = F)
 #type,amino,resno
