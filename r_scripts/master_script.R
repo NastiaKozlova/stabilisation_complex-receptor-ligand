@@ -79,10 +79,10 @@ for (i in 1:length(v_ligands)) {
 
 part_proteins<-paste0(part_start,",",v_list_proteins)
 for (i in 1:length(v_list_proteins)) {
-  part_name<-paste0(part_start,",",v_list_proteins[i])
+  #  part_name<-paste0(part_start,",",v_list_proteins[i])
   part_protein<-part_proteins[i]
   #copying sctipts for docking
-  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_name),ignore.stdout=T,wait = T)
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/copy_files_for_docking.R ",part_protein),ignore.stdout=T,wait = T)
   
   #copying sctipts for docking
   #prepare data for docking with and wothout surface counting
@@ -90,10 +90,10 @@ for (i in 1:length(v_list_proteins)) {
   system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking/r_scripts/docking_main_surphase_predocking.R ",
                           part_protein),ignore.stdout=T,wait = T)
   #prepare starting files for docking
-    part_name<-paste0(part_start,v_list_proteins)[i]
-    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking/r_scripts/prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
-    
-  }
+  part_name<-paste0(part_start,v_list_proteins)[i]
+  system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking/r_scripts/prepare_first_docking_main.R ",part_name),ignore.stdout=T,wait = T)
+  
+}
 #}
 j<-1
 i<-1
