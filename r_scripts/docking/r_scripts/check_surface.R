@@ -1,9 +1,9 @@
-part_name = commandArgs(trailingOnly=TRUE)
+part_analysis = commandArgs(trailingOnly=TRUE)
 library(dplyr)
 library(bio3d)
 library(readr)
 
-part<-paste0(part_name,"docking_first/")
+part<-part_analysis
 setwd(part)
 name<-"start"
 
