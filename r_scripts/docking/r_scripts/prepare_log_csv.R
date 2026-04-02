@@ -20,7 +20,7 @@ for (i in 1:nrow(df_convert)) {
    df_convert$converted[i]<-file.exists(paste0(part_analysis,"din/log/",a,".csv"))
 }
 df_convert<-df_convert%>%mutate(start_name=paste0(part_analysis,"log/",script_name,".log"))
-df_convert<-df_convert%>%filter(!converted)
+#df_convert<-df_convert%>%filter(!converted)
 df_convert<-df_convert%>%filter(file_size>1200)
 
 i<-1
