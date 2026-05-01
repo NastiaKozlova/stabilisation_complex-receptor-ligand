@@ -131,9 +131,10 @@ for (i in 1:length(v_list_proteins)) {
 
     part_protein<-paste0(part_start,",",v_list_proteins[i],",",v_search[j])
 
-    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_surphase.R ",part_protein),ignore.stdout=T,wait = T)
+    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_calculation.R ",part_protein),ignore.stdout=T,wait = T)
 #        system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_script.R ",part),ignore.stdout=T,wait = T)
-        
+  }
+}
         system(command = paste0("Rscript --vanilla  ",,"r_scripts/docking/r_scripts/docking_group_structure.R ",
                             part_protein,"/docking/","docking_first/",",",1),ignore.stdout=T,wait = T)
 
