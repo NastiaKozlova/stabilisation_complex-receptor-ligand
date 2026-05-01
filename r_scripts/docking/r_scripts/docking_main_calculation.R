@@ -17,7 +17,4 @@ system(command = paste0("Rscript --vanilla  ",part_scriprs,"prepare_log_csv.R ",
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_pre_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
 #calculate interactions between receptor and ligands
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"docking_interactions.R ",part_analysis),ignore.stdout=T,wait = T)
-#calculate RMSD between all structures in the groups
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"RMSD_docking_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
-#make a calibration graph of RMSD cutoff
-system(command = paste0("Rscript --vanilla  ",part_scriprs,"calibration_group_structure.R ",part_analysis),ignore.stdout=T,wait = T)
+
