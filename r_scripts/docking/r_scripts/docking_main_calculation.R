@@ -8,7 +8,7 @@ v_center<-part_TEMP[3]
 part_analysis<-paste0(part_start,v_list_protein,"/docking/docking_first/",v_center,"/")
 #part_analysis<-paste0(part_name,"docking_first/")
 part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
-
+system(command = paste0("cp ",  part_scriprs,"pdbqt_to_pdbs.py ",part_analysis),ignore.stdout=T,wait = T)
 #pdbqt to pdb
 system(command = paste0("Rscript --vanilla  ",part_scriprs,"first_docking_start_analysis.R ",part_analysis),ignore.stdout=T,wait = T)
 #log to csv
