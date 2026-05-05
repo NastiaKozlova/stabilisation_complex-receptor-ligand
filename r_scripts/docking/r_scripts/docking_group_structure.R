@@ -10,8 +10,9 @@ library(ggplot2)
 
 setwd(part_start)
 part<-paste0(part_start,"din/")
+if(file.exists(paste0(part_start,"din/df_log_all.csv"))){
 setwd(part)
-if(file.exists("df_log_all.csv")){
+
   if(dir.exists(paste0(part,"groups"))) {system(command = paste0("rm -r ",part,"groups"),ignore.stdout=T,wait = T)}
   if(dir.exists(paste0(part,"groups_fin"))) {system(command = paste0("rm -r ",part,"groups_fin"),ignore.stdout=T,wait = T)}
   if(dir.exists(paste0(part,"str"))) {system(command = paste0("rm -r ",part,"str"),ignore.stdout=T,wait = T)}
