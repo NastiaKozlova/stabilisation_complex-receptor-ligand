@@ -16,9 +16,9 @@ for(q in 1:length(v_temp)){
   setwd(part)
   df_ligand<-read.csv(paste0("ligand_field.csv"),stringsAsFactors = F)
   df_ligand<-df_ligand%>%mutate(c=NA)
-  
-  
-  
+  v_ligand<-list.files("ligand/")
+  df_ligand<-df_ligand%>%mutate(name=paste0(ligand,".pdbqt"))
+  df_ligand<-df_ligand[df_ligand$name%in%v_ligand,]
   df_active_center<-read.csv(paste0("active_center.csv"),stringsAsFactors = F)
   df_center<-df_active_center%>%select(type)
   df_center<-unique(df_center)
