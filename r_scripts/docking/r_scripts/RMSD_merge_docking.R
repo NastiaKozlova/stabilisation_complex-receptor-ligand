@@ -15,10 +15,10 @@ part<-paste0(part_analysis,"din/")
 if(dir.exists(paste0(part,"fin_merged"))) {system(command = paste0("rm -r ",part,"fin_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"structure_merged"))) {system(command = paste0("rm -r ",part,"structure_merged"),ignore.stdout=T,wait = T)}
 if(dir.exists(paste0(part,"groups_merged"))) {system(command = paste0("rm -r ",part,"groups_merged"),ignore.stdout=T,wait = T)}
-if (!dir.exists("RMSD_merged")) {dir.create("RMSD_merged")}
-if (!dir.exists("groups_merged")) {dir.create("groups_merged")}
-if (!dir.exists("structure_merged")) {dir.create("structure_merged")}
-if (!dir.exists("fin_merged")) {dir.create("fin_merged")}
+if (!dir.exists(paste0(part,"RMSD_merged"))) {dir.create(paste0(part,"RMSD_merged"))}
+if (!dir.exists(paste0(part,"groups_merged"))) {dir.create(paste0(part,"groups_merged"))}
+if (!dir.exists(paste0(part,"structure_merged"))) {dir.create(paste0(part,"structure_merged"))}
+if (!dir.exists(paste0(part,"fin_merged"))) {dir.create(paste0(part,"fin_merged"))}
 
 if(file.exists("din/log_fin.csv")){
   df_all<-df_all%>%mutate(x=NA)
@@ -73,7 +73,7 @@ if(file.exists("din/log_fin.csv")){
         df_calculation_sep$RMSD[j]<-rmsd(pdb_1,pdb_2)
       }
       print(Sys.time())
-      write.csv(df_calculation_sep,paste0("RMSD_merged/",df_analysis$receptor_ligand[q],".csv"),row.names=F)
+      write.csv(df_calculation_sep,paste0("RMSD_merged/",df_separate$receptor[p],"_",df_separate$ligand[p],".csv"),row.names=F)
     }
     print(Sys.time())
   }
