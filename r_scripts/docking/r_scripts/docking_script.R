@@ -15,6 +15,12 @@ i<-1
 df_active_center<-read.csv("active_center.csv",stringsAsFactors = F)
 #df_ligand_field<-read.csv("ligand_field.csv",stringsAsFactors = F)
 df_all<-read.csv("df_all.csv",stringsAsFactors = F)
+for (i in 1:nrow(df_all)) {
+  if(!file.exists(paste0("ligand/",df_all$ligand[i],".pdbqt"))){
+    df_all$ligand[i]<-NA
+  }
+}
+df_all<-df_all%>%filter(!is.na(ligand))
 j<-1
 df_all<-df_all%>%mutate(x_len=NA)%>% mutate(x_mean=NA)%>%
   mutate(y_len=NA)%>%  mutate(y_mean=NA)%>%
