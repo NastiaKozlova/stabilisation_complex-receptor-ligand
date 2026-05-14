@@ -32,7 +32,7 @@ for (i in 1:length(v_ligands)) {
   a<-strsplit(v_ligands[i],split = ".",fixed = T)[[1]][1]
   system(command = paste0("obabel ",part_start,"start/docking/docking_first/ligand_start/",a, ".pdb -O ",part_start,"start/docking/docking_first/ligand/",a, ".pdbqt"),ignore.stdout=T,wait = T)
 }
-
+i<-1
 part_proteins<-paste0(part_start,",",v_list_proteins)
 for (i in 1:length(v_list_proteins)) {
   #  part_name<-paste0(part_start,",",v_list_proteins[i])
@@ -54,12 +54,14 @@ for (i in 1:length(v_list_proteins)) {
 j<-1
 i<-1
 part_doking_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
+part_scriprs<-paste0(part_start,"r_scripts/docking/r_scripts/")
 v_search<-c("center","surf")
 if(!surphase_conut){
   v_search<-v_search[1]
 }
 #docking_main_surphase
-
+i<-1
+j<-1
 for (i in 1:length(v_list_proteins)) {
   for (j in 1:length(v_search)) {
     part<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/",v_search[j],"/")
@@ -113,15 +115,12 @@ for (i in 1:length(v_list_proteins)) {
   }
 }
 
-#system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_surphase.R ",part_protein),ignore.stdout=T,wait = T)
-#}
-#}#else{
-#  for (i in 1:length(v_list_proteins)) {
-#    #prepare castade start_file
-#    part_protein<-part_proteins[i]
-#    #copying sctipts for docking
-#    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_center.R ",part_protein),ignore.stdout=T,wait = T)
-#    #sctipts for cascade docking
-#    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/cascade_docking_center.R ",part_protein),ignore.stdout=T,wait = T)
-#  }
-#}
+for (i in 1:length(v_list_proteins)) {
+  for (j in 1:length(v_search)) {
+    
+    part_analysis<-paste0(part_start,v_list_proteins[i],"/docking/docking_first/",v_search[j],"/")
+    system(command = paste0("Rscript --vanilla  ",part_start,"r_scripts/docking_main_merge.R ",part_analysis),ignore.stdout=T,wait = T)
+    #        system(command = paste0("Rscript --vanilla  ",,"r_scripts/docking/r_scripts/docking_group_structure.R ",
+    #                            part_protein,"/docking/","docking_first/",",",1),ignore.stdout=T,wait = T)
+  }
+}
